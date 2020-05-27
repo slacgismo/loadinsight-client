@@ -1,0 +1,66 @@
+.root {
+    position: relative;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.photoBorder {
+    display: inline-block;
+    vertical-align: top;
+    width: 46px;
+    height: 46px;
+    border-radius: 22px;
+    border: 2px solid #404040;
+    padding: 1px;
+    margin-right: 16px;
+}
+
+.photo {
+    width: 40px;
+    height: 40px;
+    background-image: url('./images/dchassin-profile.jpeg');
+    background-size: 40px;
+    border-radius: 20px;
+}
+
+.nameAndOrg {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    margin-right: 16px;
+    padding-top: 5px;
+}
+
+.name {
+    font-family: Roboto, serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #404040;
+    line-height: 21px;
+    margin-bottom: 3px;
+}
+
+.organization {
+    font-family: Roboto, serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #404040;
+    line-height: 16px;
+}
+
+.dropdownArrow {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    background-size: 20px;
+    background-image: url('./images/drop-down-arrow.png');
+}
+
+.orgDropdown {
+    position: absolute;
+    top: 56px;
+}

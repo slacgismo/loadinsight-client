@@ -1,0 +1,68 @@
+.root {
+    width: 250px;
+    padding: 10px 16px 10px 16px;
+    border: 1px solid #d2d2d2;
+    border-radius: 2px;
+    background-color: #fff;
+    text-align: left;;
+}
+
+.header {
+    font-family: Roboto, serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #d2d2d2;
+    margin-bottom: 10px;
+}
+
+.organization {
+    width: 100%;
+    cursor: pointer;
+}
+
+.organization .photo {
+    display: inline-block;
+    vertical-align: top;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-size: 30px;
+    margin-right: 10px;
+}
+
+.organization .name {
+    display: inline-block;
+    vertical-align: top;
+    font-family: Roboto, serif;
+    font-size: 12px;
+    font-weight: 300;
+    padding-top: 7px;
+}
+
+.organization .photo.hce {
+    background-image: url('./images/holy-cross-logo.png');
+}
+
+.organization .photo.pge {
+    background-image: url('./images/pge-logo.png');
+}
+
+.organization .photo.svce {
+    background-image: url('./images/svce-logo.png');
+}
+
+.organization:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.border {
+    width: 100%;
+    border-bottom: 1px solid #d2d2d2;
+    margin: 10px 0px 10px 0px;
+}
+
+.signout {
+    font-family: Roboto, serif;
+    font-size: 12px;
+    cursor: pointer;
+}
