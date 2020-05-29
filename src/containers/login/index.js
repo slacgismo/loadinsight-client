@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { loginUser as loginUserAction } from 'actions/user';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { ROUTE_DASHBOARDS } from 'config/routes';
 import styles from './index.module.css';
 
 class Login extends Component {
@@ -22,7 +23,7 @@ class Login extends Component {
   componentDidUpdate() {
     const { userProfile, history } = this.props;
     if (userProfile) {
-      history.push('/dashboards');
+      history.push(ROUTE_DASHBOARDS);
     }
   }
 

@@ -18,6 +18,12 @@ import Dashboards from 'containers/dashboards';
 import Jobs from 'containers/jobs';
 import Pipelines from 'containers/pipelines';
 import reducers from 'reducers';
+import {
+  ROUTE_LOGIN,
+  ROUTE_DASHBOARDS,
+  ROUTE_PIPELINES,
+  ROUTE_JOBS,
+} from 'config/routes';
 import * as serviceWorker from './serviceWorker';
 import 'index.css';
 
@@ -43,11 +49,11 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <Route exact path="/login" render={() => (<Login />)} />
-        <Route exact path="/dashboards" render={requireLogin(<Dashboards />)} />
-        <Route exact path="/pipelines" render={requireLogin(<Pipelines />)} />
-        <Route exact path="/jobs" render={requireLogin(<Jobs />)} />
-        <Redirect to="/dashboards" />
+        <Route exact path={ROUTE_LOGIN} render={() => (<Login />)} />
+        <Route exact path={ROUTE_DASHBOARDS} render={requireLogin(<Dashboards />)} />
+        <Route exact path={ROUTE_PIPELINES} render={requireLogin(<Pipelines />)} />
+        <Route exact path={ROUTE_JOBS} render={requireLogin(<Jobs />)} />
+        <Redirect to={ROUTE_DASHBOARDS} />
       </Switch>
     </BrowserRouter>
   </Provider>,

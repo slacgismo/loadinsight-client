@@ -4,13 +4,14 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { logoutUser as logoutUserAction } from 'actions/user';
 import PropTypes from 'prop-types';
+import { ROUTE_LOGIN } from 'config/routes';
 import styles from './index.module.css';
 
 const OrgDropdown = (props) => {
   const { history, logoutUser } = props;
   const onSignOut = () => {
     logoutUser();
-    history.push('/login');
+    history.push(ROUTE_LOGIN);
   };
 
   return (
