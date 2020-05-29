@@ -42,7 +42,7 @@ export default class ApiClient {
     }
 
     const apiInstance = axios.create({
-      baseURL: `${config.api.baseUrl}${config.api.version}`,
+      baseURL: `${config.api.baseUrl}`,
       timeout,
       headers,
     });

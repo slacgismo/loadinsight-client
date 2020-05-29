@@ -4,13 +4,12 @@ import {
   LOGIN_USER_FAILED,
   LOGOUT_USER,
 } from 'actions';
-import user from 'mock-data/user-profile';
+import ApiClient from 'util/api-client';
 import { isDevelopment } from 'config';
 
 export function loginUserStarted() {
   return {
-    type: LOGIN_USER_STARTED,
-    payload: user,
+    type: LOGIN_USER_STARTED
   };
 }
 
@@ -31,10 +30,20 @@ export function loginUserFailed(error) {
 export function loginUser(email, password) {
   return (dispatch) => {
     dispatch(loginUserStarted());
-    if (isDevelopment() || (email === user.email && password === user.password)) {
-      dispatch(loginUserCompleted(user));
-    } else {
-      const err = Error('Incorrect email and password');
+    try {
+      ApiClient.get('/api/user-profile.json')
+        .then((res) => {
+          const user = res.data;
+          if (isDevelopment() || (email === user.email && password === user.password)) {
+            dispatch(loginUserCompleted(user));
+          } else {
+            throw Error('Incorrect email and password');
+          }
+        })
+        .catch((err) => {
+          dispatch(loginUserFailed(err));
+        });
+    } catch (err) {
       dispatch(loginUserFailed(err));
     }
   };
