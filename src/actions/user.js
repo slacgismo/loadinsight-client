@@ -9,7 +9,7 @@ import { isDevelopment } from 'config';
 
 export function loginUserStarted() {
   return {
-    type: LOGIN_USER_STARTED
+    type: LOGIN_USER_STARTED,
   };
 }
 
