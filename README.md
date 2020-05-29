@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## LoadInsight Environments
+[Production](https://loadinsight.org)
+[Staging](https://staging.loadinsight.org)
+
 ## Available Scripts
 
 In the project directory, you can run:
