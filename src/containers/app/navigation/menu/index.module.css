@@ -1,9 +1,9 @@
 .root {
-    padding: 10px 16px 0px 16px;
+    padding: 10px 0px 0px 0px;
 }
 
 .menuItem {
-    width: 170px;
+    width: 240px;
     height: 47px;
     padding-top: 13px;
     padding-left: 16px;    

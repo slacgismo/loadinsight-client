@@ -1,7 +1,9 @@
 .root {
     width: 100%;
-    padding: 21px 16px 0px 16px;
-    text-align: center;;
+    height: 100%;
+    padding: 0px;
+    text-align: center;
+    background-color: #fff;
 }
 
 .profile {
