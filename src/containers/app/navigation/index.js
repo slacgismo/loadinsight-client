@@ -9,5 +9,8 @@ export default () => (
       <Profile />
     </div>
     <Menu />
+    <div className={styles.helpLink}>
+      Help
+    </div>
   </div>
 );
