@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button } from 'antd';
+import { Input } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loginUser as loginUserAction } from 'actions/user';
@@ -37,24 +37,35 @@ class Login extends Component {
 
   onLoginClicked() {
     const { email, password } = this.state;
-    const { loginUser } = this.props;
+    const { loginUser, isLoggingIn } = this.props;
 
-    loginUser(email, password);
+    if (!isLoggingIn) {
+      loginUser(email, password);
+    }
   }
 
   render() {
+    const { loginError } = this.props;
+    const errorStyle = loginError ? styles.active : styles.inactive;
+
     return (
       <div className={styles.root}>
         <div className={styles.header}>Welcome to LoadInsight</div>
-        <div>
-          <Input className={styles.textField} placeholder="Email" onChange={this.onEmailChanged} />
+        <div className={styles.form}>
+          <div className={styles.title}>Sign In</div>
+          <div>
+            <Input className={styles.textField} placeholder="EMAIL" onChange={this.onEmailChanged} />
+          </div>
+          <div>
+            <Input type="password" className={styles.textField} placeholder="PASSWORD" onChange={this.onPasswordChanged} />
+          </div>
+          <div className={`${styles.error} ${errorStyle}`}>
+            Invalid credentials entered.
+          </div>
+          <div className={styles.button} role="button" tabIndex={0} onClick={this.onLoginClicked} onKeyPress={this.onLoginClicked}>
+            Sign In
+          </div>
         </div>
-        <div>
-          <Input type="password" className={styles.textField} placeholder="Password" onChange={this.onPasswordChanged} />
-        </div>
-        <Button className={styles.button} htmlType="submit" onClick={this.onLoginClicked}>
-          Sign In
-        </Button>
       </div>
     );
   }
@@ -66,14 +77,20 @@ Login.propTypes = {
   }).isRequired,
   loginUser: PropTypes.func.isRequired,
   userProfile: PropTypes.shape({}),
+  isLoggingIn: PropTypes.bool,
+  loginError: PropTypes.node,
 };
 
 Login.defaultProps = {
   userProfile: undefined,
+  isLoggingIn: false,
+  loginError: undefined,
 };
 
 const mapStateToProps = (state) => ({
   userProfile: state.user.profile,
+  isLoggingIn: state.user.isLoggingIn,
+  loginError: state.user.loginError,
 });
 
 const mapDispatch = (dispatch) => bindActionCreators({

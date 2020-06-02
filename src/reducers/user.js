@@ -25,13 +25,13 @@ export default (state = DEFAULT_STATE, action) => {
     case LOGIN_USER_COMPLETED:
       Auth.loginUser(action.payload);
       return {
-        ...state,
+        ...DEFAULT_STATE,
         profile: Auth.getUser(),
       };
     case LOGIN_USER_FAILED:
       return {
         ...DEFAULT_STATE,
-        error: action.payload,
+        loginError: action.payload,
       };
     case LOGOUT_USER:
       Auth.logoutUser();
