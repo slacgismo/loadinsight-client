@@ -31,3 +31,11 @@
     text-align: center;
     cursor: pointer;
 }
+
+.pipelines {
+    margin-top: 30px;
+}
+
+.pipelines .item {
+    margin-bottom: 15px;
+}

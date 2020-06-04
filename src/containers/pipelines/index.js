@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getPipelines as getPipelinesAction } from 'actions/pipelines';
+import Pipeline from './pipeline';
 import styles from './index.module.css';
 
-export default () => {
-    return (
-        <div className={styles.root}>
+class Pipelines extends Component {
+
+    componentDidMount() {
+        const { getPipelines } = this.props;
+        getPipelines();
+    }
+
+    render() {
+        const { pipelines } = this.props;
+        return (
+            <div className={styles.root}>
             <div className={styles.header}>
                 <div className={styles.title}>
                     Pipelines
@@ -12,6 +24,27 @@ export default () => {
                     +Add Pipeline
                 </div>
             </div>
+            <div className={styles.pipelines}>
+                {
+                    pipelines.map(p => (
+                        <div className={styles.item}>
+                            <Pipeline key={p.id} name={p.name} lastUpdated={p.last_updated} />
+                        </div>
+                    ))
+                }
+            </div>
         </div>
-    )
+        );
+    }
 }
+
+const mapStateToProps = (state) => ({
+  pipelines: state.pipelines.pipelines,
+});
+
+const mapDispatch = (dispatch) => bindActionCreators({
+    getPipelines: getPipelinesAction,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatch)(Pipelines);
+  
