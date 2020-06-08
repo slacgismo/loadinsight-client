@@ -53,7 +53,7 @@ export default class Profile extends Component {
             <div className={styles.name}>David Chassin</div>
             <div className={styles.organization}>SLAC</div>
           </div>
-          <div className={styles.manageSettings}>
+          <div className={styles.manageSettings} onClick={this.onToggleDropdown}>
             Manage Settings
           </div>
         </div>

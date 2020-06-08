@@ -16,7 +16,7 @@ const OrgDropdown = (props) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>Organizations</div>
+      {/*<div className={styles.header}>Organizations</div>
       <div className={styles.organizations}>
         <div className={styles.organization}>
           <div className={`${styles.photo} ${styles.hce}`} />
@@ -30,9 +30,11 @@ const OrgDropdown = (props) => {
           <div className={`${styles.photo} ${styles.svce}`} />
           <div className={styles.name}>Silicon Valley Clean Energy</div>
         </div>
-      </div>
-      <div className={styles.border} />
-      <div className={styles.signout} role="button" tabIndex={0} onClick={onSignOut} onKeyPress={onSignOut}>Sign Out</div>
+      </div>*/}
+      <ul>
+        <li>Account Profile</li>
+        <li className={styles.signout} role="button" tabIndex={0} onClick={onSignOut} onKeyPress={onSignOut}>Sign Out</li>
+      </ul>
     </div>
   );
 };
