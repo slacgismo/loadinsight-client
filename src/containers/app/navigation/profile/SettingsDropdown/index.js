@@ -58,8 +58,8 @@ const SettingsDropdown = ({ logoutUser }) => {
       <StyledMenuItem>
         Account Profile
       </StyledMenuItem>
-      <StyledMenuItem>
-        <button type="button" onClick={onSignOut} onKeyPress={onSignOut}>Sign Out</button>
+      <StyledMenuItem onClick={onSignOut} onKeyPress={onSignOut}>
+        Sign Out
       </StyledMenuItem>
     </StyledMenu>
   );
