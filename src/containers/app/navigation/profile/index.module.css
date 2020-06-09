@@ -57,8 +57,3 @@
     background-size: 20px;
     background-image: url('./images/drop-down-arrow.png');
 }
-
-.orgDropdown {
-    position: absolute;
-    top: 56px;
-}

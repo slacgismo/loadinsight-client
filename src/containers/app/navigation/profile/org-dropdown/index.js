@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { ROUTE_LOGIN } from 'config/routes';
 import styles from './index.module.css';
 
-const OrgDropdown = (props) => {
+const OrgDropdown = (props) => { // TODO: remove if not in use
   const { history, logoutUser } = props;
   const onSignOut = () => {
     logoutUser();
