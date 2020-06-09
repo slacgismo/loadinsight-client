@@ -5,27 +5,27 @@ import {
 } from 'actions';
 import ApiClient from 'util/api-client';
 
-export function getPipelinesStarted() {
+export const getPipelinesStarted = () => {
   return {
     type: GET_PIPELINES_STARTED,
   };
 }
 
-export function getPipelinesCompleted(payload) {
+export const getPipelinesCompleted = (payload) => {
   return {
     type: GET_PIPELINES_COMPLETED,
     payload,
   };
 }
 
-export function getPipelinesFailed(error) {
+export const getPipelinesFailed = (error) => {
   return {
     type: GET_PIPELINES_FAILED,
     payload: error,
   };
 }
 
-export function getPipelines() {
+export const getPipelines = () => {
   return (dispatch) => {
     dispatch(getPipelinesStarted());
     ApiClient.get('/api/pipelines.json')
