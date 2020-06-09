@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { ROUTE_LOGIN } from 'config/routes';
 import styles from './index.module.css';
 
-const OrgDropdown = (props) => {
+const OrgDropdown = (props) => { // TODO: remove if not in use
   const { history, logoutUser } = props;
   const onSignOut = () => {
     logoutUser();
@@ -16,7 +16,7 @@ const OrgDropdown = (props) => {
 
   return (
     <div className={styles.root}>
-      {/*<div className={styles.header}>Organizations</div>
+      <div className={styles.header}>Organizations</div>
       <div className={styles.organizations}>
         <div className={styles.organization}>
           <div className={`${styles.photo} ${styles.hce}`} />
@@ -30,11 +30,9 @@ const OrgDropdown = (props) => {
           <div className={`${styles.photo} ${styles.svce}`} />
           <div className={styles.name}>Silicon Valley Clean Energy</div>
         </div>
-      </div>*/}
-      <ul>
-        <li>Account Profile</li>
-        <li className={styles.signout} role="button" tabIndex={0} onClick={onSignOut} onKeyPress={onSignOut}>Sign Out</li>
-      </ul>
+      </div>
+      <div className={styles.border} />
+      <div className={styles.signout} role="button" tabIndex={0} onClick={onSignOut} onKeyPress={onSignOut}>Sign Out</div>
     </div>
   );
 };
