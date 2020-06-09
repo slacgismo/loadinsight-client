@@ -44,6 +44,10 @@ const StyledMenuLabel = styled.div`
   color: #404040;
 `;
 
+const StyledDownOutlined = styled(DownOutlined)`
+  margin-left: 4px;
+`;
+
 const SettingsDropdown = ({ logoutUser }) => {
   const history = useHistory();
 
@@ -68,7 +72,7 @@ const SettingsDropdown = ({ logoutUser }) => {
     <Dropdown overlay={menu}>
       <StyledMenuLabel>
         Manage settings
-        <DownOutlined />
+        <StyledDownOutlined />
       </StyledMenuLabel>
     </Dropdown>
   );
