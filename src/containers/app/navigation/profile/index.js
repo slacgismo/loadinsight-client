@@ -44,7 +44,7 @@ export default class Profile extends Component {
     }
 
     return (
-      <div className={styles.root} role="button" tabIndex={0} onClick={this.onToggleDropdown} onKeyPress={this.onToggleDropdown}>
+      <div className={styles.root}>
         <div className={styles.clickable}>
           <div className={styles.photoBorder}>
             <div className={styles.photo} />
@@ -53,7 +53,9 @@ export default class Profile extends Component {
             <div className={styles.name}>David Chassin</div>
             <div className={styles.organization}>SLAC</div>
           </div>
-          <div className={styles.dropdownArrow} />
+          <div className={styles.manageSettings}>
+            Manage Settings
+          </div>
         </div>
         {orgDropdown}
       </div>

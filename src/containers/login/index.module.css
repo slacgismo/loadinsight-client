@@ -1,39 +1,78 @@
 
 
 .root {
+    width: 100%;
+    height: 100vh;
     text-align: center;
-    margin-top: 200px;
 }
 
 .header {
     font-family: Roboto, serif;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 500;
     color: #404040;
-    margin-bottom: 25px;
+    padding-top: 100px;
+}
+
+.form {
+    width: 390px;
+    padding: 30px;
+    margin: 45px auto 0px auto;
+    background-color: #fff;
+    text-align: left;
+}
+
+.form .title {
+    font-family: Roboto, serif;
+    font-weight: 500;
+    font-size: 24px;
+    color: #707070;
+    text-transform: uppercase;
+    margin-bottom: 40px;
 }
 
 .textField {
     width: 330px;
-    height: 30px;
     font-family: Roboto, serif;
-    font-size: 16px;
-    padding-left: 10px;
-    color: #404040;
-    margin-bottom: 10px;
+    font-size: 20px;
+    color: #707070;
+    border: none;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.textField::placeholder {
+    color: #D2D2D2;
+    opacity: 1;
+}
+
+.textField:first-child {
+    margin-bottom: 20px;
+}
+
+.error {
+    font-family: Roboto, serif;
+    font-size: 14px;
+    color: #FF511B;
+    opacity: 0;
+}
+
+.error.active {
+    opacity: 1;
 }
 
 .button {
-    width: 185px;
-    height: 32px;
+    width: 110px;
+    height: 50px;
     font-family: Roboto, serif;
+    font-weight: 500;
     font-size: 16px;
-    color: #fff;
-    background-color: #404040;
-    display: inline-block;
-    border-radius: 2px;
-    margin-top: 25px;
+    color: #EDEDED;
+    background-color: #318466;
+    border-radius: 3px;
     cursor: pointer;
-    border-radius: 2px;
+    text-align: center;
+    padding-top: 14px;
+    margin-top: 30px;
 }
 

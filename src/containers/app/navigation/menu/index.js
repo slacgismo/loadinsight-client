@@ -23,8 +23,6 @@ const Menu = (props) => {
       <div className={`${styles.menuItem} ${dashboardsStyle}`} role="button" tabIndex={0} onClick={navigate(ROUTE_DASHBOARDS)} onKeyPress={navigate(ROUTE_DASHBOARDS)}>Dashboards</div>
       <div className={`${styles.menuItem} ${pipelinesStyle}`} role="button" tabIndex={0} onClick={navigate(ROUTE_PIPELINES)} onKeyPress={navigate(ROUTE_PIPELINES)}>Pipelines</div>
       <div className={`${styles.menuItem} ${jobsStyle}`} role="button" tabIndex={0} onClick={navigate(ROUTE_JOBS)} onKeyPress={navigate(ROUTE_JOBS)}>Jobs</div>
-      <div className={`${styles.menuItem}`}>Settings</div>
-      <div className={`${styles.menuItem}`}>Help</div>
     </div>
   );
 };
