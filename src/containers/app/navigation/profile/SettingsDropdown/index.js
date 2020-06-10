@@ -25,7 +25,7 @@ const StyledMenu = styled(Menu)`
 `;
 
 const StyledMenuItem = styled(Item)`
-  padding: 8px 0;
+  padding: 7px 0;
   text-align: center;
 `;
 
