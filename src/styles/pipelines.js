@@ -1,6 +1,13 @@
 import styled from 'styled-components';
-
 import { Button } from 'antd';
+
+import {
+  ColorWhite,
+  ColorDarkGray,
+  ColorBlack,
+  ColorBlue,
+  ColorGreen,
+} from 'styles/colors';
 
 export const StyledPipelines = styled.div`
   margin-top: 30px;
@@ -10,7 +17,7 @@ export const StyledPipelineItem = styled.div`
   position: relative;
   width: 100%;
   height: 72px;
-  background-color: #fff;
+  background-color: ${ColorWhite};
   margin-bottom: 15px;
 `;
 
@@ -22,7 +29,7 @@ export const StyledPipelineName = styled.div`
   padding-left: 25px;
   font-size: 18px;
   font-weight: 500;
-  color: #2A7AB7;
+  color: ${ColorBlue};
 `;
 
 export const StyledPipelineLastUpdated = styled.div`
@@ -31,16 +38,16 @@ export const StyledPipelineLastUpdated = styled.div`
   height: 72px;
   padding-left: 25px;
   font-size: 14px;
-  color: #aaaaaa;
+  color: ${ColorDarkGray};
 `;
 
-export const StyledPipelineItemButton = styled.div`
+export const StyledPipelineItemButton = styled(Button)`
   position: absolute;
   top: 18px;
   right: 25px;
   width: 133px;
   height: 36px;
-  background-color: #318466;
+  background-color: ${ColorGreen};
   border-radius: 2px;
   color: #fff;
   font-size: 18px;
@@ -56,8 +63,11 @@ export const StyledPipelinesButton = styled(Button)`
   border: 0;
   border-radius: 3px;
   font-size: 12px;
+  background-color: ${ColorBlack};
   &, &:hover, &:focus {
-    background-color: #404040;
     color: #fff;
+  }
+  &:hover, &:focus {
+    background-color: ${ColorBlue};
   }
 `;
