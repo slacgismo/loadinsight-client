@@ -1,11 +1,8 @@
-export const ColorWhite = '#ffffff';
-
-export const ColorLightGray = '#d2d2d2';
-
-export const ColorDarkGray = '#aaaaaa';
-
-export const ColorBlack = '#404040';
-
-export const ColorBlue = '#2a7ab7';
-
-export const ColorGreen = '#318466';
+export default {
+  White: '#ffffff',
+  LightGray: '#d2d2d2',
+  DarkGray: '#aaaaaa',
+  Black: '#404040',
+  Blue: '#2a7ab7',
+  Green: '#318466',
+};

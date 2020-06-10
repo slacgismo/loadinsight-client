@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ColorBlack } from 'styles/colors';
+import Colors from 'styles/colors';
 import SettingsDropdown from './SettingsDropdown';
 import PhotoImg from './images/dchassin-profile.jpeg';
 
@@ -16,7 +16,7 @@ const StyledPhotoContainer = styled.div`
   width: 46px;
   height: 46px;
   border-radius: 22px;
-  border: 2px solid ${ColorBlack};
+  border: 2px solid ${Colors.Black};
   padding: 1px;
   margin: 0px auto 0px auto;
 `;
