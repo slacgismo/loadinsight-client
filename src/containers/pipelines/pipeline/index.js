@@ -1,18 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './index.module.css';
+
+import {
+  StyledPipelineItem,
+  StyledPipelineName,
+  StyledPipelineLastUpdated,
+  StyledPipelineItemButton,
+} from 'styles/pipelines';
 
 const Pipeline = (props) => {
   const { name, lastUpdated } = props;
   return (
-    <div className={styles.root}>
-      <div className={styles.name}>{name}</div>
-      <div className={styles.lastUpdated}>
-        Last updated
+    <StyledPipelineItem>
+      <StyledPipelineName>{name}</StyledPipelineName>
+      <StyledPipelineLastUpdated>
+        Last updated&nbsp;
         {lastUpdated}
-      </div>
-      <div className={styles.button}>Succeeded</div>
-    </div>
+      </StyledPipelineLastUpdated>
+      <StyledPipelineItemButton>Succeeded</StyledPipelineItemButton>
+    </StyledPipelineItem>
   );
 };
 

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getPipelines as getPipelinesAction } from 'actions/pipelines';
 import PropTypes from 'prop-types';
-import Pipeline from './pipeline';
-import styles from './index.module.css';
+
+import { getPipelines as getPipelinesAction } from 'actions/pipelines';
+import { StyledHeader, StyledTitle } from 'styles/app';
+import { StyledPipelines, StyledPipelinesButton } from 'styles/pipelines';
+import PipelineItem from './pipeline';
 
 class Pipelines extends Component {
   componentDidMount() {
@@ -15,25 +17,25 @@ class Pipelines extends Component {
   render() {
     const { pipelines } = this.props;
     return (
-      <div className={styles.root}>
-        <div className={styles.header}>
-          <div className={styles.title}>
+      <>
+        <StyledHeader>
+          <StyledTitle>
             Pipelines
-          </div>
-          <div className={styles.addPipelineButton}>
-            +Add Pipeline
-          </div>
-        </div>
-        <div className={styles.pipelines}>
+          </StyledTitle>
+          <StyledPipelinesButton type="text">
+            + Add Pipeline
+          </StyledPipelinesButton>
+        </StyledHeader>
+        <StyledPipelines>
           {
-                    pipelines.map((p) => (
-                      <div className={styles.item}>
-                        <Pipeline key={p.id} name={p.name} lastUpdated={p.last_updated} />
-                      </div>
-                    ))
-                }
-        </div>
-      </div>
+            // eslint-disable-next-line camelcase
+            pipelines.map(({ id, name, last_updated }) => (
+              // eslint-disable-next-line camelcase
+              <PipelineItem key={id} name={name} lastUpdated={last_updated} />
+            ))
+          }
+        </StyledPipelines>
+      </>
     );
   }
 }
