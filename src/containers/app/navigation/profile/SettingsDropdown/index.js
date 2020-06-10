@@ -25,15 +25,17 @@ const StyledMenu = styled(Menu)`
 `;
 
 const StyledMenuItem = styled(Item)`
-  margin: 0 auto;
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 500;
   padding: 8px 0;
   text-align: center;
-  &:hover {
-    background: #f7f7f7;
-  }
+`;
+
+const StyledMenuButton = styled.button`
+  border: 0;
+  background: transparent;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  cursor: pointer;
 `;
 
 const StyledMenuLabel = styled.div`
@@ -59,10 +61,10 @@ const SettingsDropdown = ({ logoutUser }) => {
   const menu = (
     <StyledMenu>
       <StyledMenuItem>
-        Account Profile
+        <StyledMenuButton type="text">Account Profile</StyledMenuButton>
       </StyledMenuItem>
-      <StyledMenuItem onClick={onSignOut} onKeyPress={onSignOut}>
-        Sign Out
+      <StyledMenuItem>
+        <StyledMenuButton type="text" onClick={onSignOut}>Sign Out</StyledMenuButton>
       </StyledMenuItem>
     </StyledMenu>
   );
