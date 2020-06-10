@@ -15,4 +15,5 @@ button:focus {
 body {
     margin: 0;
     font-family: Roboto, serif;
+    color: #404040;
 }

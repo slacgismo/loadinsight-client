@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { ColorBlack } from 'styles/colors';
 import SettingsDropdown from './SettingsDropdown';
 import PhotoImg from './images/dchassin-profile.jpeg';
 
@@ -31,7 +32,6 @@ const StyledPhoto = styled.div`
 const StyledNameAndOrg = styled.div`
   font-size: 18px;
   font-weight: 500;
-  color: #404040;
   line-height: 21px;
   margin-top: 10px;
 `;
@@ -39,14 +39,12 @@ const StyledNameAndOrg = styled.div`
 const StyledName = styled.div`
   font-size: 18px;
   font-weight: 500;
-  color: #404040;
   line-height: 21px;
   margin-top: 10px;
 `;
 
 const StyledOrganization = styled.div`
   font-size: 14px;
-  color: #404040;
   margin-top: 5px;
 `;
 
