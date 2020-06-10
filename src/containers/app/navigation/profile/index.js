@@ -16,7 +16,7 @@ const StyledPhotoContainer = styled.div`
   width: 46px;
   height: 46px;
   border-radius: 22px;
-  border: 2px solid #404040;
+  border: 2px solid ${ColorBlack};
   padding: 1px;
   margin: 0px auto 0px auto;
 `;
