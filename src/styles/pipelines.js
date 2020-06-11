@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Button, Modal, Card } from 'antd';
 
 import { StyledTitleText, StyledButtonGreen, StyledButtonBlue } from 'styles/app';
@@ -113,4 +113,4 @@ export const StyledPipelineLabel = styled.div`
 
 export const StyledCustomPipelineImportButton = styled(Button)`
   ${StyledButtonBlue}
-`
+`;
