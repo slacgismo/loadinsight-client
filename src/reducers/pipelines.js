@@ -61,7 +61,7 @@ export default (state = DEFAULT_STATE, action) => {
       const localPipelines = [
         ...state.pipelines,
         {
-          id: state.pipelines.length,
+          id: Math.random(),
           name: action.payload.name,
           last_updated: 'a few seconds ago',
         },

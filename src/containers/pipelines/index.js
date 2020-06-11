@@ -27,8 +27,8 @@ function Pipelines({ getPipelines, pipelines }) {
           + Add Pipeline
         </StyledPipelinesButton>
       </StyledTitle>
-      {pipelines.map(({ name, last_updated: lastUpdated }) => (
-        <PipelineItem key={name} name={name} lastUpdated={lastUpdated} />
+      {pipelines.map(({ id, name, last_updated: lastUpdated }) => (
+        <PipelineItem key={id} name={name} lastUpdated={lastUpdated} />
       ))}
       {addModalVisible && (
       <AddModal
