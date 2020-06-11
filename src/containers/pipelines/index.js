@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 import { getPipelines as getPipelinesAction } from 'actions/pipelines';
-import { StyledHeader, StyledTitle } from 'styles/app';
+import { StyledTitle } from 'styles/app';
 import { StyledPipelines, StyledPipelinesButton } from 'styles/pipelines';
 import PipelineItem from './pipeline';
 
@@ -18,20 +18,16 @@ class Pipelines extends Component {
     const { pipelines } = this.props;
     return (
       <>
-        <StyledHeader>
-          <StyledTitle>
-            Pipelines
-          </StyledTitle>
+        <StyledTitle>
+          Pipelines
           <StyledPipelinesButton type="text">
             + Add Pipeline
           </StyledPipelinesButton>
-        </StyledHeader>
+        </StyledTitle>
         <StyledPipelines>
           {
-            // eslint-disable-next-line camelcase
-            pipelines.map(({ id, name, last_updated }) => (
-              // eslint-disable-next-line camelcase
-              <PipelineItem key={id} name={name} lastUpdated={last_updated} />
+            pipelines.map(({ id, name, last_updated: lastUpdated }) => (
+              <PipelineItem key={id} name={name} lastUpdated={lastUpdated} />
             ))
           }
         </StyledPipelines>

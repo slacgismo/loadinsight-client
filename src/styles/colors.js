@@ -1,8 +1,8 @@
 export default {
-  White: '#ffffff',
-  LightGray: '#d2d2d2',
-  DarkGray: '#aaaaaa',
-  Black: '#404040',
-  Blue: '#2a7ab7',
-  Green: '#318466',
+  white: '#ffffff',
+  lightGray: '#d2d2d2',
+  darkGray: '#aaaaaa',
+  black: '#404040',
+  blue: '#2a7ab7',
+  green: '#318466',
 };

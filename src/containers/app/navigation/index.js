@@ -1,16 +1,23 @@
 import React from 'react';
+import styled from 'styled-components';
+
+import colors from 'styles/colors';
 import Profile from './profile';
 import Menu from './menu';
-import styles from './index.module.css';
+
+const StyledHelpLink = styled.div`
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  font-size: 16px;
+  color: ${colors.blue};
+  cursor: pointer;
+`;
 
 export default () => (
-  <div className={styles.root}>
-    <div className={styles.profile}>
-      <Profile />
-    </div>
+  <>
+    <Profile />
     <Menu />
-    <div className={styles.helpLink}>
-      Help
-    </div>
-  </div>
+    <StyledHelpLink>Help</StyledHelpLink>
+  </>
 );

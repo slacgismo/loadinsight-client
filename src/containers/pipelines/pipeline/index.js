@@ -8,19 +8,16 @@ import {
   StyledPipelineItemButton,
 } from 'styles/pipelines';
 
-const Pipeline = (props) => {
-  const { name, lastUpdated } = props;
-  return (
-    <StyledPipelineItem>
-      <StyledPipelineName>{name}</StyledPipelineName>
-      <StyledPipelineLastUpdated>
-        Last updated&nbsp;
-        {lastUpdated}
-      </StyledPipelineLastUpdated>
-      <StyledPipelineItemButton>Succeeded</StyledPipelineItemButton>
-    </StyledPipelineItem>
-  );
-};
+const Pipeline = ({ name, lastUpdated }) => (
+  <StyledPipelineItem>
+    <StyledPipelineName>{name}</StyledPipelineName>
+    <StyledPipelineLastUpdated>
+      Last updated&nbsp;
+      {lastUpdated}
+    </StyledPipelineLastUpdated>
+    <StyledPipelineItemButton>Succeeded</StyledPipelineItemButton>
+  </StyledPipelineItem>
+);
 
 Pipeline.propTypes = {
   name: PropTypes.string.isRequired,

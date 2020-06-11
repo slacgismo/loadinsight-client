@@ -1,24 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Colors from 'styles/colors';
+import colors from 'styles/colors';
 import SettingsDropdown from './SettingsDropdown';
 import PhotoImg from './images/dchassin-profile.jpeg';
 
 const StyledProfileContainer = styled.div`
   position: relative;
   text-align: center;
-  padding-top: 30px;
   cursor: pointer;
+  border-bottom: 1px solid #d2d2d2;
+  padding-bottom: 10px;
+  margin: 34px 20px 0 16px;
 `;
 
 const StyledPhotoContainer = styled.div`
   width: 46px;
   height: 46px;
   border-radius: 22px;
-  border: 2px solid ${Colors.Black};
+  border: 2px solid ${colors.black};
   padding: 1px;
-  margin: 0px auto 0px auto;
+  margin: 0 auto;
 `;
 
 const StyledPhoto = styled.div`
