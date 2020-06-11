@@ -18,7 +18,7 @@ export const StyledPipelinesButton = styled(Button)`
   line-height: 14px;
   background-color: ${colors.black};
   &, &:hover, &:focus {
-    color: #fff;
+    color: ${colors.white};
   }
   &:hover, &:focus {
     background-color: ${colors.blue};
@@ -52,5 +52,5 @@ export const StyledPipelineItemButton = styled(Button)`
   line-height: 21px;
   border: 0;
   border-radius: 2px;
-  color: #fff;
+  color: ${colors.white};
 `;
