@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -8,7 +8,6 @@ import { Dropdown, Menu } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 
-import { ROUTE_LOGIN } from 'config/routes';
 import { logoutUser as logoutUserAction } from 'actions/user';
 
 const { Item } = Menu;
@@ -48,21 +47,13 @@ const StyledDownOutlined = styled(DownOutlined)`
 `;
 
 const SettingsDropdown = ({ logoutUser }) => {
-  const history = useHistory();
-
-  const onSignOut = (event) => {
-    event.preventDefault();
-    logoutUser();
-    history.push(ROUTE_LOGIN);
-  };
-
   const menu = (
     <StyledMenu>
       <StyledMenuItem>
         <Link to="/profile">Account Profile</Link>
       </StyledMenuItem>
       <StyledMenuItem>
-        <Link to="/login" onClick={onSignOut}>Sign Out</Link>
+        <Link to="/login" onClick={logoutUser}>Sign Out</Link>
       </StyledMenuItem>
     </StyledMenu>
   );
