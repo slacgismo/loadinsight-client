@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -23,9 +23,9 @@ import HttpImg from '../images/http.svg';
 function AddModal({ handleOk, handleCancel }) {
   const history = useHistory();
 
-  const goToImportCustom = (event) => {
+  const goToImportCustom = () => {
     history.push(ROUTE_PIPELINES_NEW_REPOSITORIES);
-  }
+  };
 
   return (
     <StyledPipelineModal

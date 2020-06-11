@@ -17,7 +17,7 @@ const Repository = ({ name }) => {
   return (
     <StyledRepositoryItem>
       <StyledRepositoryName>{name}</StyledRepositoryName>
-      <div></div>
+      <div />
       <StyledRepositoryItemButton onClick={goToImport}>
         Set-up Pipeline
       </StyledRepositoryItemButton>

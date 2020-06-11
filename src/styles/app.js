@@ -85,4 +85,4 @@ export const StyledButtonBlue = css`
 
 export const StyledInput = styled(Input)`
   max-width: 370px;
-`
+`;
