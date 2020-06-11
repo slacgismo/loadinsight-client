@@ -1,12 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Button, Modal, Card } from 'antd';
 
-import { StyledTitleText } from 'styles/app';
+import { StyledTitleText, StyledButtonGreen, StyledButtonBlue } from 'styles/app';
 import colors from 'styles/colors';
-
-export const StyledPipelines = styled.div`
-  margin-top: 30px;
-`;
 
 export const StyledPipelinesButton = styled(Button)`
   width: 98px;
@@ -48,12 +44,7 @@ export const StyledPipelineLastUpdated = styled.div`
 `;
 
 export const StyledPipelineItemButton = styled(Button)`
-  background-color: ${colors.green};
-  font-size: 18px;
-  line-height: 21px;
-  border: 0;
-  border-radius: 2px;
-  color: ${colors.white};
+  ${StyledButtonGreen}
 `;
 
 export const StyledPipelineGrid = styled.div`
@@ -119,3 +110,7 @@ export const StyledPipelineLabel = styled.div`
   text-align: center;
   width: 100%;
 `;
+
+export const StyledCustomPipelineImportButton = styled(Button)`
+  ${StyledButtonBlue}
+`

@@ -1,7 +1,9 @@
 import React from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 
+import { ROUTE_PIPELINES_NEW_REPOSITORIES } from 'config/routes';
 import {
   StyledPipelineModal,
   StyledPipelineCard,
@@ -19,6 +21,12 @@ import PresetImg from '../images/preset.svg';
 import HttpImg from '../images/http.svg';
 
 function AddModal({ handleOk, handleCancel }) {
+  const history = useHistory();
+
+  const goToImportCustom = (event) => {
+    history.push(ROUTE_PIPELINES_NEW_REPOSITORIES);
+  }
+
   return (
     <StyledPipelineModal
       title="Add Pipelines"
@@ -48,13 +56,13 @@ function AddModal({ handleOk, handleCancel }) {
           </Button>
         </StyledPipelineCard>
         <StyledPipelineCard>
-          <Button onClick={null}>
+          <Button onClick={goToImportCustom}>
             <StyledPipelineLabel>Preset Pipelines</StyledPipelineLabel>
             <img src={PresetImg} alt="Preset" />
           </Button>
         </StyledPipelineCard>
         <StyledPipelineCard>
-          <Button onClick={null}>
+          <Button onClick={goToImportCustom}>
             <StyledPipelineLabel>Import Custom Pipeline</StyledPipelineLabel>
             <img src={CustomImg} alt="Custom" />
           </Button>
