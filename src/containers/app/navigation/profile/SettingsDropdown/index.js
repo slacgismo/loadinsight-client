@@ -17,7 +17,7 @@ const StyledMenu = styled(Menu)`
   width: 118px;
   margin: 0 auto;
   background: #f7f7f7;
-  padding: 10px 0;
+  padding: 18px 0;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.05);
@@ -29,8 +29,9 @@ const StyledMenuItem = styled(Item)`
   font-size: 12px;
   line-height: 14px;
   font-weight: 500;
+  padding: 0;
   a {
-    padding: 7px 0;
+    padding: 8px 0;
     margin: 0;
   }
 `;
