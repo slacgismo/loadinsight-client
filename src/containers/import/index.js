@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,6 +23,8 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
   }, [getCustomPipeline]);
 
   const { inputs = [], outputs = [], load_profile: loadProfile = [] } = pipelineNewImport;
+
+  const [pipelineNewImportName, setPipelineNewImportName] = useState('PG&E Load Profile Pipeline');
 
   const inputsColumns = [
     {
@@ -79,18 +81,21 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
   ];
 
   const addNewPipelineImport = () => {
-    addPipeline(pipelineNewImport);
+    addPipeline({
+      name: pipelineNewImportName,
+      ...pipelineNewImport,
+    });
     history.push(ROUTE_PIPELINES);
   };
 
-  inputs.forEach((input) => {
-    inputs[input].key = inputs[input].id;
+  inputs.forEach((input, i) => {
+    inputs[i].key = input.name;
   });
-  outputs.forEach((output) => {
-    outputs[output].key = outputs[output].id;
+  outputs.forEach((output, i) => {
+    outputs[i].key = output.name;
   });
-  loadProfile.forEach((profile) => {
-    loadProfile[profile].key = loadProfile[profile].id;
+  loadProfile.forEach((profile, i) => {
+    loadProfile[i].key = profile.name;
   });
 
   return (
@@ -100,7 +105,11 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
       </StyledTitle>
       <StyledSection>
         <header>
-          <StyledInput type="text" value="PG&E Load Profile Pipeline" />
+          <StyledInput
+            type="text"
+            defaultValue={pipelineNewImportName}
+            onChange={(event) => setPipelineNewImportName(event.target.value)}
+          />
           <StyledCustomPipelineImportButton onClick={addNewPipelineImport}>
             Import Pipeline
           </StyledCustomPipelineImportButton>
@@ -110,7 +119,7 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             <StyledH5>
               THIS PIPELINE HAS
               {inputs.length}
-              {' '}
+              &nbsp;
               INPUT PARAMETERS
             </StyledH5>
             <Table
@@ -123,7 +132,7 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             <StyledH5>
               THIS PIPELINE HAS
               {outputs.length}
-              {' '}
+              &nbsp;
               OUTPUTS
             </StyledH5>
             <Table

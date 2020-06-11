@@ -1,5 +1,4 @@
 {
-  "name": "PG&E Load Profile Pipeline",
   "inputs": [
     {
       "name": "Start Date",

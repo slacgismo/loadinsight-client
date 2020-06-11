@@ -20,14 +20,6 @@ const DEFAULT_STATE = {
 export default (state = DEFAULT_STATE, action) => {
   if (action.error) return state;
 
-  const localPipelines = [
-    ...state.pipelines,
-    {
-      ...action.payload,
-      last_updated: 'a few seconds ago',
-    },
-  ];
-
   switch (action.type) {
     case GET_PIPELINES_STARTED:
       return {
@@ -65,12 +57,21 @@ export default (state = DEFAULT_STATE, action) => {
         isLoadingCustomPipeline: false,
         error: action.payload,
       };
-    case ADD_PIPELINE:
+    case ADD_PIPELINE: {
+      const localPipelines = [
+        ...state.pipelines,
+        {
+          id: state.pipelines.length,
+          name: action.payload.name,
+          last_updated: 'a few seconds ago',
+        },
+      ];
       window.localStorage.setItem(`${USER_KEY}Pipelines`, JSON.stringify(localPipelines));
       return {
         ...state,
         pipelines: localPipelines,
       };
+    }
     default:
       return state;
   }
