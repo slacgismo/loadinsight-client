@@ -12,18 +12,17 @@ import AddModal from './AddModal';
 function Pipelines({ getPipelines, pipelines }) {
   useEffect(() => {
     getPipelines();
-  }, []);
+  }, [getPipelines]);
 
   const [addModalVisible, setAddModalVisible] = useState(false);
 
-  const openModal = () => setAddModalVisible(true);
-  const closeModal = () => setAddModalVisible(false);
+  const toggleModal = () => setAddModalVisible(!addModalVisible);
 
   return (
     <>
       <StyledTitle>
         Pipelines
-        <StyledPipelinesButton type="text" onClick={openModal}>
+        <StyledPipelinesButton type="text" onClick={toggleModal}>
           + Add Pipeline
         </StyledPipelinesButton>
       </StyledTitle>
@@ -36,8 +35,8 @@ function Pipelines({ getPipelines, pipelines }) {
       </StyledPipelines>
       {addModalVisible && (
       <AddModal
-        handleOk={closeModal}
-        handleCancel={closeModal}
+        handleOk={toggleModal}
+        handleCancel={toggleModal}
       />
       )}
     </>
