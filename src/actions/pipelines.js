@@ -59,8 +59,7 @@ export const getCustomPipeline = () => (dispatch) => {
     });
 };
 
-
-export const addPipeline = () => (payload) => ({
+export const addPipeline = (payload) => ({
   type: ADD_PIPELINE,
   payload,
-})
+});

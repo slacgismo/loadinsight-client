@@ -1,4 +1,4 @@
-const USER_KEY = 'user';
+export const USER_KEY = 'user';
 
 export default class Auth {
   static loginUser(user) {

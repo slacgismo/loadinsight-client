@@ -10,6 +10,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import Auth from 'util/auth';
 import Login from 'containers/login';
@@ -39,7 +40,7 @@ if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger);
 }
 
-const store = applyMiddleware(...middlewares)(createStore)(reducers);
+const store = composeWithDevTools(applyMiddleware(...middlewares))(createStore)(reducers);
 
 const requireLogin = (component) => () => {
   if (Auth.isUserLoggedIn()) {
@@ -57,7 +58,11 @@ ReactDOM.render(
         <Route exact path={ROUTE_DASHBOARDS} render={requireLogin(<Dashboards />)} />
         <Route exact path={ROUTE_PIPELINES} render={requireLogin(<Pipelines />)} />
         <Route exact path={ROUTE_JOBS} render={requireLogin(<Jobs />)} />
-        <Route exact path={ROUTE_PIPELINES_NEW_REPOSITORIES} render={requireLogin(<Repositories />)} />
+        <Route
+          exact
+          path={ROUTE_PIPELINES_NEW_REPOSITORIES}
+          render={requireLogin(<Repositories />)}
+        />
         <Route exact path={ROUTE_PIPELINES_NEW_IMPORT} render={requireLogin(<Import />)} />
         <Redirect to={ROUTE_DASHBOARDS} />
       </Switch>

@@ -1,19 +1,28 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Table, Space } from 'antd';
 
-import { getCustomPipeline as getCustomPipelineAction } from 'actions/pipelines';
-import { StyledTitle, StyledSection, StyledInput, StyledH5 } from 'styles/app';
+import { ROUTE_PIPELINES } from 'config/routes';
+import {
+  getCustomPipeline as getCustomPipelineAction,
+  addPipeline as addPipelineAction,
+} from 'actions/pipelines';
+import {
+  StyledTitle, StyledSection, StyledInput, StyledH5,
+} from 'styles/app';
 import { StyledCustomPipelineImportButton } from 'styles/pipelines';
 
-function ImportCustom({ getCustomPipeline, pipelineNewImport={}}) {
+function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }) {
+  const history = useHistory();
+
   useEffect(() => {
     getCustomPipeline();
   }, [getCustomPipeline]);
 
-  const { inputs=[], outputs=[], load_profile: loadProfile=[] } = pipelineNewImport
+  const { inputs = [], outputs = [], load_profile: loadProfile = [] } = pipelineNewImport;
 
   const inputsColumns = [
     {
@@ -69,6 +78,21 @@ function ImportCustom({ getCustomPipeline, pipelineNewImport={}}) {
     },
   ];
 
+  const addNewPipelineImport = () => {
+    addPipeline(pipelineNewImport);
+    history.push(ROUTE_PIPELINES);
+  };
+
+  inputs.forEach((input) => {
+    inputs[input].key = inputs[input].id;
+  });
+  outputs.forEach((output) => {
+    outputs[output].key = outputs[output].id;
+  });
+  loadProfile.forEach((profile) => {
+    loadProfile[profile].key = loadProfile[profile].id;
+  });
+
   return (
     <>
       <StyledTitle>
@@ -77,11 +101,18 @@ function ImportCustom({ getCustomPipeline, pipelineNewImport={}}) {
       <StyledSection>
         <header>
           <StyledInput type="text" value="PG&E Load Profile Pipeline" />
-          <StyledCustomPipelineImportButton>Import Pipeline</StyledCustomPipelineImportButton>
+          <StyledCustomPipelineImportButton onClick={addNewPipelineImport}>
+            Import Pipeline
+          </StyledCustomPipelineImportButton>
         </header>
         <Space direction="vertical" size={56}>
           <div>
-            <StyledH5>THIS PIPELINE HAS {inputs.length} INPUT PARAMETERS</StyledH5>
+            <StyledH5>
+              THIS PIPELINE HAS
+              {inputs.length}
+              {' '}
+              INPUT PARAMETERS
+            </StyledH5>
             <Table
               columns={inputsColumns}
               dataSource={inputs}
@@ -89,7 +120,12 @@ function ImportCustom({ getCustomPipeline, pipelineNewImport={}}) {
             />
           </div>
           <div>
-            <StyledH5>THIS PIPELINE HAS {outputs.length} OUTPUTS</StyledH5>
+            <StyledH5>
+              THIS PIPELINE HAS
+              {outputs.length}
+              {' '}
+              OUTPUTS
+            </StyledH5>
             <Table
               columns={outputsColumns}
               dataSource={outputs}
@@ -112,6 +148,7 @@ function ImportCustom({ getCustomPipeline, pipelineNewImport={}}) {
 
 ImportCustom.propTypes = {
   getCustomPipeline: PropTypes.func.isRequired,
+  addPipeline: PropTypes.func.isRequired,
   pipelineNewImport: PropTypes.shape({
     inputs: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -137,6 +174,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatch = (dispatch) => bindActionCreators({
   getCustomPipeline: getCustomPipelineAction,
+  addPipeline: addPipelineAction,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(ImportCustom);
