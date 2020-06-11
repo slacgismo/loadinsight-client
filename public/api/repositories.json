@@ -1,0 +1,26 @@
+[
+    {
+      "id": 1,
+      "name": "SLAC Gismo/PG&E Load Profile Pipeline"
+    },
+    {
+      "id": 2,
+      "name": "SLAC Gismo/CALS"
+    },
+    {
+      "id": 3,
+      "name": "SLAC Gismo/my_workflow_project"
+    },
+    {
+      "id": 4,
+      "name": "SLAC Gismo/GridLabD"
+    },
+    {
+      "id": 5,
+      "name": "SLAC Gismo/PublicAPIDev"
+    },
+    {
+      "id": 6,
+      "name": "SLAC Gismo/PVInsight"
+    }
+]
