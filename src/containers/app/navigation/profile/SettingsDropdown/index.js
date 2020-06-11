@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -25,17 +25,14 @@ const StyledMenu = styled(Menu)`
 `;
 
 const StyledMenuItem = styled(Item)`
-  padding: 7px 0;
   text-align: center;
-`;
-
-const StyledMenuButton = styled.button`
-  border: 0;
-  background: transparent;
-  font-weight: 500;
   font-size: 12px;
   line-height: 14px;
-  cursor: pointer;
+  font-weight: 500;
+  a {
+    padding: 7px 0;
+    margin: 0;
+  }
 `;
 
 const StyledMenuLabel = styled.div`
@@ -61,10 +58,10 @@ const SettingsDropdown = ({ logoutUser }) => {
   const menu = (
     <StyledMenu>
       <StyledMenuItem>
-        <StyledMenuButton type="text">Account Profile</StyledMenuButton>
+        <Link to="/profile">Account Profile</Link>
       </StyledMenuItem>
       <StyledMenuItem>
-        <StyledMenuButton type="text" onClick={onSignOut}>Sign Out</StyledMenuButton>
+        <Link to="/login" onClick={onSignOut}>Sign Out</Link>
       </StyledMenuItem>
     </StyledMenu>
   );
