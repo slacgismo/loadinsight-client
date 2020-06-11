@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Layout } from 'antd';
 
 import colors from 'styles/colors';
@@ -17,6 +17,15 @@ export const StyledContent = styled(Layout.Content)`
   background-color: ${colors.lightBg};
 `;
 
+export const StyledTitleText = css`
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33px;
+  color: ${colors.black};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+`;
+
 export const StyledTitle = styled.div`
   display: flex;
   align-items: center;
@@ -24,10 +33,11 @@ export const StyledTitle = styled.div`
   background-color: ${colors.white};
   border-bottom: 1px solid ${colors.lightGray};
   padding: 25px 15px 20px 15px;
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 33px;
-  color: ${colors.black};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  ${StyledTitleText}
+`;
+
+export const StyledH5 = styled.div`
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 500;
 `;

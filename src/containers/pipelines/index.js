@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -7,33 +7,41 @@ import { getPipelines as getPipelinesAction } from 'actions/pipelines';
 import { StyledTitle } from 'styles/app';
 import { StyledPipelines, StyledPipelinesButton } from 'styles/pipelines';
 import PipelineItem from './pipeline';
+import AddModal from './AddModal';
 
-class Pipelines extends Component {
-  componentDidMount() {
-    const { getPipelines } = this.props;
+function Pipelines({ getPipelines, pipelines }) {
+  useEffect(() => {
     getPipelines();
-  }
+  }, []);
 
-  render() {
-    const { pipelines } = this.props;
-    return (
-      <>
-        <StyledTitle>
-          Pipelines
-          <StyledPipelinesButton type="text">
-            + Add Pipeline
-          </StyledPipelinesButton>
-        </StyledTitle>
-        <StyledPipelines>
-          {
-            pipelines.map(({ id, name, last_updated: lastUpdated }) => (
-              <PipelineItem key={id} name={name} lastUpdated={lastUpdated} />
-            ))
-          }
-        </StyledPipelines>
-      </>
-    );
-  }
+  const [addModalVisible, setAddModalVisible] = useState(false);
+
+  const openModal = () => setAddModalVisible(true);
+  const closeModal = () => setAddModalVisible(false);
+
+  return (
+    <>
+      <StyledTitle>
+        Pipelines
+        <StyledPipelinesButton type="text" onClick={openModal}>
+          + Add Pipeline
+        </StyledPipelinesButton>
+      </StyledTitle>
+      <StyledPipelines>
+        {
+          pipelines.map(({ id, name, last_updated: lastUpdated }) => (
+            <PipelineItem key={id} name={name} lastUpdated={lastUpdated} />
+          ))
+        }
+      </StyledPipelines>
+      {addModalVisible && (
+      <AddModal
+        handleOk={closeModal}
+        handleCancel={closeModal}
+      />
+      )}
+    </>
+  );
 }
 
 Pipelines.propTypes = {
