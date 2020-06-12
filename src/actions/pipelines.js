@@ -6,6 +6,7 @@ import {
   GET_CUSTOM_PIPELINE_COMPLETED,
   GET_CUSTOM_PIPELINE_FAILED,
   ADD_PIPELINE,
+  DELETE_PIPELINE,
 } from 'actions';
 import ApiClient from 'util/api-client';
 
@@ -61,5 +62,10 @@ export const getCustomPipeline = () => (dispatch) => {
 
 export const addPipeline = (payload) => ({
   type: ADD_PIPELINE,
+  payload,
+});
+
+export const deletePipeline = (payload) => ({
+  type: DELETE_PIPELINE,
   payload,
 });
