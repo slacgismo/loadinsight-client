@@ -1,5 +1,11 @@
 import styled, { css } from 'styled-components';
-import { Layout, Input } from 'antd';
+import {
+  Layout,
+  Input,
+  Button,
+  Menu,
+  Table,
+} from 'antd';
 
 import colors from 'styles/colors';
 
@@ -62,8 +68,8 @@ export const StyledButton = css`
   line-height: 21px;
   border: 0;
   border-radius: 2px;
-  font-weight: bold;
-  padding: 8px;
+  font-weight: 500;
+  padding: 8px 12px;
   height: auto;
 `;
 
@@ -85,4 +91,88 @@ export const StyledButtonBlue = css`
 
 export const StyledInput = styled(Input)`
   max-width: 370px;
+  font-weight: 500;
+  background-color: ${colors.lightBg};
+  color: ${colors.darkText};
+  &::placeholder {
+    color: ${colors.lightGray};
+  }
+`;
+
+export const StyledChevron = styled.span`
+  font-weight: bold;
+`;
+
+export const StyledMenu = styled(Menu)`
+  padding: 8px 10px;
+  border: 1px solid ${colors.lightGray};
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
+  .ant-menu-vertical {
+    border-right: 0;
+  }
+  .ant-btn {
+  font-size: 12px;
+  line-height: 14px;
+  }
+`;
+
+export const StyledMenuItem = styled(Menu.Item)`
+  padding: 0;
+  background-color: transparent;
+  &:hover {
+    background-color: transparent;
+  }
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+`;
+
+const MenuItemButton = css`
+  width: 100%;
+  color: ${colors.gray};
+  text-align: left;
+  padding: 5px;
+  height: auto;
+  &, &:hover, &:focus {
+    border: 1px solid ${colors.lightBg};
+  }
+  &:hover, &:focus {
+    background-color: ${colors.lightBg};
+    color: ${colors.blue};
+  }
+`;
+
+export const StyledMenuItemButton = styled(Button)`
+  ${MenuItemButton}
+`;
+
+export const StyledMenuItemButtonRed = styled(Button)`
+  ${MenuItemButton}
+  &:hover, &:focus {
+    background-color: ${colors.lightBg};
+    color: ${colors.orangeRed};
+  }
+`;
+
+export const StyledTable = styled(Table)`
+  .ant-table-tbody > tr > td, .ant-table-thead > tr > th {
+    padding: 8px;
+    margin: 8px;
+  }
+  .ant-table-thead > tr > th {
+    color: ${colors.gray40};
+    font-size: 13px;
+    line-height: 18px;
+    background-color: transparent;
+    font-weight: normal;
+  }
+  .ant-table-tbody > tr > td {
+    color: black;
+    font-weight: normal;
+    background-color: ${colors.lightBg};
+  }
+  .ant-table-tbody > tr:nth-child(2n) > td {
+    background-color: ${colors.white};
+  } 
 `;

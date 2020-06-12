@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Input } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loginUser as loginUserAction } from 'actions/user';
@@ -54,10 +53,10 @@ class Login extends Component {
         <div className={styles.form}>
           <div className={styles.title}>Sign In</div>
           <div>
-            <Input className={styles.textField} placeholder="EMAIL" onChange={this.onEmailChanged} />
+            <input className={styles.textField} placeholder="EMAIL" onChange={this.onEmailChanged} />
           </div>
           <div>
-            <Input type="password" className={styles.textField} placeholder="PASSWORD" onChange={this.onPasswordChanged} />
+            <input type="password" className={styles.textField} placeholder="PASSWORD" onChange={this.onPasswordChanged} />
           </div>
           <div className={`${styles.error} ${errorStyle}`}>
             Invalid credentials entered.
