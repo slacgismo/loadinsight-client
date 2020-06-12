@@ -86,15 +86,13 @@ export default (state = DEFAULT_STATE, action) => {
       };
     }
     case DELETE_PIPELINE: {
-      const localPipelines = state.pipelines.filter(pipeline => {
-        return pipeline.id !== action.payload.id;
-      });
+      const localPipelines = state.pipelines.filter((item) => item.id !== action.payload.id);
       window.localStorage.setItem(`${USER_KEY}Pipelines`, JSON.stringify(localPipelines));
 
       return {
         ...state,
         pipelines: localPipelines,
-      }
+      };
     }
     default:
       return state;

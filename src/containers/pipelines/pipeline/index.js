@@ -21,7 +21,9 @@ import {
   deletePipeline as deletePipelineAction,
 } from 'actions/pipelines';
 
-const Pipeline = ({ id, name, lastUpdated, deletePipeline }) => {
+const Pipeline = ({
+  id, name, lastUpdated, deletePipeline,
+}) => {
   const menu = (
     <StyledMenu>
       <StyledMenuItem>
