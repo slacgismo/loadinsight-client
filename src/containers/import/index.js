@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { Table, Space } from 'antd';
+import { Space } from 'antd';
 
 import { ROUTE_PIPELINES } from 'config/routes';
 import {
@@ -11,7 +11,11 @@ import {
   addPipeline as addPipelineAction,
 } from 'actions/pipelines';
 import {
-  StyledTitle, StyledSection, StyledInput, StyledH5,
+  StyledTitle,
+  StyledSection,
+  StyledInput,
+  StyledH5,
+  StyledTable,
 } from 'styles/app';
 import { StyledCustomPipelineImportButton } from 'styles/pipelines';
 
@@ -31,16 +35,19 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      width: 160,
     },
     {
       title: 'Parameter',
       dataIndex: 'parameter',
       key: 'parameter',
+      width: 160,
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      width: 360,
     },
   ];
 
@@ -49,16 +56,19 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      width: 160,
     },
     {
       title: 'Field',
       dataIndex: 'field',
       key: 'field',
+      width: 160,
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      width: 360,
     },
   ];
 
@@ -67,16 +77,19 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      width: 160,
     },
     {
       title: 'Field',
       dataIndex: 'field',
       key: 'field',
+      width: 160,
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      width: 600,
     },
   ];
 
@@ -109,46 +122,42 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             type="text"
             defaultValue={pipelineNewImportName}
             onChange={(event) => setPipelineNewImportName(event.target.value)}
+            autofocus="autofocus"
+            placeholder="Edit Pipeline Name"
           />
           <StyledCustomPipelineImportButton onClick={addNewPipelineImport}>
             Import Pipeline
           </StyledCustomPipelineImportButton>
         </header>
         <Space direction="vertical" size={56}>
-          <div>
+          <Space direction="vertical" size="middle">
             <StyledH5>
-              THIS PIPELINE HAS
-              {inputs.length}
-              &nbsp;
-              INPUT PARAMETERS
+              {`THIS PIPELINE HAS ${inputs.length} INPUT PARAMETERS`}
             </StyledH5>
-            <Table
+            <StyledTable
               columns={inputsColumns}
               dataSource={inputs}
               pagination={false}
             />
-          </div>
-          <div>
+          </Space>
+          <Space direction="vertical" size="middle">
             <StyledH5>
-              THIS PIPELINE HAS
-              {outputs.length}
-              &nbsp;
-              OUTPUTS
+              {`THIS PIPELINE HAS ${outputs.length} OUTPUTS`}
             </StyledH5>
-            <Table
+            <StyledTable
               columns={outputsColumns}
               dataSource={outputs}
               pagination={false}
             />
-          </div>
-          <div>
+          </Space>
+          <Space direction="vertical" size="middle">
             <StyledH5>LOAD PROFILE BY TARRIF</StyledH5>
-            <Table
+            <StyledTable
               columns={loadProfileColumns}
               dataSource={loadProfile}
               pagination={false}
             />
-          </div>
+          </Space>
         </Space>
       </StyledSection>
     </>

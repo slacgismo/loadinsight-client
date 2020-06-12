@@ -1,6 +1,10 @@
 import styled, { css } from 'styled-components';
 import {
-  Layout, Input, Button, Menu,
+  Layout,
+  Input,
+  Button,
+  Menu,
+  Table,
 } from 'antd';
 
 import colors from 'styles/colors';
@@ -87,6 +91,12 @@ export const StyledButtonBlue = css`
 
 export const StyledInput = styled(Input)`
   max-width: 370px;
+  font-weight: 500;
+  background-color: ${colors.lightBg};
+  color: ${colors.darkText};
+  &::placeholder {
+    color: ${colors.lightGray};
+  }
 `;
 
 export const StyledChevron = styled.span`
@@ -143,4 +153,26 @@ export const StyledMenuItemButtonRed = styled(Button)`
     background-color: ${colors.lightBg};
     color: ${colors.orangeRed};
   }
+`;
+
+export const StyledTable = styled(Table)`
+  .ant-table-tbody > tr > td, .ant-table-thead > tr > th {
+    padding: 8px;
+    margin: 8px;
+  }
+  .ant-table-thead > tr > th {
+    color: ${colors.gray40};
+    font-size: 13px;
+    line-height: 18px;
+    background-color: transparent;
+    font-weight: normal;
+  }
+  .ant-table-tbody > tr > td {
+    color: black;
+    font-weight: normal;
+    background-color: ${colors.lightBg};
+  }
+  .ant-table-tbody > tr:nth-child(2n) > td {
+    background-color: ${colors.white};
+  } 
 `;
