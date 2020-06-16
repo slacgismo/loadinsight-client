@@ -53,8 +53,25 @@ export const StyledTitle = styled.div`
   background-color: ${colors.white};
   border-bottom: 1px solid ${colors.lightGray};
   padding: 25px 15px 20px 15px;
-  margin-bottom: 30px;
+  margin-bottom: ${(props) => props.margin >= 0 ? props.margin : 30}px;
   ${StyledTitleText}
+`;
+
+export const StyledH2 = styled.h2`
+  color: ${(props) => (props.color in colors ? colors[props.color] : (props.color || colors.darkGray))};
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+`;
+
+export const StyledH3 = styled.div`
+  color: ${(props) => (props.color in colors ? colors[props.color] : (props.color || colors.darkGray))}
+`;
+
+export const StyledH4 = styled.h4`
+  font-size: 16px;
+  line-height: 19px;
+  color: ${colors.gray};
 `;
 
 export const StyledH5 = styled.div`

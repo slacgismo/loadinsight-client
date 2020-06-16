@@ -11,5 +11,9 @@ export default {
   blue: '#2a7ab7',
   lightBlue: '#3595dc',
   green: '#318466',
+  oceanGreen: '#3BA889',
+  algaeGreen: '#95E1CC',
+  lightGreen: '#76C2AD',
+  yellow: '#FEDF88',
   orangeRed: '#F76D42',
 };
