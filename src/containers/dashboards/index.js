@@ -287,6 +287,7 @@ export default () => {
         fill: false,
         backgroundColor: '#3BA889',
         borderColor: '#3BA889',
+        lineTension: 0
       },
       {
         label: 'Second dataset',
@@ -321,8 +322,11 @@ export default () => {
   };
 
   const options = {
-    bezierCurve: false,
-    lineTension: 0.0,
+    elements: {
+      line: {
+        tension: 0
+      }
+    }
   };
 
   return (
