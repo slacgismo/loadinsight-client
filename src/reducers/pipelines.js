@@ -8,7 +8,7 @@ import {
   ADD_PIPELINE,
   DELETE_PIPELINE,
 } from 'actions';
-import { USER_KEY } from 'util/auth';
+import { USER_KEY_PIPELINES } from 'util/storage';
 
 const DEFAULT_STATE = {
   pipelines: [],
@@ -29,7 +29,7 @@ export default (state = DEFAULT_STATE, action) => {
         error: null,
       };
     case GET_PIPELINES_COMPLETED: {
-      let localPipelines = window.localStorage.getItem(`${USER_KEY}Pipelines`);
+      let localPipelines = window.localStorage.getItem(USER_KEY_PIPELINES);
 
       try {
         localPipelines = localPipelines.length ? JSON.parse(localPipelines) : [];
@@ -37,7 +37,7 @@ export default (state = DEFAULT_STATE, action) => {
         localPipelines = action.payload;
       }
 
-      window.localStorage.setItem(`${USER_KEY}Pipelines`, JSON.stringify(localPipelines));
+      window.localStorage.setItem(USER_KEY_PIPELINES, JSON.stringify(localPipelines));
 
       return {
         ...state,
@@ -78,7 +78,7 @@ export default (state = DEFAULT_STATE, action) => {
           last_updated: 'a few seconds ago',
         },
       ];
-      window.localStorage.setItem(`${USER_KEY}Pipelines`, JSON.stringify(localPipelines));
+      window.localStorage.setItem(USER_KEY_PIPELINES, JSON.stringify(localPipelines));
 
       return {
         ...state,
@@ -87,7 +87,7 @@ export default (state = DEFAULT_STATE, action) => {
     }
     case DELETE_PIPELINE: {
       const localPipelines = state.pipelines.filter((item) => item.id !== action.payload.id);
-      window.localStorage.setItem(`${USER_KEY}Pipelines`, JSON.stringify(localPipelines));
+      window.localStorage.setItem(USER_KEY_PIPELINES, JSON.stringify(localPipelines));
 
       return {
         ...state,
