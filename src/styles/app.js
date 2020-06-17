@@ -146,8 +146,6 @@ export const StyledMenu = styled(Menu)`
 `;
 
 export const StyledMenuItem = styled(Menu.Item)`
-  font-size: 12px;
-  line-height: 14px;
   padding: 0;
   background-color: transparent;
   &:hover {
@@ -171,12 +169,16 @@ export const StyledMenuLabel = styled.div`
 }};
 `;
 
-const MenuItemButton = css`
+export const CSSMenuItemButton = css`
+  font-size: 12px;
+  line-height: 14px;
   width: 100%;
   color: ${colors.gray};
   text-align: left;
   padding: 5px;
   height: auto;
+  transition: none;
+  border-radius: 3px;
   &, &:hover, &:focus {
     border: 1px solid ${colors.lightBg};
   }
@@ -187,11 +189,11 @@ const MenuItemButton = css`
 `;
 
 export const StyledMenuItemButton = styled(Button)`
-  ${MenuItemButton}
+  ${CSSMenuItemButton}
 `;
 
 export const StyledMenuItemButtonRed = styled(Button)`
-  ${MenuItemButton}
+  ${CSSMenuItemButton}
   &:hover, &:focus {
     background-color: ${colors.lightBg};
     color: ${colors.orangeRed};

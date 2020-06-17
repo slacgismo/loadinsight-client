@@ -15,7 +15,7 @@ function Repositories({ getRepositories, repositories }) {
   return (
     <>
       <StyledTitle>
-        Import Custom Pipeline
+        <h1>Import Custom Pipeline</h1>
       </StyledTitle>
       {repositories.map(({ id, name }) => (
         <RepositoryItem key={id} name={name} />

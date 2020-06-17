@@ -4,6 +4,7 @@ import {
 } from 'antd';
 
 import colors from 'styles/colors';
+import { CSSMenuItemButton } from 'styles/app';
 
 export const StyledDashboardsButton = styled(Button)`
   width: 109px;
@@ -83,6 +84,14 @@ export const StyledDashboardsMenuLabel = styled.div`
   line-height: 21px;
   font-weight: 500;
 }};
+`;
+
+export const StyledDashboardsFilterMenuItemButton = styled(Button)`
+  ${CSSMenuItemButton}
+  &:hover, &:focus {
+    background-color: ${colors.darkGray};
+    color: ${colors.white};
+  }
 `;
 
 export const StyledDashboardsHeader = styled.div`
