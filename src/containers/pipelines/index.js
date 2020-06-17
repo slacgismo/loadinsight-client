@@ -21,10 +21,12 @@ function Pipelines({ getPipelines, pipelines }) {
   return (
     <>
       <StyledTitle>
-        Pipelines
-        <StyledPipelinesButton type="text" onClick={toggleModal}>
-          + Add Pipeline
-        </StyledPipelinesButton>
+        <div>
+          <h1>Pipelines</h1>
+          <StyledPipelinesButton type="text" onClick={toggleModal}>
+            + Add Pipeline
+          </StyledPipelinesButton>
+        </div>
       </StyledTitle>
       {pipelines.map(({ id, name, last_updated: lastUpdated }) => (
         <PipelineItem key={id} id={id} name={name} lastUpdated={lastUpdated} />

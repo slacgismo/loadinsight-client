@@ -4,6 +4,6 @@ import { StyledTitle } from 'styles/app';
 
 export default () => (
   <StyledTitle>
-    Jobs
+    <h1>Jobs</h1>
   </StyledTitle>
 );

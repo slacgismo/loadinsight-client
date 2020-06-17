@@ -114,7 +114,7 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
   return (
     <>
       <StyledTitle>
-        Import Custom Pipeline
+        <h1>Import Custom Pipeline</h1>
       </StyledTitle>
       <StyledSection>
         <header>
