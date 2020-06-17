@@ -123,7 +123,6 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
     </StyledDashboardsMenu>
   );
 
-
   const graphData = [];
 
   if (dashboards.length) {
