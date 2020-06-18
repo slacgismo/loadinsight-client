@@ -21,7 +21,7 @@ export const getDashboardsFailed = (error) => ({
 
 export const getDashboards = () => (dispatch) => {
   dispatch(getDashboardsStarted());
-  ApiClient.get('/api/RateStudy15MinKwh.json')
+  ApiClient.get('/api/holy-cross-load-profile.json')
     .then((res) => {
       dispatch(getDashboardsCompleted(res.data));
     })

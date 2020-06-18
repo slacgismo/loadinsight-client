@@ -8,8 +8,6 @@ import { DownOutlined } from '@ant-design/icons';
 import {
   StyledMenu,
   StyledMenuItem,
-  StyledMenuItemButton,
-  StyledMenuItemButtonRed,
 } from 'styles/app';
 import {
   StyledPipelineItem,
@@ -27,19 +25,13 @@ const Pipeline = ({
   const menu = (
     <StyledMenu>
       <StyledMenuItem>
-        <StyledMenuItemButton>
-          View Latest Output
-        </StyledMenuItemButton>
+        <span>View Latest Output</span>
       </StyledMenuItem>
       <StyledMenuItem>
-        <StyledMenuItemButton>
-          Update Now
-        </StyledMenuItemButton>
+        <span>Update Now</span>
       </StyledMenuItem>
-      <StyledMenuItem>
-        <StyledMenuItemButtonRed onClick={() => deletePipeline({ id })}>
-          Delete
-        </StyledMenuItemButtonRed>
+      <StyledMenuItem hoverColor="orangeRed" onClick={() => deletePipeline({ id })}>
+        <span>Delete</span>
       </StyledMenuItem>
     </StyledMenu>
   );

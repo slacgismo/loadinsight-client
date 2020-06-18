@@ -2,8 +2,12 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 
-const LineGraph = ({ data, dateTimeFilterValue }) => {
-  let tickValues = 'every 15 minutes';
+import colors from 'styles/colors';
+
+const LineGraph = ({ data, dateTimeFilterValue, index = 0 }) => {
+  const graphColors = [colors.yellow, colors.lightGreen, colors.oceanGreen, colors.green];
+
+  let tickValues = 'every hour';
   let axisBottomFormat = '%H:%M:%S';
   if (dateTimeFilterValue !== 1) {
     tickValues = 'every day';
@@ -19,6 +23,7 @@ const LineGraph = ({ data, dateTimeFilterValue }) => {
       xScale={{
         format: '%Y-%m-%d %H:%M:%S',
         type: 'time',
+        precision: 'second',
       }}
       xFormat="time:%Y-%m-%d %H:%M:%S"
       yScale={{
@@ -33,7 +38,7 @@ const LineGraph = ({ data, dateTimeFilterValue }) => {
         tickSize: 10,
         tickPadding: 5,
         tickRotation: -90,
-        legend: 'Date Time',
+        legend: 'Date and Time',
         legendOffset: 80,
         legendPosition: 'middle',
       }}
@@ -42,11 +47,11 @@ const LineGraph = ({ data, dateTimeFilterValue }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: 'Energy Used',
+        legend: 'Energy Used (kWh)',
         legendOffset: -62,
         legendPosition: 'middle',
       }}
-      colors={['#FEDF88', '#76C2AD', '#3BA889', '#318466']}
+      colors={graphColors[index]}
       pointSize={0} // could remove props related to point
       pointColor={{ theme: 'background' }}
       pointBorderWidth={1}
@@ -68,6 +73,7 @@ LineGraph.propTypes = {
     })).isRequired,
   })).isRequired,
   dateTimeFilterValue: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default LineGraph;

@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import {
   Layout,
   Input,
-  Button,
   Menu,
   Table,
 } from 'antd';
@@ -140,9 +139,29 @@ export const StyledMenu = styled(Menu)`
   border: 1px solid ${colors.lightGray};
   border-radius: 3px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
-  .ant-menu-vertical {
-    border-right: 0;
+  width: 10
+`;
+
+export const CSSMenuItemSpan = css`
+  display: inline-block;
+  font-size: 12px;
+  line-height: 14px;
+  width: 100%;
+  color: ${colors.gray};
+  text-align: left;
+  padding: 5px;
+  height: auto;
+  transition: none;
+  border-radius: 3px;
+  ${({ borderColor, hoverBgColor, hoverColor }) => (`
+  &, &:hover, &:focus {
+    border: 1px solid ${borderColor in colors ? colors[borderColor] : colors.lightBg};
   }
+  &:hover, &:focus {
+    background-color: ${hoverBgColor in colors ? colors[hoverBgColor] : colors.lightBg};
+    color: ${hoverColor in colors ? colors[hoverColor] : colors.blue};
+  }
+  `)}
 `;
 
 export const StyledMenuItem = styled(Menu.Item)`
@@ -153,6 +172,9 @@ export const StyledMenuItem = styled(Menu.Item)`
   }
   &:not(:last-child) {
     margin-bottom: 5px;
+  }
+  span {
+    ${CSSMenuItemSpan}
   }
 `;
 
@@ -165,39 +187,9 @@ export const StyledMenuLabel = styled.div`
     )};`
   )}
   border-radius: 3px;
-  padding: 4px 9px;
+  padding: 0 9px;
+  display: inline-block;
 }};
-`;
-
-export const CSSMenuItemButton = css`
-  font-size: 12px;
-  line-height: 14px;
-  width: 100%;
-  color: ${colors.gray};
-  text-align: left;
-  padding: 5px;
-  height: auto;
-  transition: none;
-  border-radius: 3px;
-  &, &:hover, &:focus {
-    border: 1px solid ${colors.lightBg};
-  }
-  &:hover, &:focus {
-    background-color: ${colors.lightBg};
-    color: ${colors.blue};
-  }
-`;
-
-export const StyledMenuItemButton = styled(Button)`
-  ${CSSMenuItemButton}
-`;
-
-export const StyledMenuItemButtonRed = styled(Button)`
-  ${CSSMenuItemButton}
-  &:hover, &:focus {
-    background-color: ${colors.lightBg};
-    color: ${colors.orangeRed};
-  }
 `;
 
 export const StyledTable = styled(Table)`
