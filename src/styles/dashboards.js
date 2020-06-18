@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import {
-  Button, Card, Space, Menu, Dropdown,
+  Button, Card, Menu, Dropdown,
 } from 'antd';
 
 import colors from 'styles/colors';

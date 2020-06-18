@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { Space, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+// import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-//import reorder from 'util/reorder';
+// import reorder from 'util/reorder';
 import { getDashboards as getDashboardsAction } from 'actions/dashboards';
 import {
   StyledTitle,
@@ -54,8 +54,6 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       </StyledDashboardsMenuItem>
     </StyledDashboardsMenu>
   );
-
-  const graphData = [];
 
   const dashboardMenu = (
     <StyledDashboardsMenu>
@@ -105,7 +103,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
     'Load Profile - 60 minutes',
   ];
 
-  /*const graphs = graphsData
+  /* const graphs = graphsData
     .map((data, i) => ({
       id: `graph${i}`,
       content: (
@@ -127,11 +125,11 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
           index={i + 2}
         />
       ),
-    }))); // TODO: remove concat. doubled up for presentation purposes*/
+    }))); // TODO: remove concat. doubled up for presentation purposes */
 
-  //const [items, setItems] = useState(graphs);
+  // const [items, setItems] = useState(graphs);
 
-  /*const onDragEnd = ((result) => {
+  /* const onDragEnd = ((result) => {
     if (!result.destination) return;
 
     setItems(reorder(
@@ -139,7 +137,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       result.source.index,
       result.destination.index,
     ));
-  });*/
+  }); */
 
   const dateTimeFilterMenu = (
     <StyledMenu>
@@ -249,7 +247,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       <StyledDashboardsGraphsGrid>
         {graphsData.map((data, i) => (
           <Graph
-            key={`graph${i}`}
+            key={graphNames[i]}
             title={graphNames[i]}
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
@@ -257,7 +255,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
           />
         ))}
       </StyledDashboardsGraphsGrid>
-      {/*<DragDropContext onDragEnd={onDragEnd}>
+      {/* <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <StyledDashboardsGraphsGrid
@@ -281,7 +279,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
             </StyledDashboardsGraphsGrid>
           )}
         </Droppable>
-      </DragDropContext>*/}
+      </DragDropContext> */}
     </>
   );
 };

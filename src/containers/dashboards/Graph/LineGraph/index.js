@@ -2,8 +2,10 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 
-const LineGraph = ({ data, dateTimeFilterValue, index=0 }) => {
-  const graphColors = ['#FEDF88', '#76C2AD', '#3BA889', '#318466'];
+import colors from 'styles/colors';
+
+const LineGraph = ({ data, dateTimeFilterValue, index = 0 }) => {
+  const graphColors = [colors.yellow, colors.lightGreen, colors.oceanGreen, colors.green];
 
   let tickValues = 'every hour';
   let axisBottomFormat = '%H:%M:%S';
@@ -57,7 +59,7 @@ const LineGraph = ({ data, dateTimeFilterValue, index=0 }) => {
       pointLabel="y"
       pointLabelYOffset={-12}
       useMesh
-      enableArea={true}
+      enableArea
     />
   );
 };
@@ -71,6 +73,7 @@ LineGraph.propTypes = {
     })).isRequired,
   })).isRequired,
   dateTimeFilterValue: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default LineGraph;
