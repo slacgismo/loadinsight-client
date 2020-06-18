@@ -4,7 +4,6 @@ import {
 } from 'antd';
 
 import colors from 'styles/colors';
-import { CSSMenuItemButton } from 'styles/app';
 
 export const StyledDashboardsButton = styled(Button)`
   width: 109px;
@@ -37,61 +36,36 @@ export const StyledDashboardsMenu = styled(Menu)`
   .ant-menu-vertical {
     border-right: 0;
   }
-  .ant-btn {
-    font-size: 16px;
-    line-height: 19px;
-    font-weight: 500;
-    color: ${colors.gray};
-  }
 `;
 
 export const StyledDashboardsMenuItem = styled(Menu.Item)`
   padding: 8px 10px;
+  margin: 0;
+  text-align: right;
   background-color: transparent;
+  ${({ color, size }) => (`
   &:hover {
     background-color: transparent;
-  }
-  margin: 0;
-`;
-
-const MenuItemButton = css`
-  width: 100%;
-  color: ${colors.gray};
-  text-align: right;
-  height: auto;
-  border: 0;
-  &:hover, &:focus {
-    color: ${colors.blue};
-  }
-`;
-
-export const StyledDashboardsMenuItemButton = styled(Button)`
-  ${MenuItemButton}
-  ${({ size, color }) => (size === 'small' ? `
-  &.ant-btn {  
-    font-size: 12px;
-    line-height: 14px;
-    font-weight: 400;
-    ${color in colors ? `color: ${colors[color]};` : colors.gray};
-  }
-  ` : '')}
+    color: ${color in colors ? `${colors[color]};` : colors.blue};
+  } 
+  ${size === 'small' ? `
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 400;
+  ` : `
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 500; 
+  `}`)}
 `;
 
 export const StyledDashboardsMenuLabel = styled.div`
   cursor: pointer;
   color: ${colors.gray};
-  font-size; 18px;
+  font-size: 18px;
   line-height: 21px;
   font-weight: 500;
 }};
-`;
-
-export const StyledDashboardsFilterMenuItemButton = styled(Button)`
-  ${CSSMenuItemButton}
-  &:hover, &:focus {
-    background-color: ${colors.darkGray};
-    color: ${colors.white};
-  }
 `;
 
 export const StyledDashboardsHeader = styled.div`
@@ -117,7 +91,12 @@ export const StyledDashboardsSummaryCard = styled(Card)`
   color: ${colors.white};
   h4 {
     text-transform: uppercase;
+    margin-bottom: 12px;
   }
+`;
+
+export const StyledDashboardsGraphsGrid = styled.div`
+  padding: 0 15px 0 10px;
 `;
 
 export const StyledDashboardsGraph = styled.div`
@@ -126,16 +105,11 @@ export const StyledDashboardsGraph = styled.div`
   background-color: ${colors.white};
   border-radius: 6px;
   padding: 16px 20px;
-  width: calc(100% - 45px);
-  margin: 0 25px 0 20px;
+  margin: 20px 10px;
   > div {
     position: relative;
   }
   h3 {
     padding: 9px 0 25px 0;
   }
-`;
-
-export const StyledDashboardsGraphSpace = styled(Space)`
-  width: 100%;
 `;
