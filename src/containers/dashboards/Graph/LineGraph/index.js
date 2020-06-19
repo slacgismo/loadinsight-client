@@ -71,11 +71,11 @@ const LineGraph = ({
         lineHeight: '20px',
         borderRadius: '2px',
         boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.05)',
-        padding: '7px 9px',
+        padding: '5px 9px',
         border: `1px solid ${colors.lightGray}`,
         display: 'grid',
         gridTemplateColumns: '16px 1fr',
-        gridGap: '8px',
+        gridGap: '5px',
       },
       basic: {
         whiteSpace: 'pre',
