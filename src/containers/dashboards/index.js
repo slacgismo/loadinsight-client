@@ -81,7 +81,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
     const { name, datasets } = dashboards[0];
 
     datasets.forEach((dataset, index) => {
-      const momentEnd = moment(dataset[dataset.length - 1].x);
+      const momentEnd = moment(dataset[dataset.length - 1].x).subtract(1, 'hour');
       const momentStart = momentEnd.subtract(dateTimeFilterValue, 'days');
 
       let sampleDataset = dataset.filter(({ x }) => moment(x).isAfter(momentStart));
@@ -101,6 +101,19 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
   const graphNames = [
     'Load Profile - 15 minutes',
     'Load Profile - 60 minutes',
+  ];
+
+  const graphsMaxY = [
+    {
+      1: 16000,
+      7: 22000,
+      31: 24000,
+    },
+    {
+      1: 220000,
+      7: 220000,
+      31: 220000,
+    },
   ];
 
   /* const graphs = graphsData
@@ -183,6 +196,62 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       >
         <span>Energy Used (kWh)</span>
       </StyledMenuItem>
+      <StyledMenuItem
+        borderColor="lightBg"
+        hoverBgColor="darkGray"
+        hoverColor="white"
+      >
+        <span>AMI Meter ID</span>
+      </StyledMenuItem>
+      <StyledMenuItem
+        borderColor="lightBg"
+        hoverBgColor="darkGray"
+        hoverColor="white"
+      >
+        <span>Channel</span>
+      </StyledMenuItem>
+      <StyledMenuItem
+        borderColor="lightBg"
+        hoverBgColor="darkGray"
+        hoverColor="white"
+      >
+        <span>Flow Direction</span>
+      </StyledMenuItem>
+      <StyledMenuItem
+        borderColor="lightBg"
+        hoverBgColor="darkGray"
+        hoverColor="white"
+      >
+        <span>ServiceLocationNumber</span>
+      </StyledMenuItem>
+      <StyledMenuItem
+        borderColor="lightBg"
+        hoverBgColor="darkGray"
+        hoverColor="white"
+      >
+        <span>Substation</span>
+      </StyledMenuItem>
+      <StyledMenuItem
+        borderColor="lightBg"
+        hoverBgColor="darkGray"
+        hoverColor="white"
+      >
+        <span>Feeder</span>
+      </StyledMenuItem>
+      <StyledMenuItem
+        borderColor="lightBg"
+        hoverBgColor="darkGray"
+        hoverColor="white"
+      >
+        <span>Zip Code</span>
+      </StyledMenuItem>
+      <StyledMenuItem
+        borderColor="lightBg"
+        hoverBgColor="darkGray"
+        hoverColor="white"
+      >
+        <span>Meter Type</span>
+      </StyledMenuItem>
     </StyledMenu>
   );
 
@@ -237,10 +306,6 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
                 </StyledMenuLabel>
               </Dropdown>
             </StyledDashboardsSummaryCard>
-            <StyledDashboardsSummaryCard>
-              <StyledH4 color="algaeGreen">Average Source Update</StyledH4>
-              Content copy appears here
-            </StyledDashboardsSummaryCard>
           </Space>
         </div>
       </StyledDashboardsHeader>
@@ -252,6 +317,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
             index={i}
+            maxY={graphsMaxY[i][dateTimeFilterValue]}
           />
         ))}
       </StyledDashboardsGraphsGrid>
