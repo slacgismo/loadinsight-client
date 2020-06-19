@@ -110,6 +110,14 @@ export const StyledDashboardsGraph = styled.div`
     position: relative;
   }
   h3 {
-    padding: 9px 0 25px 0;
+    padding: 9px 0 32px 0;
   }
+`;
+
+export const StyledLegendIcon = styled.div`
+  width: 12px;
+  height: 12px;
+  margin-top: 3px;
+  border-radius: 3px;
+  background-color: ${({ serieColor }) => serieColor};
 `;

@@ -13,7 +13,7 @@ import IconDragndrop from './images/icon-dragndrop.svg';
 import LineGraph from './LineGraph';
 
 const Graph = ({
-  title, data, dateTimeFilterValue, index,
+  title, data, dateTimeFilterValue, index, maxY,
 }) => {
   const graphsMenu = (
     <StyledDashboardsMenu>
@@ -48,6 +48,7 @@ const Graph = ({
         data={data}
         dateTimeFilterValue={dateTimeFilterValue}
         index={index}
+        maxY={maxY}
       />
     </StyledDashboardsGraph>
   );
@@ -64,6 +65,7 @@ Graph.propTypes = {
   })).isRequired,
   dateTimeFilterValue: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
+  maxY: PropTypes.number.isRequired,
 };
 
 export default Graph;
