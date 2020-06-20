@@ -14,7 +14,7 @@ import {
   StyledTitle,
   StyledSection,
   StyledInput,
-  StyledH5,
+  StyledH3,
   StyledTable,
 } from 'styles/app';
 import { StyledCustomPipelineImportButton } from 'styles/pipelines';
@@ -124,6 +124,7 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             onChange={(event) => setPipelineNewImportName(event.target.value)}
             autofocus="autofocus"
             placeholder="Edit Pipeline Name"
+            size="large"
           />
           <StyledCustomPipelineImportButton onClick={addNewPipelineImport}>
             Import Pipeline
@@ -131,9 +132,9 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
         </header>
         <Space direction="vertical" size={56}>
           <Space direction="vertical" size="middle">
-            <StyledH5>
+            <StyledH3>
               {`THIS PIPELINE HAS ${inputs.length} INPUT PARAMETERS`}
-            </StyledH5>
+            </StyledH3>
             <StyledTable
               columns={inputsColumns}
               dataSource={inputs}
@@ -141,9 +142,9 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             />
           </Space>
           <Space direction="vertical" size="middle">
-            <StyledH5>
+            <StyledH3>
               {`THIS PIPELINE HAS ${outputs.length} OUTPUTS`}
-            </StyledH5>
+            </StyledH3>
             <StyledTable
               columns={outputsColumns}
               dataSource={outputs}
@@ -151,7 +152,7 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             />
           </Space>
           <Space direction="vertical" size="middle">
-            <StyledH5>LOAD PROFILE BY TARRIF</StyledH5>
+            <StyledH3>LOAD PROFILE BY TARRIF</StyledH3>
             <StyledTable
               columns={loadProfileColumns}
               dataSource={loadProfile}

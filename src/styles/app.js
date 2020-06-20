@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import {
   Layout,
   Input,
+  Checkbox,
   Menu,
   Table,
 } from 'antd';
@@ -83,9 +84,12 @@ export const StyledH4 = styled.h4`
 `;
 
 export const StyledH5 = styled.div`
-  font-size: 16px;
-  line-height: 19px;
+  color: ${colors.gray};
+  font-size: 14px;
+  line-height: 16px;
   font-weight: 500;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const StyledButton = css`
@@ -115,17 +119,72 @@ export const StyledButtonBlue = css`
 `;
 
 export const StyledInput = styled(Input)`
-  max-width: 370px;
+  width: auto;
+  min-width: 280px;
+  padding: 9px;
+  background-color: ${colors.darkOverlay};
+  border: 0;
+  border-bottom: 1px solid transparent;
+  &, &:hover:focus {
+    color: ${colors.darkText};
+  }
+  &:hover, &:focus {
+    box-shadow: none;
+    border-bottom: 1px solid ${colors.lightBlue};
+  }
+  &:hover {
+    &, &::placeholder {
+      color: ${colors.lightBlue};
+    }
+  }
+  &:focus:placeholder-shown::placeholder {
+    color: ${colors.lightGray};
+  }
+  &::selection {
+    background-color: ${colors.blue};
+  }
+  ${({ size }) => (size === 'large' ? `
+  font-size: 18px;
+  line-height: 21px;
   font-weight: 500;
-  background-color: ${colors.lightBg};
-  color: ${colors.darkText};
+  background-color: ${colors.overlay20};
+  width: 360px;
+  ` : `
+  font-size: 12px;
+  line-height: 14px;
+  `)}
+  ${({ shape }) => (shape === 'round' ? `
+  background-color: ${colors.white};
+  border: 1px solid ${colors.lightGray};
+  font-size: 14px;
+  line-height: 16px;
+  &:hover, &:focus {
+    border: 1px solid ${colors.lightBlue};
+  }
   &::placeholder {
     color: ${colors.lightGray};
   }
+  &:focus:placeholder-shown::placeholder {
+    font-size: 0;
+  }
+` : `
+  &::placeholder {
+    color: ${colors.lightOverlay20};
+  }
+  `)}
 `;
 
-export const StyledChevron = styled.span`
-  font-weight: bold;
+export const StyledCheckbox = styled(Checkbox)`
+  font-size: 14px;
+  line-height: 16px;
+  color: ${colors.gray};
+  &:hover {
+    color: ${colors.blue};
+  }
+  .ant-checkbox-inner {
+    border: 1px solid ${colors.gray};
+    border-radius: 3px;
+  }
 `;
 
 export const StyledIcon = styled.div`

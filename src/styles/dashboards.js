@@ -33,9 +33,6 @@ export const StyledDashboardsMenu = styled(Menu)`
   border: 1px solid ${colors.lightGray};
   border-radius: 3px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
-  .ant-menu-vertical {
-    border-right: 0;
-  }
 `;
 
 export const StyledDashboardsMenuItem = styled(Menu.Item)`
@@ -65,6 +62,10 @@ export const StyledDashboardsMenuLabel = styled.div`
   font-size: 18px;
   line-height: 21px;
   font-weight: 500;
+  margin-top: -7px;
+  img {
+    margin-top: 7px;
+  }
 }};
 `;
 
@@ -78,6 +79,30 @@ export const StyledDashboardsHeader = styled.div`
   }
   h2 {
     margin-left: 16px;
+  }
+  .ant-popover-open {
+    position: absolute;
+    top: 1px;
+    right: 484px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid ${colors.gray};
+    border-radius: 3px;
+    a {
+      font-size: 12px;
+      line-height: 14px;
+      padding: 0 10px;
+    }
+  }
+  .ant-popover-arrow {
+    display: none;
+  }
+  .ant-popover-title {
+    border: 0;
+    padding: 12px 12px 0 20px;
+    width: 474px;
+  }
+  .ant-space {
+    width: 100%;
   }
 `;
 

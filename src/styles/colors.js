@@ -3,6 +3,8 @@ export default {
   lightBg: '#f7f7f7',
   lightOverlay: 'rgba(112, 112, 112, 0.1)',
   lightOverlay20: 'rgba(112, 112, 112, 0.2)',
+  overlay20: 'rgba(210, 210, 210, 0.2)',
+  darkOverlay: 'rgba(0, 0, 0, 0.1)',
   lightGray: '#d2d2d2',
   darkGray: '#aaaaaa',
   gray20: '#afafaf',

@@ -30,6 +30,7 @@ import {
 } from 'styles/dashboards';
 import IconMenu from './images/icon-menu.svg';
 import Graph from './Graph';
+import SharePopover from './SharePopover';
 
 const Dashboards = ({ getDashboards, dashboards = [] }) => {
   useEffect(() => {
@@ -55,6 +56,10 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
     </StyledDashboardsMenu>
   );
 
+  const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
+
+  const toggleSharePopoverVisible = () => setSharePopoverVisible(!sharePopoverVisible);
+
   const dashboardMenu = (
     <StyledDashboardsMenu>
       <StyledDashboardsMenuItem>
@@ -66,7 +71,10 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       <StyledDashboardsMenuItem size="small">
         Edit dashboard name
       </StyledDashboardsMenuItem>
-      <StyledDashboardsMenuItem size="small">
+      <StyledDashboardsMenuItem
+        onClick={toggleSharePopoverVisible}
+        size="small"
+      >
         Share this dashboard
       </StyledDashboardsMenuItem>
       <StyledDashboardsMenuItem size="small" color="orangeRed">
@@ -273,6 +281,10 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       </StyledTitle>
       <StyledDashboardsHeader>
         <div>
+          {sharePopoverVisible && <SharePopover
+            visible={sharePopoverVisible}
+            setSharePopoverVisible={setSharePopoverVisible}
+          />}
           <StyledDashboardsDropdown overlay={dashboardMenu}>
             <StyledDashboardsMenuLabel>
               <StyledIcon>
