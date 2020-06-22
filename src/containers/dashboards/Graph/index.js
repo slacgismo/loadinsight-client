@@ -12,7 +12,7 @@ import MenuOutlined from 'icons/MenuOutlined';
 import LineGraph from './LineGraph';
 
 const Graph = ({
-  title, data, dateTimeFilterValue, index, maxY,
+  title, data, dateTimeFilterValue, index, maxY, yUnit,
 }) => {
   const graphsMenu = (
     <StyledDashboardsMenu>
@@ -45,6 +45,7 @@ const Graph = ({
           dateTimeFilterValue={dateTimeFilterValue}
           index={index}
           maxY={maxY}
+          yUnit={yUnit}
         />
       </div>
     </StyledDashboardsGraph>
@@ -63,6 +64,11 @@ Graph.propTypes = {
   dateTimeFilterValue: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
   maxY: PropTypes.number.isRequired,
+  yUnit: PropTypes.string,
+};
+
+Graph.defaultProps = {
+  yUnit: '',
 };
 
 export default Graph;
