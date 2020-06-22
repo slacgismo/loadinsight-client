@@ -84,6 +84,9 @@ export const StyledDashboardsHeader = styled.div`
     padding: 12px 12px 0 20px;
     width: 474px;
   }
+  .ant-popover-inner-content {
+    padding: 12px 20px;
+  }
   .ant-space {
     width: 100%;
   }
