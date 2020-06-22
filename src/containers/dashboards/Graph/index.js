@@ -35,7 +35,9 @@ const Graph = ({
     <StyledDashboardsGraph>
       <div>
         <StyledDashboardsDropdown overlay={graphsMenu}>
-          <MenuOutlined color="darkGray" />
+          <div>
+            <MenuOutlined color="darkGray" />
+          </div>
         </StyledDashboardsDropdown>
         <StyledH3>{ title }</StyledH3>
         <LineGraph
