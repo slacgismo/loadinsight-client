@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { getPipelines as getPipelinesAction } from 'actions/pipelines';
 import { StyledTitle, StyledButton } from 'styles/app';
-import Pipeline from 'containers/pipelines/Pipeline';
+import PipelineItem from './PipelineItem';
 import AddModal from './AddModal';
 
 function Pipelines({ getPipelines, pipelines }) {
@@ -28,7 +28,7 @@ function Pipelines({ getPipelines, pipelines }) {
         </div>
       </StyledTitle>
       {pipelines.map(({ id, name, last_updated: lastUpdated }) => (
-        <Pipeline key={id} id={id} name={name} lastUpdated={lastUpdated} />
+        <PipelineItem key={id} id={id} name={name} lastUpdated={lastUpdated} />
       ))}
       {addModalVisible && (
       <AddModal
