@@ -45,6 +45,7 @@ const Graph = ({
           dateTimeFilterValue={dateTimeFilterValue}
           index={index}
           maxY={maxY}
+          yUnit={yUnit}
         />
       </div>
     </StyledDashboardsGraph>
