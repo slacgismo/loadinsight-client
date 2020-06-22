@@ -19,7 +19,7 @@ const SharePopover = ({ visible, setSharePopoverVisible }) => {
   const copyToClipboard = (event) => {
     event.preventDefault();
     linkInput.current.select();
-    document.execCommand('copy');
+    window.document.execCommand('copy');
     linkInput.current.blur();
     if (!copyState) setCopyState(true);
   };

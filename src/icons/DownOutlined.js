@@ -17,12 +17,16 @@ const DownOutlined = (props) => {
   );
 
   return (
-    <Icon component={DownOutlinedSVG} {...props} />
+    <Icon component={DownOutlinedSVG} />
   );
 };
 
 DownOutlined.propTypes = {
   color: PropTypes.string,
+};
+
+DownOutlined.defaultProps = {
+  color: colors.white,
 };
 
 export default DownOutlined;

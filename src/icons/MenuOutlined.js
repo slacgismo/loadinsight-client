@@ -28,15 +28,16 @@ const MenuOutlined = (props) => {
   );
 
   return (
-    <StyledIcon
-      component={color === 'darkGray' ? MenuOutlinedDarkSVG : MenuOutlinedSVG}
-      {...props}
-    />
+    <StyledIcon component={color === 'darkGray' ? MenuOutlinedDarkSVG : MenuOutlinedSVG} />
   );
 };
 
-MenuOutlined.defaultProps = {
+MenuOutlined.propTypes = {
   color: PropTypes.string,
+};
+
+MenuOutlined.defaultProps = {
+  color: colors.darkGray,
 };
 
 export default MenuOutlined;
