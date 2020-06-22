@@ -287,7 +287,7 @@ export const StyledTable = styled(Table)`
   }
   .ant-table-tbody > tr {
     &:first-child > td {
-      font-weight: 400;
+      font-weight: 500;
       background-color: ${colors.lightGrey};
     }
   }
