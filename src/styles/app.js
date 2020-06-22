@@ -275,6 +275,8 @@ export const StyledTable = styled(Table)`
   .ant-table-tbody > tr > td {
     padding: 12px 8px;
     color: ${colors.black};
+    font-size: 14px;
+    line-height: 20px;
     font-weight: 300;
     background-color: ${colors.lightBg};
     border: 0;
