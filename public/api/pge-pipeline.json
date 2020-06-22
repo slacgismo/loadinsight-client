@@ -20,7 +20,7 @@
     {
       "name": "Aggregate Value",
       "field": "value",
-      "description": "The summed value of all tarrifs for a given sample"
+      "description": "The summed value of all tariffs for a given sample"
     }
   ],
   "load_profile": [
@@ -32,77 +32,77 @@
     {
       "name": "A1",
       "field": "A1",
-      "description": "The value of the A1 tarrif for a given ssample"
+      "description": "The value of the A1 tariff for a given sample"
     },
     {
       "name": "A10",
       "field": "A10",
-      "description": "The value of the A10 tarrif for a given ssample"
+      "description": "The value of the A10 tariff for a given sample"
     },
     {
       "name": "A6",
       "field": "A6",
-      "description": "The value of the A6 tarrif for a given ssample"
+      "description": "The value of the A6 tariff for a given sample"
     },
     {
       "name": "E19P",
       "field": "E19P",
-      "description": "The value of the E19P tarrif for a given ssample"
+      "description": "The value of the E19P tariff for a given sample"
     },
     {
       "name": "E19S",
       "field": "E19S",
-      "description": "The value of the E19S tarrif for a given ssample"
+      "description": "The value of the E19S tariff for a given sample"
     },
     {
       "name": "E19V",
       "field": "E19V",
-      "description": "The value of the E19V tarrif for a given ssample"
+      "description": "The value of the E19V tariff for a given sample"
     },
     {
       "name": "E20P",
       "field": "E20P",
-      "description": "The value of the E20P tarrif for a given ssample"
+      "description": "The value of the E20P tariff for a given sample"
     },
     {
       "name": "E20S",
       "field": "E20S",
-      "description": "The value of the E20S tarrif for a given ssample"
+      "description": "The value of the E20S tariff for a given sample"
     },
     {
       "name": "E20T",
       "field": "E20T",
-      "description": "The value of the E20T tarrif for a given ssample"
+      "description": "The value of the E20T tariff for a given sample"
     },
     {
       "name": "RES",
       "field": "RES",
-      "description": "The value of the RES tarrif for a given ssample"
+      "description": "The value of the RES tariff for a given sample"
     },
     {
       "name": "S19",
       "field": "S19",
-      "description": "The value of the S19 tarrif for a given ssample"
+      "description": "The value of the S19 tariff for a given sample"
     },
     {
       "name": "S1M",
       "field": "S1M",
-      "description": "The value of the S1M tarrif for a given ssample"
+      "description": "The value of the S1M tariff for a given sample"
     },
     {
       "name": "S1S",
       "field": "S1S",
-      "description": "The value of the S1S tarrif for a given ssample"
+      "description": "The value of the S1S tariff for a given sample"
     },
     {
       "name": "S20",
       "field": "S20",
-      "description": "The value of the S20 tarrif for a given ssample"
+      "description": "The value of the S20 tariff for a given sample"
     },
     {
       "name": "STBY",
       "field": "STBY",
-      "description": "The value of the STBY tarrif for a given ssample"
+      "description": "The value of the STBY tariff for a given sample"
     }
   ]
 }

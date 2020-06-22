@@ -151,12 +151,15 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
               pagination={false}
             />
           </Space>
+        </Space>
+        <Space direction size={72}>
           <Space direction="vertical" size="middle">
-            <StyledH3>LOAD PROFILE BY TARRIF</StyledH3>
+            <StyledH3>LOAD PROFILE BY TARIFF</StyledH3>
             <StyledTable
               columns={loadProfileColumns}
               dataSource={loadProfile}
               pagination={false}
+              alternateRowColors
             />
           </Space>
         </Space>

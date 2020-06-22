@@ -263,38 +263,36 @@ export const StyledMenuItem = styled(Menu.Item)`
   }
 `;
 
-export const StyledMenuLabel = styled.div`
-  color: ${({ color }) => (color in colors ? colors[color] : colors.black)};
-  cursor: pointer;
-  ${({ borderColor }) => (
-    borderColor && `border: 1px solid ${(
-      borderColor in colors ? colors[borderColor] : 'transparent'
-    )};`
-  )}
-  border-radius: 3px;
-  padding: 0 9px;
-  display: inline-block;
-}};
-`;
-
 export const StyledTable = styled(Table)`
-  .ant-table-tbody > tr > td, .ant-table-thead > tr > th {
-    padding: 8px;
-    margin: 8px;
-  }
   .ant-table-thead > tr > th {
+    padding: 8px;
     color: ${colors.gray40};
     font-size: 13px;
     line-height: 18px;
     background-color: transparent;
-    font-weight: normal;
+    font-weight: 400;
   }
   .ant-table-tbody > tr > td {
-    color: black;
-    font-weight: normal;
+    padding: 12px 8px;
+    color: ${colors.black};
+    font-weight: 300;
     background-color: ${colors.lightBg};
+    border: 0;
   }
+  ${({ alternateRowColors }) => (alternateRowColors ? (`
   .ant-table-tbody > tr:nth-child(2n) > td {
     background-color: ${colors.white};
-  } 
+  }
+  .ant-table-tbody > tr {
+    &:first-child > td {
+      font-weight: 400;
+      background-color: ${colors.lightGrey};
+    }
+  }
+  `) : (`
+  .ant-table-tbody > tr > td {
+    padding: 4px 8px;
+    border-bottom: 16px solid ${colors.white};
+  }
+  `))}
 `;
