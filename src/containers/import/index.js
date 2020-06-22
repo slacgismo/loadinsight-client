@@ -14,10 +14,10 @@ import {
   StyledTitle,
   StyledSection,
   StyledInput,
+  StyledButton,
   StyledH3,
   StyledTable,
 } from 'styles/app';
-import { StyledCustomPipelineImportButton } from 'styles/pipelines';
 
 function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }) {
   const history = useHistory();
@@ -126,9 +126,9 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             placeholder="Edit Pipeline Name"
             size="large"
           />
-          <StyledCustomPipelineImportButton onClick={addNewPipelineImport}>
+          <StyledButton size="large" color="lightBlue" onClick={addNewPipelineImport}>
             Import Pipeline
-          </StyledCustomPipelineImportButton>
+          </StyledButton>
         </header>
         <Space direction="vertical" size={56}>
           <Space direction="vertical" size="middle">

@@ -5,13 +5,20 @@ import {
   Checkbox,
   Menu,
   Table,
+  Button,
 } from 'antd';
+import Icon from '@ant-design/icons';
 
 import colors from 'styles/colors';
 
 export const StyledLayout = styled(Layout)`
   height: 100vh;
   width: 100vw;
+  .ant-dropdown-trigger {
+    .anticon {
+      margin-left: 8px;
+    }
+  }
 `;
 
 export const StyledSider = styled(Layout.Sider)`
@@ -55,6 +62,7 @@ export const StyledTitle = styled.div`
   margin-bottom: ${(props) => (props.margin >= 0 ? props.margin : 30)}px;
   h1 {
     ${StyledTitleText}
+    margin-right: 16px;
   }
   > div {
     position: relative;
@@ -92,30 +100,49 @@ export const StyledH5 = styled.div`
   justify-content: space-between;
 `;
 
-export const StyledButton = css`
-  font-size: 18px;
-  line-height: 21px;
+export const StyledButton = styled(Button)`
   border: 0;
-  border-radius: 2px;
-  font-weight: 500;
   padding: 8px 12px;
   height: auto;
-`;
-
-export const StyledButtonGreen = css`
-  ${StyledButton}
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  .anticon {
+    line-height: 0;
+  }
+  &.ant-btn-lg { 
+    border-radius: 2px;
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: 500;
+  }
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 400;
+  border-radius: 2px;
+  &.ant-btn-sm {
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 400;
+    border-radius: 3px;
+    padding: 5px 8px;
+  }
+  ${({ color }) => (`
   &, &:hover, &:focus {
-    background-color: ${colors.green};
+    background-color: ${(color in colors ? colors[color] : 'transparent')};
+  }
+  &:hover, &:focus {
+    color: ${(color in colors ? colors.white : colors.blue)};
+  }
+  &.ant-btn-sm, &.ant-btn-lg {
+    background-color: ${(color in colors ? colors[color] : colors.black)};
     color: ${colors.white};
   }
-`;
-
-export const StyledButtonBlue = css`
-  ${StyledButton}
-  &, &:hover, &:focus {
-    background-color: ${colors.lightBlue};
-    color: ${colors.white};
+  &.ant-btn-sm:hover, &.ant-btn-sm:focus {
+    background-color: ${colors.blue};
   }
+  `)}
 `;
 
 export const StyledInput = styled(Input)`
@@ -187,7 +214,7 @@ export const StyledCheckbox = styled(Checkbox)`
   }
 `;
 
-export const StyledIcon = styled.div`
+export const StyledIcon = styled(Icon)`
   position: absolute;
   top: 0;
   right: 0;
@@ -198,7 +225,6 @@ export const StyledMenu = styled(Menu)`
   border: 1px solid ${colors.lightGray};
   border-radius: 3px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
-  width: 10
 `;
 
 export const CSSMenuItemSpan = css`

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { Popover, Space } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
-import { StyledH5, StyledInput, StyledCheckbox } from 'styles/app';
+import {
+  StyledH5, StyledInput, StyledCheckbox, StyledButton,
+} from 'styles/app';
 
 const SharePopover = ({ visible, setSharePopoverVisible }) => {
   const linkInput = useRef(null);
@@ -41,7 +43,7 @@ const SharePopover = ({ visible, setSharePopoverVisible }) => {
     <Space size={25} direction="vertical">
       <div>
         <StyledInput ref={linkInput} value={shareLink} />
-        <a onClick={copyToClipboard}>{copyState ? 'Copied' : 'Copy Link'}</a>
+        <StyledButton onClick={copyToClipboard}>{copyState ? 'Copied' : 'Copy Link'}</StyledButton>
       </div>
       <form onSubmit={(event) => event.preventDefault()}>
         <StyledCheckbox
@@ -68,12 +70,9 @@ const SharePopover = ({ visible, setSharePopoverVisible }) => {
       title={title}
       trigger="click"
       placement="topLeft"
-      onVisibleChange={(visible) => setSharePopoverVisible(!visible)}
+      onVisibleChange={() => setSharePopoverVisible(!visible)}
       getPopupContainer={(trigger) => trigger}
       visible={visible}
-      align={{
-        points: ['tl', 'tr'],
-      }}
     />
   );
 };

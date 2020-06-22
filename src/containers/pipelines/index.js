@@ -4,9 +4,8 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 import { getPipelines as getPipelinesAction } from 'actions/pipelines';
-import { StyledTitle } from 'styles/app';
-import { StyledPipelinesButton } from 'styles/pipelines';
-import PipelineItem from './pipeline';
+import { StyledTitle, StyledButton } from 'styles/app';
+import Pipeline from './Pipeline';
 import AddModal from './AddModal';
 
 function Pipelines({ getPipelines, pipelines }) {
@@ -23,13 +22,13 @@ function Pipelines({ getPipelines, pipelines }) {
       <StyledTitle>
         <div>
           <h1>Pipelines</h1>
-          <StyledPipelinesButton type="text" onClick={toggleModal}>
+          <StyledButton size="small" onClick={toggleModal}>
             + Add Pipeline
-          </StyledPipelinesButton>
+          </StyledButton>
         </div>
       </StyledTitle>
       {pipelines.map(({ id, name, last_updated: lastUpdated }) => (
-        <PipelineItem key={id} id={id} name={name} lastUpdated={lastUpdated} />
+        <Pipeline key={id} id={id} name={name} lastUpdated={lastUpdated} />
       ))}
       {addModalVisible && (
       <AddModal

@@ -5,10 +5,9 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Dropdown, Menu } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
-import 'antd/dist/antd.css';
 
 import { logoutUser as logoutUserAction } from 'actions/user';
+import DownOutlined from 'icons/DownOutlined';
 
 const { Item } = Menu;
 
@@ -35,17 +34,6 @@ const StyledMenuItem = styled(Item)`
   }
 `;
 
-const StyledMenuLabel = styled.div`
-  font-size: 12px;
-  line-height: 14px;
-  margin-top: 15px;
-  color: #404040;
-`;
-
-const StyledDownOutlined = styled(DownOutlined)`
-  margin-left: 4px;
-`;
-
 const SettingsDropdown = ({ logoutUser }) => {
   const menu = (
     <StyledMenu>
@@ -60,10 +48,10 @@ const SettingsDropdown = ({ logoutUser }) => {
 
   return (
     <Dropdown overlay={menu}>
-      <StyledMenuLabel>
+      <div>
         Manage settings
-        <StyledDownOutlined />
-      </StyledMenuLabel>
+        <DownOutlined color="gray" />
+      </div>
     </Dropdown>
   );
 };

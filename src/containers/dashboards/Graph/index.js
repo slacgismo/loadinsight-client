@@ -6,10 +6,9 @@ import {
   StyledDashboardsGraph,
   StyledDashboardsMenu,
   StyledDashboardsMenuItem,
-  StyledDashboardsMenuLabel,
 } from 'styles/dashboards';
-import { StyledH3, StyledIcon } from 'styles/app';
-import IconDragndrop from './images/icon-dragndrop.svg';
+import { StyledH3 } from 'styles/app';
+import MenuOutlined from 'icons/MenuOutlined';
 import LineGraph from './LineGraph';
 
 const Graph = ({
@@ -36,20 +35,16 @@ const Graph = ({
     <StyledDashboardsGraph>
       <div>
         <StyledDashboardsDropdown overlay={graphsMenu}>
-          <StyledDashboardsMenuLabel>
-            <StyledIcon>
-              <img src={IconDragndrop} alt="Drag Load Profile" />
-            </StyledIcon>
-          </StyledDashboardsMenuLabel>
+          <MenuOutlined color="darkGray" />
         </StyledDashboardsDropdown>
         <StyledH3>{ title }</StyledH3>
+        <LineGraph
+          data={data}
+          dateTimeFilterValue={dateTimeFilterValue}
+          index={index}
+          maxY={maxY}
+        />
       </div>
-      <LineGraph
-        data={data}
-        dateTimeFilterValue={dateTimeFilterValue}
-        index={index}
-        maxY={maxY}
-      />
     </StyledDashboardsGraph>
   );
 };
