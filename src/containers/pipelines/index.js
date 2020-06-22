@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { getPipelines as getPipelinesAction } from 'actions/pipelines';
 import { StyledTitle, StyledButton } from 'styles/app';
-import Pipeline from './Pipeline';
+import Pipeline from 'containers/pipelines/Pipeline';
 import AddModal from './AddModal';
 
 function Pipelines({ getPipelines, pipelines }) {
