@@ -11,7 +11,7 @@ import {
   StyledPipelineGrid,
 } from 'styles/pipelines';
 import {
-  StyledH5,
+  StyledH3,
 } from 'styles/app';
 import CustomImg from '../images/custom.svg';
 import DatabaseImg from '../images/database.svg';
@@ -35,7 +35,7 @@ function AddModal({ handleOk, handleCancel }) {
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      <StyledH5>Select a pipeline type</StyledH5>
+      <StyledH3>Select a pipeline type</StyledH3>
       <StyledPipelineGrid>
         <StyledPipelineCard>
           <Button onClick={null}>

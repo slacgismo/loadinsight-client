@@ -2,15 +2,23 @@ import styled, { css } from 'styled-components';
 import {
   Layout,
   Input,
+  Checkbox,
   Menu,
   Table,
+  Button,
 } from 'antd';
+import Icon from '@ant-design/icons';
 
 import colors from 'styles/colors';
 
 export const StyledLayout = styled(Layout)`
   height: 100vh;
   width: 100vw;
+  .ant-dropdown-trigger {
+    .anticon {
+      margin-left: 8px;
+    }
+  }
 `;
 
 export const StyledSider = styled(Layout.Sider)`
@@ -54,6 +62,7 @@ export const StyledTitle = styled.div`
   margin-bottom: ${(props) => (props.margin >= 0 ? props.margin : 30)}px;
   h1 {
     ${StyledTitleText}
+    margin-right: 16px;
   }
   > div {
     position: relative;
@@ -83,52 +92,129 @@ export const StyledH4 = styled.h4`
 `;
 
 export const StyledH5 = styled.div`
-  font-size: 16px;
-  line-height: 19px;
+  color: ${colors.gray};
+  font-size: 14px;
+  line-height: 16px;
   font-weight: 500;
+  display: flex;
+  justify-content: space-between;
 `;
 
-export const StyledButton = css`
-  font-size: 18px;
-  line-height: 21px;
+export const StyledButton = styled(Button)`
   border: 0;
-  border-radius: 2px;
-  font-weight: 500;
   padding: 8px 12px;
   height: auto;
-`;
-
-export const StyledButtonGreen = css`
-  ${StyledButton}
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  .anticon {
+    line-height: 0;
+  }
+  &.ant-btn-lg { 
+    border-radius: 2px;
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: 500;
+  }
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 400;
+  border-radius: 2px;
+  &.ant-btn-sm {
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 400;
+    border-radius: 3px;
+    padding: 5px 8px;
+  }
+  ${({ color }) => (`
   &, &:hover, &:focus {
-    background-color: ${colors.green};
+    background-color: ${(color in colors ? colors[color] : 'transparent')};
+  }
+  &:hover, &:focus {
+    color: ${(color in colors ? colors.white : colors.blue)};
+  }
+  &.ant-btn-sm, &.ant-btn-lg {
+    background-color: ${(color in colors ? colors[color] : colors.black)};
     color: ${colors.white};
   }
-`;
-
-export const StyledButtonBlue = css`
-  ${StyledButton}
-  &, &:hover, &:focus {
-    background-color: ${colors.lightBlue};
-    color: ${colors.white};
+  &.ant-btn-sm:hover, &.ant-btn-sm:focus {
+    background-color: ${colors.blue};
   }
+  `)}
 `;
 
 export const StyledInput = styled(Input)`
-  max-width: 370px;
+  width: auto;
+  min-width: 280px;
+  padding: 9px;
+  background-color: ${colors.darkOverlay};
+  border: 0;
+  border-bottom: 1px solid transparent;
+  &, &:hover:focus {
+    color: ${colors.darkText};
+  }
+  &:hover, &:focus {
+    box-shadow: none;
+    border-bottom: 1px solid ${colors.lightBlue};
+  }
+  &:hover {
+    &, &::placeholder {
+      color: ${colors.lightBlue};
+    }
+  }
+  &:focus:placeholder-shown::placeholder {
+    color: ${colors.lightGray};
+  }
+  &::selection {
+    background-color: ${colors.blue};
+  }
+  ${({ size }) => (size === 'large' ? `
+  font-size: 18px;
+  line-height: 21px;
   font-weight: 500;
-  background-color: ${colors.lightBg};
-  color: ${colors.darkText};
+  background-color: ${colors.overlay20};
+  width: 360px;
+  ` : `
+  font-size: 12px;
+  line-height: 14px;
+  `)}
+  ${({ shape }) => (shape === 'round' ? `
+  background-color: ${colors.white};
+  border: 1px solid ${colors.lightGray};
+  font-size: 14px;
+  line-height: 16px;
+  &:hover, &:focus {
+    border: 1px solid ${colors.lightBlue};
+  }
   &::placeholder {
     color: ${colors.lightGray};
   }
+  &:focus:placeholder-shown::placeholder {
+    font-size: 0;
+  }
+` : `
+  &::placeholder {
+    color: ${colors.lightOverlay20};
+  }
+  `)}
 `;
 
-export const StyledChevron = styled.span`
-  font-weight: bold;
+export const StyledCheckbox = styled(Checkbox)`
+  font-size: 14px;
+  line-height: 16px;
+  color: ${colors.gray};
+  &:hover {
+    color: ${colors.blue};
+  }
+  .ant-checkbox-inner {
+    border: 1px solid ${colors.gray};
+    border-radius: 3px;
+  }
 `;
 
-export const StyledIcon = styled.div`
+export const StyledIcon = styled(Icon)`
   position: absolute;
   top: 0;
   right: 0;
@@ -139,7 +225,6 @@ export const StyledMenu = styled(Menu)`
   border: 1px solid ${colors.lightGray};
   border-radius: 3px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
-  width: 10
 `;
 
 export const CSSMenuItemSpan = css`
@@ -178,38 +263,38 @@ export const StyledMenuItem = styled(Menu.Item)`
   }
 `;
 
-export const StyledMenuLabel = styled.div`
-  color: ${({ color }) => (color in colors ? colors[color] : colors.black)};
-  cursor: pointer;
-  ${({ borderColor }) => (
-    borderColor && `border: 1px solid ${(
-      borderColor in colors ? colors[borderColor] : 'transparent'
-    )};`
-  )}
-  border-radius: 3px;
-  padding: 0 9px;
-  display: inline-block;
-}};
-`;
-
 export const StyledTable = styled(Table)`
-  .ant-table-tbody > tr > td, .ant-table-thead > tr > th {
-    padding: 8px;
-    margin: 8px;
-  }
   .ant-table-thead > tr > th {
+    padding: 8px;
     color: ${colors.gray40};
     font-size: 13px;
     line-height: 18px;
     background-color: transparent;
-    font-weight: normal;
+    font-weight: 400;
   }
   .ant-table-tbody > tr > td {
-    color: black;
-    font-weight: normal;
+    padding: 12px 8px;
+    color: ${colors.black};
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 300;
     background-color: ${colors.lightBg};
+    border: 0;
   }
+  ${({ alternateRowColors }) => (alternateRowColors ? (`
   .ant-table-tbody > tr:nth-child(2n) > td {
     background-color: ${colors.white};
-  } 
+  }
+  .ant-table-tbody > tr {
+    &:first-child > td {
+      font-weight: 500;
+      background-color: ${colors.lightGrey};
+    }
+  }
+  `) : (`
+  .ant-table-tbody > tr > td {
+    padding: 4px 8px;
+    border-bottom: 16px solid ${colors.white};
+  }
+  `))}
 `;

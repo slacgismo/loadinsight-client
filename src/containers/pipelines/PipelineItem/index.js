@@ -3,21 +3,21 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
 
+import {
+  deletePipeline as deletePipelineAction,
+} from 'actions/pipelines';
+import DownOutlined from 'icons/DownOutlined';
 import {
   StyledMenu,
   StyledMenuItem,
+  StyledButton,
 } from 'styles/app';
 import {
   StyledPipelineItem,
   StyledPipelineName,
   StyledPipelineLastUpdated,
-  StyledPipelineItemButton,
 } from 'styles/pipelines';
-import {
-  deletePipeline as deletePipelineAction,
-} from 'actions/pipelines';
 
 const Pipeline = ({
   id, name, lastUpdated, deletePipeline,
@@ -44,10 +44,10 @@ const Pipeline = ({
         {lastUpdated}
       </StyledPipelineLastUpdated>
       <Dropdown overlay={menu}>
-        <StyledPipelineItemButton>
-          Succeeded&nbsp;
+        <StyledButton size="large" color="green">
+          Succeeded
           <DownOutlined />
-        </StyledPipelineItemButton>
+        </StyledButton>
       </Dropdown>
     </StyledPipelineItem>
   );

@@ -1,35 +1,33 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
-import { Space, Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Space } from 'antd';
 import moment from 'moment';
 // import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // import reorder from 'util/reorder';
 import { getDashboards as getDashboardsAction } from 'actions/dashboards';
+import MenuOutlined from 'icons/MenuOutlined';
+import DownOutlined from 'icons/DownOutlined';
 import {
   StyledTitle,
   StyledH2,
   StyledH4,
+  StyledButton,
   StyledMenu,
   StyledMenuItem,
-  StyledMenuLabel,
-  StyledIcon,
 } from 'styles/app';
 import {
-  StyledDashboardsButton,
-  StyledDashboardsDropdown,
+  StyledDashboardsHeader,
+  StyledDashboardsGraphsGrid,
   StyledDashboardsMenu,
   StyledDashboardsMenuItem,
-  StyledDashboardsMenuLabel,
-  StyledDashboardsHeader,
+  StyledDashboardsDropdown,
   StyledDashboardsSummaryCard,
-  StyledDashboardsGraphsGrid,
 } from 'styles/dashboards';
-import IconMenu from './images/icon-menu.svg';
 import Graph from './Graph';
+import SharePopover from './SharePopover';
 
 const Dashboards = ({ getDashboards, dashboards = [] }) => {
   useEffect(() => {
@@ -55,6 +53,10 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
     </StyledDashboardsMenu>
   );
 
+  const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
+
+  const toggleSharePopoverVisible = () => setSharePopoverVisible(!sharePopoverVisible);
+
   const dashboardMenu = (
     <StyledDashboardsMenu>
       <StyledDashboardsMenuItem>
@@ -66,7 +68,10 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       <StyledDashboardsMenuItem size="small">
         Edit dashboard name
       </StyledDashboardsMenuItem>
-      <StyledDashboardsMenuItem size="small">
+      <StyledDashboardsMenuItem
+        onClick={toggleSharePopoverVisible}
+        size="small"
+      >
         Share this dashboard
       </StyledDashboardsMenuItem>
       <StyledDashboardsMenuItem size="small" color="orangeRed">
@@ -260,25 +265,29 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       <StyledTitle margin={0}>
         <div>
           <h1>Dashboards</h1>
-          <StyledDashboardsButton type="text">
+          <StyledButton size="small">
             + Add Dashboard
-          </StyledDashboardsButton>
+          </StyledButton>
           <StyledDashboardsDropdown overlay={dashboardsMenu}>
-            <StyledDashboardsMenuLabel>
-              My Dashboards&nbsp;&nbsp;
-              <DownOutlined />
-            </StyledDashboardsMenuLabel>
+            <div>
+              <span>My Dashboards</span>
+              <DownOutlined color="gray" />
+            </div>
           </StyledDashboardsDropdown>
         </div>
       </StyledTitle>
       <StyledDashboardsHeader>
         <div>
+          {sharePopoverVisible && (
+            <SharePopover
+              visible={sharePopoverVisible}
+              setSharePopoverVisible={setSharePopoverVisible}
+            />
+          )}
           <StyledDashboardsDropdown overlay={dashboardMenu}>
-            <StyledDashboardsMenuLabel>
-              <StyledIcon>
-                <img src={IconMenu} alt="Load Profile Menu" />
-              </StyledIcon>
-            </StyledDashboardsMenuLabel>
+            <span>
+              <MenuOutlined />
+            </span>
           </StyledDashboardsDropdown>
           <StyledH2 color="white">Holy Cross Dashboard</StyledH2>
           <Space size={25}>
@@ -289,21 +298,19 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
             <StyledDashboardsSummaryCard>
               <StyledH4 color="algaeGreen">Filter by</StyledH4>
               <Dropdown overlay={dateTimeFilterMenu}>
-                <StyledMenuLabel color="white" borderColor="algaeGreen">
+                <div>
                   {dateTimeFilterOptions[dateTimeFilterValue]}
-                  &nbsp;&nbsp;
-                  <DownOutlined />
-                </StyledMenuLabel>
+                  <DownOutlined color="algaeGreen" />
+                </div>
               </Dropdown>
             </StyledDashboardsSummaryCard>
             <StyledDashboardsSummaryCard>
               <StyledH4 color="algaeGreen">Additional Filter</StyledH4>
               <Dropdown overlay={additionalFilterMenu}>
-                <StyledMenuLabel color="white" borderColor="algaeGreen">
+                <div>
                   Energy Used (kWh)
-                  &nbsp;&nbsp;
-                  <DownOutlined />
-                </StyledMenuLabel>
+                  <DownOutlined color="algaeGreen" />
+                </div>
               </Dropdown>
             </StyledDashboardsSummaryCard>
           </Space>
