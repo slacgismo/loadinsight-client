@@ -19,7 +19,7 @@ const LineGraph = ({
   }
 
   const theme = {
-    fontSize: '12px',
+    fontSize: 12,
     textColor: colors.gray20,
     crosshair: {
       line: {

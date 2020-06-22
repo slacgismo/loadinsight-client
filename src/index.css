@@ -5,19 +5,14 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
-div:focus,
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-    outline: none;
-}
 body {
-    margin: 0;
     font-family: Roboto, serif;
     color: #404040;
     background-color: #f7f7f7;
 }
 a {
     color: #404040;
+}
+[ant-click-animating-without-extra-node]:after {
+    animation: none;
 }

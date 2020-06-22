@@ -30,6 +30,7 @@ import {
   ROUTE_PIPELINES_NEW_IMPORT,
 } from 'config/routes';
 import * as serviceWorker from './serviceWorker';
+import 'antd/dist/antd.compact.min.css';
 import 'index.css';
 
 // Auth.logoutUser();

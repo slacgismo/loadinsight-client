@@ -12,6 +12,15 @@ const StyledProfileContainer = styled.div`
   border-bottom: 1px solid #d2d2d2;
   padding-bottom: 10px;
   margin: 34px 20px 0 16px;
+  font-size: 12px;
+  line-height: 14px;
+  .ant-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    color: ${colors.black};
+  }
 `;
 
 const StyledPhotoContainer = styled.div`

@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import { Button } from 'antd';
 
 import colors from 'styles/colors';
-import { StyledButtonBlue } from 'styles/app';
 
 export const StyledRepositoryItem = styled.div`
   display: grid;
@@ -17,8 +15,4 @@ export const StyledRepositoryName = styled.div`
   font-size: 18px;
   font-weight: 500;
   color: ${colors.gray};
-`;
-
-export const StyledRepositoryItemButton = styled(Button)`
-  ${StyledButtonBlue}
 `;

@@ -14,10 +14,10 @@ import {
   StyledTitle,
   StyledSection,
   StyledInput,
-  StyledH5,
+  StyledButton,
+  StyledH3,
   StyledTable,
 } from 'styles/app';
-import { StyledCustomPipelineImportButton } from 'styles/pipelines';
 
 function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }) {
   const history = useHistory();
@@ -124,16 +124,17 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             onChange={(event) => setPipelineNewImportName(event.target.value)}
             autofocus="autofocus"
             placeholder="Edit Pipeline Name"
+            size="large"
           />
-          <StyledCustomPipelineImportButton onClick={addNewPipelineImport}>
+          <StyledButton size="large" color="lightBlue" onClick={addNewPipelineImport}>
             Import Pipeline
-          </StyledCustomPipelineImportButton>
+          </StyledButton>
         </header>
         <Space direction="vertical" size={56}>
           <Space direction="vertical" size="middle">
-            <StyledH5>
+            <StyledH3>
               {`THIS PIPELINE HAS ${inputs.length} INPUT PARAMETERS`}
-            </StyledH5>
+            </StyledH3>
             <StyledTable
               columns={inputsColumns}
               dataSource={inputs}
@@ -141,21 +142,24 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
             />
           </Space>
           <Space direction="vertical" size="middle">
-            <StyledH5>
+            <StyledH3>
               {`THIS PIPELINE HAS ${outputs.length} OUTPUTS`}
-            </StyledH5>
+            </StyledH3>
             <StyledTable
               columns={outputsColumns}
               dataSource={outputs}
               pagination={false}
             />
           </Space>
+        </Space>
+        <Space direction size={72}>
           <Space direction="vertical" size="middle">
-            <StyledH5>LOAD PROFILE BY TARRIF</StyledH5>
+            <StyledH3>LOAD PROFILE BY TARIFF</StyledH3>
             <StyledTable
               columns={loadProfileColumns}
               dataSource={loadProfile}
               pagination={false}
+              alternateRowColors
             />
           </Space>
         </Space>

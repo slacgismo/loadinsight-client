@@ -12,12 +12,14 @@ import colors from 'styles/colors';
 
 const StyledMenu = styled(Menu)`
   padding: 23px 9px 0 0;
-  &.ant-menu-vertical .ant-menu-item-selected {
-    background-color: ${colors.black};
-    color: ${colors.white};
-    cursor: default;
-  }
-  &.ant-menu-vertical > .ant-menu-item {
+  &.ant-menu-vertical {
+    border-right: 0;
+    .ant-menu-item-selected {
+      background-color: ${colors.black};
+      color: ${colors.white};
+      cursor: default;
+    }
+     > .ant-menu-item {
     margin: 0;
     height: auto;
     line-height: 47px;
