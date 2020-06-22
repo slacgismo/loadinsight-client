@@ -318,6 +318,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
             dateTimeFilterValue={dateTimeFilterValue}
             index={i}
             maxY={graphsMaxY[i][dateTimeFilterValue]}
+            yUnit={(i === 1 ? 'MWh' : 'kWh')}
           />
         ))}
       </StyledDashboardsGraphsGrid>

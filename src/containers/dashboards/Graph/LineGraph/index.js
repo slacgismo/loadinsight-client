@@ -5,9 +5,10 @@ import moment from 'moment';
 
 import colors from 'styles/colors';
 import { StyledLegendIcon } from 'styles/dashboards';
+import theme from './theme';
 
 const LineGraph = ({
-  data, dateTimeFilterValue, index = 0, maxY = 'auto',
+  data, dateTimeFilterValue, index = 0, maxY = 'auto', yUnit,
 }) => {
   const graphColors = [colors.yellow, colors.lightGreen, colors.oceanGreen, colors.green];
 
@@ -17,77 +18,6 @@ const LineGraph = ({
     tickValues = 'every day';
     axisBottomFormat = '%d';
   }
-
-  const theme = {
-    fontSize: '12px',
-    textColor: colors.gray20,
-    crosshair: {
-      line: {
-        stroke: colors.gray,
-        strokeWidth: 1,
-        strokeOpacity: 1,
-        strokeDasharray: '3 3',
-      },
-    },
-    axis: {
-      domain: {
-        line: {
-          stroke: colors.lightOverlay20,
-          strokeWidth: 1,
-        },
-      },
-      range: {
-        line: {
-          stroke: colors.lightOverlay20,
-          strokeWidth: 1,
-        },
-      },
-      legend: {
-        text: {
-          fontSize: 12,
-          fill: colors.gray,
-          fontWeight: 'bold',
-        },
-      },
-      ticks: {
-        text: {
-          fontSize: 12,
-          fill: colors.gray20,
-          fontWeight: 400,
-        },
-      },
-    },
-    grid: {
-      line: {
-        stroke: colors.lightOverlay20,
-        strokeWidth: 1,
-      },
-    },
-    tooltip: {
-      container: {
-        background: 'white',
-        color: colors.gray,
-        fontSize: 12,
-        lineHeight: '20px',
-        borderRadius: '2px',
-        boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.05)',
-        padding: '5px 9px',
-        border: `1px solid ${colors.lightGray}`,
-        display: 'grid',
-        gridTemplateColumns: '16px 1fr',
-        gridGap: '5px',
-      },
-      basic: {
-        whiteSpace: 'pre',
-        display: 'flex',
-        alignItems: 'center',
-      },
-      table: {},
-      tableCell: {
-        padding: '3px 5px',
-      },
-    },
-  };
 
   const CustomTick = (tick) => {
     const {
@@ -123,6 +53,26 @@ const LineGraph = ({
     );
   };
 
+  const ScaledYTick = (tick) => {
+    const {
+      value, x, y,
+    } = tick;
+
+    return (
+      <g transform={`translate(${x - 28},${y})`}>
+        <text
+          textAnchor="middle"
+          dominantBaseline="middle"
+          style={{
+            ...theme.axis.ticks.text,
+          }}
+        >
+          {yUnit === 'MWh' ? value / 1000 : value}
+        </text>
+      </g>
+    );
+  };
+
   return (
     <ResponsiveLine
       data={data}
@@ -134,15 +84,18 @@ const LineGraph = ({
         type: 'time',
         precision: 'second',
       }}
-      xFormat="time:%b %d, %Y|%H:%M:%S"
+      xFormat="time:%b %d, %Y|%H:%M:%S" // delimeter |
       yScale={{
-        type: 'linear', min: 0, max: maxY, stacked: true, reverse: false, precision: '0.1',
+        type: 'linear',
+        min: 0,
+        max: maxY,
       }}
-      yFormat={(value) => Math.floor(value)}
+      style={{ overflow: 'hidden' }}
+      yFormat={(y) => (yUnit === 'MWh' ? (y / 1000).toFixed(1) : y)}
       tooltip={({ point }) => {
         const { xFormatted, yFormatted } = point.data;
         const { serieColor } = point;
-        const [date, time] = xFormatted.split('|');
+        const [date, time] = xFormatted.split('|'); // split at delimeter |
         return (
           <div style={{ ...theme.tooltip.container }}>
             <StyledLegendIcon serieColor={serieColor} />
@@ -177,9 +130,10 @@ const LineGraph = ({
         tickSize: 0,
         tickPadding: 16,
         tickRotation: 0,
-        legend: 'Energy Used (kWh)',
+        legend: `Energy Used (${yUnit})`,
         legendOffset: -72,
         legendPosition: 'middle',
+        renderTick: ScaledYTick,
       }}
       colors={graphColors[index]}
       pointSize={0} // could remove props related to point
@@ -208,6 +162,7 @@ LineGraph.propTypes = {
   dateTimeFilterValue: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
   maxY: PropTypes.number.isRequired,
+  yUnit: PropTypes.string.isRequired,
 };
 
 export default LineGraph;
