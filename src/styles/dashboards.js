@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { Card, Menu, Dropdown } from 'antd';
+import {
+  Card, Menu, Dropdown,
+} from 'antd';
 
 import colors from 'styles/colors';
 
@@ -109,39 +111,40 @@ export const StyledDashboardsSummaryCard = styled(Card)`
   .ant-card-body {
     padding: 24px 20px;
   }
-  .ant-dropdown-trigger {
-    color: ${colors.white};
-    cursor: pointer;
-    border: 1px solid ${colors.algaeGreen};
-    border-radius: 3px;
-    padding: 3px 9px;
-    display: inline-flex;
-    align-items: center;
-    margin-top: -4px;
-    .anticon {
-      margin-left: 8px;
-    }
-  }
 `;
 
 export const StyledDashboardsGraphsGrid = styled.div`
-  padding: 0 15px 0 10px;
+  padding: 0 25px 20px 20px;
+  display: grid;
+  grid-gap: 20px;
 `;
 
-export const StyledDashboardsGraph = styled.div`
-  min-height: 33vh;
-  height: 20vw;
+export const StyledDashboardsGraph = styled.section`
   background-color: ${colors.white};
   border-radius: 6px;
   padding: 16px 12px 16px 20px;
-  margin: 20px 10px;
   display: flex;
-  > div {
+  flex-direction: column;
+  position: relative;
+  ${({ graphheight }) => (graphheight ? (`
+  height: ${graphheight};
+  `) : (`
+    min-height: 33vh;
+    height: 20vw;
+  `))}
+  header {
     position: relative;
-    flex-basis: 100%;
+    z-index: 2;
+    h3 {
+      padding: 9px 0;
+    }
   }
-  h3 {
-    padding: 9px 0 32px 0;
+  > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 `;
 
@@ -151,4 +154,23 @@ export const StyledLegendIcon = styled.div`
   margin-top: 3px;
   border-radius: 3px;
   background-color: ${({ serieColor }) => serieColor};
+`;
+
+export const StyledAxisItem = styled.div`
+  background-color ${colors.white};
+  ${({ active }) => (`
+  color: ${active ? colors.darkText : colors.lightGray};
+  `)}
+  display: flex;
+  align-items: center;
+  padding: 16px 8px;
+  font-size: 14px;
+  line-height: 16px;
+  width: 290px;
+  cursor: pointer;
+  position: relative;
+  .anticon {
+    top: 16px;
+    right: 20px;
+  }
 `;

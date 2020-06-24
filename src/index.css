@@ -16,3 +16,10 @@ a {
 [ant-click-animating-without-extra-node]:after {
     animation: none;
 }
+.ant-space {
+    width: 100%;
+}
+.ant-dropdown-menu {
+    display: inline-block;
+    min-width: 142px;
+}

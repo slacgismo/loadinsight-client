@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Space } from 'antd';
 import PropTypes from 'prop-types';
 
 import { getPipelines as getPipelinesAction } from 'actions/pipelines';
@@ -27,9 +28,11 @@ function Pipelines({ getPipelines, pipelines }) {
           </StyledButton>
         </div>
       </StyledTitle>
-      {pipelines.map(({ id, name, last_updated: lastUpdated }) => (
-        <PipelineItem key={id} id={id} name={name} lastUpdated={lastUpdated} />
-      ))}
+      <Space direction="vertical" size={16}>
+        {pipelines.map(({ id, name, last_updated: lastUpdated }) => (
+          <PipelineItem key={id} id={id} name={name} lastUpdated={lastUpdated} />
+        ))}
+      </Space>
       {addModalVisible && (
       <AddModal
         handleOk={toggleModal}

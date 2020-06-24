@@ -30,7 +30,7 @@ const Pipeline = ({
       <StyledMenuItem>
         <span>Update Now</span>
       </StyledMenuItem>
-      <StyledMenuItem hoverColor="orangeRed" onClick={() => deletePipeline({ id })}>
+      <StyledMenuItem hovercolor="orangeRed" onClick={() => deletePipeline({ id })}>
         <span>Delete</span>
       </StyledMenuItem>
     </StyledMenu>

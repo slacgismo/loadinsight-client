@@ -131,7 +131,7 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
           </StyledButton>
         </header>
         <Space direction="vertical" size={56}>
-          <Space direction="vertical" size="middle">
+          <Space direction="vertical" size="middle" style={{ width: 'auto' }}>
             <StyledH3>
               {`THIS PIPELINE HAS ${inputs.length} INPUT PARAMETERS`}
             </StyledH3>
@@ -141,7 +141,7 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
               pagination={false}
             />
           </Space>
-          <Space direction="vertical" size="middle">
+          <Space direction="vertical" size="middle" style={{ width: 'auto' }}>
             <StyledH3>
               {`THIS PIPELINE HAS ${outputs.length} OUTPUTS`}
             </StyledH3>

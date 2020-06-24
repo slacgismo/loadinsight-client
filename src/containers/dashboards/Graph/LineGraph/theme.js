@@ -1,7 +1,7 @@
 import colors from 'styles/colors';
 
 export default {
-  fontSize: '12px',
+  fontSize: 12,
   textColor: colors.gray20,
   crosshair: {
     line: {
@@ -41,7 +41,7 @@ export default {
   },
   grid: {
     line: {
-      stroke: colors.lightOverlay20,
+      stroke: colors.lightOverlay,
       strokeWidth: 1,
     },
   },
