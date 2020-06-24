@@ -8,9 +8,15 @@ import { StyledLegendIcon } from 'styles/dashboards';
 import theme from './theme';
 
 const LineGraph = ({
-  data, dateTimeFilterValue, index = 0, maxY = 'auto', yUnit,
+  data, dateTimeFilterValue, index = 0, maxY = 'auto', yUnit, hasTitleMargin,
 }) => {
   const graphColors = [colors.yellow, colors.lightGreen, colors.oceanGreen, colors.green];
+  const dataColors = [
+    graphColors[index],
+    graphColors[(index + 1) % 4],
+    graphColors[(index + 2) % 4],
+    graphColors[(index + 3) % 4],
+  ];
 
   let tickValues = 'every hour';
   let axisBottomFormat = '%-I %p';
@@ -77,7 +83,10 @@ const LineGraph = ({
     <ResponsiveLine
       data={data}
       margin={{
-        top: 9, right: 20, bottom: 120, left: 78, // 4 or 5 is minimum to fit tick values
+        top: hasTitleMargin ? 93 : 60,
+        right: 30,
+        bottom: 68,
+        left: 98,
       }}
       xScale={{
         format: '%Y-%m-%d %H:%M:%S',
@@ -89,6 +98,7 @@ const LineGraph = ({
         type: 'linear',
         min: 0,
         max: maxY,
+        stacked: true,
       }}
       style={{ overflow: 'hidden' }}
       yFormat={(y) => (yUnit === 'MWh' ? (y / 1000).toFixed(1) : y)}
@@ -110,6 +120,7 @@ const LineGraph = ({
         );
       }}
       gridYValues={5}
+      gridXValues={dateTimeFilterValue === 1 ? 24 : dateTimeFilterValue}
       axisTop={null}
       axisRight={null}
       axisBottom={{
@@ -135,17 +146,11 @@ const LineGraph = ({
         legendPosition: 'middle',
         renderTick: ScaledYTick,
       }}
-      colors={graphColors[index]}
-      pointSize={0} // could remove props related to point
-      pointColor={{ theme: 'background' }}
-      pointBorderWidth={1}
-      pointBorderColor={{ from: 'serieColor' }}
-      pointLabel="y"
-      pointLabelYOffset={-12}
+      colors={dataColors}
+      pointSize={0}
       useMesh
       enableArea
       theme={theme}
-      enableGridX={false}
       layers={['grid', 'markers', 'axes', 'areas', 'lines', 'points', 'slices', 'crosshair', 'mesh', 'legends']}
     />
   );
@@ -161,8 +166,14 @@ LineGraph.propTypes = {
   })).isRequired,
   dateTimeFilterValue: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
-  maxY: PropTypes.number.isRequired,
+  maxY: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   yUnit: PropTypes.string.isRequired,
+  hasTitleMargin: PropTypes.bool,
+};
+
+LineGraph.defaultProps = {
+  hasTitleMargin: true,
+  maxY: 'auto',
 };
 
 export default LineGraph;

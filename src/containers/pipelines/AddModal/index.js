@@ -5,13 +5,11 @@ import PropTypes from 'prop-types';
 
 import { ROUTE_PIPELINES_NEW_REPOSITORIES } from 'config/routes';
 import {
-  StyledPipelineModal,
-  StyledPipelineCard,
-  StyledPipelineLabel,
-  StyledPipelineGrid,
-} from 'styles/pipelines';
-import {
+  StyledModal,
   StyledH3,
+  StyledModalCard,
+  StyledModalLabel,
+  StyledModalGrid,
 } from 'styles/app';
 import CustomImg from '../images/custom.svg';
 import DatabaseImg from '../images/database.svg';
@@ -28,7 +26,7 @@ function AddModal({ handleOk, handleCancel }) {
   };
 
   return (
-    <StyledPipelineModal
+    <StyledModal
       title="Add Pipelines"
       visible
       footer={null}
@@ -36,45 +34,45 @@ function AddModal({ handleOk, handleCancel }) {
       onCancel={handleCancel}
     >
       <StyledH3>Select a pipeline type</StyledH3>
-      <StyledPipelineGrid>
-        <StyledPipelineCard>
+      <StyledModalGrid>
+        <StyledModalCard>
           <Button onClick={null}>
-            <StyledPipelineLabel>File</StyledPipelineLabel>
+            <StyledModalLabel>File</StyledModalLabel>
             <img src={FileImg} alt="File" />
           </Button>
-        </StyledPipelineCard>
-        <StyledPipelineCard>
+        </StyledModalCard>
+        <StyledModalCard>
           <Button onClick={null}>
-            <StyledPipelineLabel>http</StyledPipelineLabel>
+            <StyledModalLabel>http</StyledModalLabel>
             <img src={HttpImg} alt="Http" />
           </Button>
-        </StyledPipelineCard>
-        <StyledPipelineCard>
+        </StyledModalCard>
+        <StyledModalCard>
           <Button onClick={null}>
-            <StyledPipelineLabel>Database</StyledPipelineLabel>
+            <StyledModalLabel>Database</StyledModalLabel>
             <img src={DatabaseImg} alt="Database" />
           </Button>
-        </StyledPipelineCard>
-        <StyledPipelineCard>
+        </StyledModalCard>
+        <StyledModalCard>
           <Button onClick={goToImportCustom}>
-            <StyledPipelineLabel>Preset Pipelines</StyledPipelineLabel>
+            <StyledModalLabel>Preset Pipelines</StyledModalLabel>
             <img src={PresetImg} alt="Preset" />
           </Button>
-        </StyledPipelineCard>
-        <StyledPipelineCard>
+        </StyledModalCard>
+        <StyledModalCard>
           <Button onClick={goToImportCustom}>
-            <StyledPipelineLabel>Import Custom Pipeline</StyledPipelineLabel>
+            <StyledModalLabel>Import Custom Pipeline</StyledModalLabel>
             <img src={CustomImg} alt="Custom" />
           </Button>
-        </StyledPipelineCard>
-        <StyledPipelineCard>
+        </StyledModalCard>
+        <StyledModalCard>
           <Button onClick={null}>
-            <StyledPipelineLabel>GridLabD</StyledPipelineLabel>
+            <StyledModalLabel>GridLabD</StyledModalLabel>
             <img src={GridLabDImg} alt="GridLAB-D" />
           </Button>
-        </StyledPipelineCard>
-      </StyledPipelineGrid>
-    </StyledPipelineModal>
+        </StyledModalCard>
+      </StyledModalGrid>
+    </StyledModal>
   );
 }
 

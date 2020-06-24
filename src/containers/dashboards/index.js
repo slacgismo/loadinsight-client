@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Space } from 'antd';
+import { Space } from 'antd';
 import moment from 'moment';
 // import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -17,6 +17,7 @@ import {
   StyledButton,
   StyledMenu,
   StyledMenuItem,
+  StyledDropdown,
 } from 'styles/app';
 import {
   StyledDashboardsHeader,
@@ -28,6 +29,7 @@ import {
 } from 'styles/dashboards';
 import Graph from './Graph';
 import SharePopover from './SharePopover';
+import AddChartModal from './AddChartModal';
 
 const Dashboards = ({ getDashboards, dashboards = [] }) => {
   useEffect(() => {
@@ -54,15 +56,20 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
   );
 
   const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
+  const [addChartModalVisible, setAddChartModalVisible] = useState(false);
 
   const toggleSharePopoverVisible = () => setSharePopoverVisible(!sharePopoverVisible);
+  const toggleAddChartModal = () => setAddChartModalVisible(!addChartModalVisible);
 
   const dashboardMenu = (
     <StyledDashboardsMenu>
       <StyledDashboardsMenuItem>
         Holy Cross Dashboard
       </StyledDashboardsMenuItem>
-      <StyledDashboardsMenuItem size="small">
+      <StyledDashboardsMenuItem
+        onClick={toggleAddChartModal}
+        size="small"
+      >
         Add a chart
       </StyledDashboardsMenuItem>
       <StyledDashboardsMenuItem size="small">
@@ -80,46 +87,71 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
     </StyledDashboardsMenu>
   );
 
-  const graphsData = [];
+  const getGraphs = () => {
+    const graphsData = {
+      1: [],
+      7: [],
+      31: [],
+    };
 
-  if (dashboards.length) {
-    const { name, datasets } = dashboards[0];
+    const graphNames = [];
+    const graphsMaxY = [];
+    const graphsYUnit = [];
 
-    datasets.forEach((dataset, index) => {
-      const momentEnd = moment(dataset[dataset.length - 1].x).subtract(1, 'hour');
-      const momentStart = momentEnd.subtract(dateTimeFilterValue, 'days');
+    if (dashboards.length) {
+      const { charts } = dashboards[0]; // show only first dashboard
 
-      let sampleDataset = dataset.filter(({ x }) => moment(x).isAfter(momentStart));
+      charts.forEach(({
+        name, maxY, yUnit, datasets,
+      }, index) => {
+        graphNames.push(name);
+        graphsMaxY.push(maxY);
+        graphsYUnit.push(yUnit);
 
-      const ratio = Math.ceil(dataset.length / 10000); // this works really nicely, every 4th
-      if (sampleDataset.length > 1000) {
-        sampleDataset = sampleDataset.filter((point, i) => i % ratio === 0);
-      }
+        datasets.forEach((set) => {
+          const { id, data } = set;
 
-      graphsData.push([{
-        id: `${name}${index}`,
-        data: sampleDataset,
-      }]);
-    });
-  }
+          ([1, 7, 31]).forEach((filterValue) => {
+            const dataPoints = [];
 
-  const graphNames = [
-    'Load Profile - 15 minutes',
-    'Load Profile - 60 minutes',
-  ];
+            const momentStart = moment(data[data.length - 1].x)
+              .subtract(filterValue, 'days');
 
-  const graphsMaxY = [
-    {
-      1: 16000,
-      7: 22000,
-      31: 24000,
-    },
-    {
-      1: 220000,
-      7: 220000,
-      31: 220000,
-    },
-  ];
+            const xStart = momentStart.format('YYYY-MM-DD HH');
+
+            for (let i = data.length - 1; i >= 0; i -= 1) { // start from the end
+              if (filterValue !== 31 || i % 4 === 0) {
+                dataPoints.push(data[i]);
+              }
+              if (data[i].x.match(xStart)) {
+                break;
+              }
+            }
+
+            const graphData = ({
+              id,
+              data: dataPoints,
+            });
+
+            if (index in graphsData[filterValue]) {
+              graphsData[filterValue][index].push(graphData);
+            } else {
+              graphsData[filterValue][index] = [graphData];
+            }
+          });
+        });
+      });
+    }
+
+    return [graphsData, graphNames, graphsMaxY, graphsYUnit];
+  };
+
+  const [
+    graphsData,
+    graphNames,
+    graphsMaxY,
+    graphsYUnit,
+  ] = useMemo(getGraphs, [dashboards]);
 
   /* const graphs = graphsData
     .map((data, i) => ({
@@ -160,25 +192,25 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
   const dateTimeFilterMenu = (
     <StyledMenu>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
         onClick={() => setDateTimeFilterValue(1)}
       >
         <span>Last 24 hours</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
         onClick={() => setDateTimeFilterValue(7)}
       >
         <span>Last week</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
         onClick={() => setDateTimeFilterValue(31)}
       >
         <span>Last month</span>
@@ -195,65 +227,65 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
   const additionalFilterMenu = (
     <StyledMenu>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>Energy Used (kWh)</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>AMI Meter ID</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>Channel</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>Flow Direction</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>ServiceLocationNumber</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>Substation</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>Feeder</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>Zip Code</span>
       </StyledMenuItem>
       <StyledMenuItem
-        borderColor="lightBg"
-        hoverBgColor="darkGray"
-        hoverColor="white"
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
       >
         <span>Meter Type</span>
       </StyledMenuItem>
@@ -297,38 +329,53 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
             </StyledDashboardsSummaryCard>
             <StyledDashboardsSummaryCard>
               <StyledH4 color="algaeGreen">Filter by</StyledH4>
-              <Dropdown overlay={dateTimeFilterMenu}>
+              <StyledDropdown
+                color="white"
+                bordercolor="algaeGreen"
+                overlay={dateTimeFilterMenu}
+              >
                 <div>
                   {dateTimeFilterOptions[dateTimeFilterValue]}
                   <DownOutlined color="algaeGreen" />
                 </div>
-              </Dropdown>
+              </StyledDropdown>
             </StyledDashboardsSummaryCard>
             <StyledDashboardsSummaryCard>
               <StyledH4 color="algaeGreen">Additional Filter</StyledH4>
-              <Dropdown overlay={additionalFilterMenu}>
+              <StyledDropdown
+                color="white"
+                bordercolor="algaeGreen"
+                overlay={additionalFilterMenu}
+              >
                 <div>
                   Energy Used (kWh)
                   <DownOutlined color="algaeGreen" />
                 </div>
-              </Dropdown>
+              </StyledDropdown>
             </StyledDashboardsSummaryCard>
           </Space>
         </div>
       </StyledDashboardsHeader>
       <StyledDashboardsGraphsGrid>
-        {graphsData.map((data, i) => (
+        {graphsData[dateTimeFilterValue].map((data, index) => (
           <Graph
-            key={graphNames[i]}
-            title={graphNames[i]}
+            key={graphNames[index]}
+            title={graphNames[index]}
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
-            index={i}
-            maxY={graphsMaxY[i][dateTimeFilterValue]}
-            yUnit={(i === 1 ? 'MWh' : 'kWh')}
+            index={index}
+            maxY={index in graphsMaxY ? graphsMaxY[index][dateTimeFilterValue] : 'auto'}
+            yUnit={index in graphsYUnit ? graphsYUnit[index] : 'kWh'}
           />
         ))}
       </StyledDashboardsGraphsGrid>
+      {addChartModalVisible && (
+        <AddChartModal
+          handleOk={toggleAddChartModal}
+          handleCancel={toggleAddChartModal}
+          index={graphsData[dateTimeFilterValue].length}
+        />
+      )}
       {/* <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
@@ -360,13 +407,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
 
 Dashboards.propTypes = {
   getDashboards: PropTypes.func.isRequired,
-  dashboards: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    datasets: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
-      x: PropTypes.string.isRequired,
-      y: PropTypes.number.isRequired,
-    }))).isRequired,
-  })).isRequired,
+  dashboards: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({

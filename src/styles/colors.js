@@ -10,6 +10,7 @@ export default {
   darkGray: '#aaaaaa',
   gray20: '#afafaf',
   gray40: '#9a99a2',
+  gray80: '#7c7c7c',
   gray: '#707070',
   darkText: '#595657',
   black: '#404040',
