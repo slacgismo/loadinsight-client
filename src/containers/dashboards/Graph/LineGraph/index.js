@@ -147,12 +147,7 @@ const LineGraph = ({
         renderTick: ScaledYTick,
       }}
       colors={dataColors}
-      pointSize={0} // could remove props related to point
-      pointColor={{ theme: 'background' }}
-      pointBorderWidth={1}
-      pointbordercolor={{ from: 'serieColor' }}
-      pointLabel="y"
-      pointLabelYOffset={-12}
+      pointSize={0}
       useMesh
       enableArea
       theme={theme}
