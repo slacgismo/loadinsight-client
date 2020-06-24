@@ -99,7 +99,6 @@ Graph.defaultProps = {
   graphheight: null,
 };
 
-
 const mapDispatch = (dispatch) => bindActionCreators({
   removeChart: removeChartAction,
 }, dispatch);
