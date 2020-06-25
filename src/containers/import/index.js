@@ -17,6 +17,7 @@ import {
   StyledButton,
   StyledH3,
   StyledTable,
+  StyledGrid,
 } from 'styles/app';
 
 function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }) {
@@ -118,17 +119,20 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
       </StyledTitle>
       <StyledSection>
         <header>
-          <StyledInput
-            type="text"
-            defaultValue={pipelineNewImportName}
-            onChange={(event) => setPipelineNewImportName(event.target.value)}
-            autofocus="autofocus"
-            placeholder="Edit Pipeline Name"
-            size="large"
-          />
-          <StyledButton size="large" color="lightBlue" onClick={addNewPipelineImport}>
-            Import Pipeline
-          </StyledButton>
+          <StyledGrid padding="0" gridTemplateColumns="360px 1fr auto">
+            <StyledInput
+              type="text"
+              defaultValue={pipelineNewImportName}
+              onChange={(event) => setPipelineNewImportName(event.target.value)}
+              autofocus="autofocus"
+              placeholder="Edit Pipeline Name"
+              size="large"
+            />
+            <div />
+            <StyledButton size="large" color="lightBlue" onClick={addNewPipelineImport}>
+              Import Pipeline
+            </StyledButton>
+          </StyledGrid>
         </header>
         <Space direction="vertical" size={56}>
           <Space direction="vertical" size="middle" style={{ width: 'auto' }}>

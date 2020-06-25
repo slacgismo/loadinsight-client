@@ -7,7 +7,11 @@ import moment from 'moment';
 // import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // import reorder from 'util/reorder';
-import { getDashboards as getDashboardsAction } from 'actions/dashboards';
+import {
+  getDashboards as getDashboardsAction,
+  deleteDashboard as deleteDashboardAction,
+  setCurrentDashboard as setCurrentDashboardAction,
+} from 'actions/dashboards';
 import MenuOutlined from 'icons/MenuOutlined';
 import DownOutlined from 'icons/DownOutlined';
 import {
@@ -30,41 +34,54 @@ import {
 import Graph from './Graph';
 import SharePopover from './SharePopover';
 import AddChartModal from './AddChartModal';
+import AddDashboardModal from './AddDashboardModal';
 
-const Dashboards = ({ getDashboards, dashboards = [] }) => {
+const Dashboards = ({
+  getDashboards,
+  dashboards = [],
+  currentDashboard,
+  deleteDashboard,
+  setCurrentDashboard,
+}) => {
   useEffect(() => {
     getDashboards();
   }, [getDashboards]);
 
   const [dateTimeFilterValue, setDateTimeFilterValue] = useState(1); // in days
 
+  const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
+  const [addChartModalVisible, setAddChartModalVisible] = useState(false);
+  const [addDashboardModalVisible, setAddDashboardModalVisible] = useState(false);
+
+  const toggleSharePopoverVisible = () => setSharePopoverVisible(!sharePopoverVisible);
+  const toggleAddChartModal = () => setAddChartModalVisible(!addChartModalVisible);
+  const toggleAddDashboardModal = () => setAddDashboardModalVisible(!addDashboardModalVisible);
+
+  const currentDashboardName = currentDashboard in dashboards ? dashboards[currentDashboard].name : '';
+
   const dashboardsMenu = (
     <StyledDashboardsMenu>
-      <StyledDashboardsMenuItem>
-        Holy Cross Energy
-      </StyledDashboardsMenuItem>
-      <StyledDashboardsMenuItem>
-        PG&E Load Profile
-      </StyledDashboardsMenuItem>
-      <StyledDashboardsMenuItem>
-        Silicon Valley Clean Energy
-      </StyledDashboardsMenuItem>
-      <StyledDashboardsMenuItem size="small">
+      {dashboards.map(({ name: dashboardName }, index) => (
+        <StyledDashboardsMenuItem
+          onClick={() => setCurrentDashboard(index)}
+          key={dashboardName}
+        >
+          {dashboardName}
+        </StyledDashboardsMenuItem>
+      ))}
+      <StyledDashboardsMenuItem
+        onClick={toggleAddDashboardModal}
+        size="small"
+      >
         + Add a new dashboard
       </StyledDashboardsMenuItem>
     </StyledDashboardsMenu>
   );
 
-  const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
-  const [addChartModalVisible, setAddChartModalVisible] = useState(false);
-
-  const toggleSharePopoverVisible = () => setSharePopoverVisible(!sharePopoverVisible);
-  const toggleAddChartModal = () => setAddChartModalVisible(!addChartModalVisible);
-
   const dashboardMenu = (
     <StyledDashboardsMenu>
       <StyledDashboardsMenuItem>
-        Holy Cross Dashboard
+        {currentDashboardName}
       </StyledDashboardsMenuItem>
       <StyledDashboardsMenuItem
         onClick={toggleAddChartModal}
@@ -81,7 +98,11 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
       >
         Share this dashboard
       </StyledDashboardsMenuItem>
-      <StyledDashboardsMenuItem size="small" color="orangeRed">
+      <StyledDashboardsMenuItem
+        onClick={() => deleteDashboard(currentDashboard)}
+        size="small"
+        color="orangeRed"
+      >
         Delete dashboard
       </StyledDashboardsMenuItem>
     </StyledDashboardsMenu>
@@ -98,8 +119,8 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
     const graphsMaxY = [];
     const graphsYUnit = [];
 
-    if (dashboards.length) {
-      const { charts } = dashboards[0]; // show only first dashboard
+    if (currentDashboard in dashboards) {
+      const { charts } = dashboards[currentDashboard];
 
       charts.forEach(({
         name, maxY, yUnit, datasets,
@@ -151,7 +172,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
     graphNames,
     graphsMaxY,
     graphsYUnit,
-  ] = useMemo(getGraphs, [dashboards]);
+  ] = useMemo(getGraphs, [dashboards, currentDashboard]);
 
   /* const graphs = graphsData
     .map((data, i) => ({
@@ -314,6 +335,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
             <SharePopover
               visible={sharePopoverVisible}
               setSharePopoverVisible={setSharePopoverVisible}
+              currentDashboardName={currentDashboardName}
             />
           )}
           <StyledDashboardsDropdown overlay={dashboardMenu}>
@@ -321,7 +343,10 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
               <MenuOutlined />
             </span>
           </StyledDashboardsDropdown>
-          <StyledH2 color="white">Holy Cross Dashboard</StyledH2>
+          <StyledH2 color="white">
+            {currentDashboardName}
+          </StyledH2>
+          {currentDashboard in dashboards && (
           <Space size={25}>
             <StyledDashboardsSummaryCard>
               <StyledH4 color="algaeGreen">Update Status</StyledH4>
@@ -354,6 +379,7 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
               </StyledDropdown>
             </StyledDashboardsSummaryCard>
           </Space>
+          )}
         </div>
       </StyledDashboardsHeader>
       <StyledDashboardsGraphsGrid>
@@ -374,6 +400,12 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
           handleOk={toggleAddChartModal}
           handleCancel={toggleAddChartModal}
           index={graphsData[dateTimeFilterValue].length}
+        />
+      )}
+      {addDashboardModalVisible && (
+        <AddDashboardModal
+          handleOk={toggleAddDashboardModal}
+          handleCancel={toggleAddDashboardModal}
         />
       )}
       {/* <DragDropContext onDragEnd={onDragEnd}>
@@ -408,14 +440,20 @@ const Dashboards = ({ getDashboards, dashboards = [] }) => {
 Dashboards.propTypes = {
   getDashboards: PropTypes.func.isRequired,
   dashboards: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentDashboard: PropTypes.number.isRequired,
+  deleteDashboard: PropTypes.func.isRequired,
+  setCurrentDashboard: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   dashboards: state.dashboards.dashboards,
+  currentDashboard: state.dashboards.currentDashboard,
 });
 
 const mapDispatch = (dispatch) => bindActionCreators({
   getDashboards: getDashboardsAction,
+  deleteDashboard: deleteDashboardAction,
+  setCurrentDashboard: setCurrentDashboardAction,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(Dashboards);

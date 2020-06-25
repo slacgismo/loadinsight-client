@@ -9,15 +9,12 @@ import {
 } from 'actions/pipelines';
 import DownOutlined from 'icons/DownOutlined';
 import {
+  StyledGrid,
   StyledMenu,
   StyledMenuItem,
   StyledButton,
+  StyledText,
 } from 'styles/app';
-import {
-  StyledPipelineItem,
-  StyledPipelineName,
-  StyledPipelineLastUpdated,
-} from 'styles/pipelines';
 
 const Pipeline = ({
   id, name, lastUpdated, deletePipeline,
@@ -37,19 +34,20 @@ const Pipeline = ({
   );
 
   return (
-    <StyledPipelineItem>
-      <StyledPipelineName>{name}</StyledPipelineName>
-      <StyledPipelineLastUpdated>
-        Last updated&nbsp;
-        {lastUpdated}
-      </StyledPipelineLastUpdated>
+    <StyledGrid gridTemplateColumns="1fr 1fr 0.25fr 0.5fr">
+      <StyledText size="large" fontweight="500" color="blue">
+        {name}
+      </StyledText>
+      <StyledText size="middle" fontweight="500" color="darkGray">
+        {`Last updated ${lastUpdated}`}
+      </StyledText>
       <Dropdown overlay={menu}>
         <StyledButton size="large" color="green">
           Succeeded
           <DownOutlined />
         </StyledButton>
       </Dropdown>
-    </StyledPipelineItem>
+    </StyledGrid>
   );
 };
 
