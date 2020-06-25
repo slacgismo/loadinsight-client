@@ -75,7 +75,9 @@ export const StyledTitle = styled.div`
 `;
 
 export const StyledText = styled.div`
-  ${({ color, fontweight, indent }) => (`
+  ${({
+    color, fontweight, indent, size,
+  }) => (`
   ${color in colors ? (`
   color: ${colors[color]};
   `) : ''}
@@ -84,6 +86,14 @@ export const StyledText = styled.div`
   `) : ''}
   ${indent ? (`
   text-indent: ${indent}px;
+  `) : ''}
+  ${size === 'large' ? (`
+  font-size: 18px;
+  line-height: 21px;
+  `) : ''}
+  ${size === 'middle' ? (`
+  font-size: 16px;
+  line-height: 19px;
   `) : ''}
   `)}
 `;
@@ -199,16 +209,10 @@ export const StyledButton = styled(Button)`
 export const StyledInput = styled(Input)`
   width: auto;
   min-width: 280px;
-  padding: 9px;
+  padding: 10px; // TODO: test this out, it was 9px before
   background-color: ${colors.darkOverlay};
-  border: 0;
-  border-bottom: 1px solid transparent;
   &, &:hover:focus {
     color: ${colors.darkText};
-  }
-  &:hover, &:focus {
-    box-shadow: none;
-    border-bottom: 1px solid ${colors.lightBlue};
   }
   &:hover {
     &, &::placeholder {
@@ -224,13 +228,13 @@ export const StyledInput = styled(Input)`
   ${({
     size, shape, bgcolor, fontWeight,
   }) => (`
-  ${(size === 'large' ? `
+  ${size === 'large' ? (`
   font-size: 18px;
   line-height: 21px;
   font-weight: 500;
   background-color: ${colors.overlay20};
-  width: 360px;
-  ` : `
+  width: 100%;
+  `) : (`
   font-size: 12px;
   line-height: 14px;
   `)}
@@ -257,6 +261,10 @@ export const StyledInput = styled(Input)`
   `) : ''}
   &::placeholder {
     color: ${colors.darkText};
+  }
+  border: 0;
+  &:hover, &:focus {
+    box-shadow: none;
   }
   `))}
   `)}
@@ -364,6 +372,9 @@ export const StyledModal = styled(Modal)`
   min-width: 732px;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
+  &.ant-modal {
+    color: ${colors.darkText};
+  }
   .ant-modal-header {
     padding: 16px 36px;
     border-bottom: 1px solid ${colors.lightGray};
@@ -459,4 +470,19 @@ export const StyledDropdown = styled(Dropdown)`
       margin-left: 8px;
     }
   }
+`;
+
+export const StyledGrid = styled.div`
+  display: grid;
+  align-items: center;
+  background-color: ${colors.white};
+  color: ${colors.darkText};
+  ${({
+    gridTemplateColumns, padding, margin, width,
+  }) => (`
+  width: ${width || '100%'};
+  grid-template-columns: ${gridTemplateColumns || '1fr'};
+  padding: ${padding || '16px 25px'};
+  margin: ${margin || 0};
+  `)}
 `;

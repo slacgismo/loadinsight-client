@@ -11,9 +11,6 @@ import {
   addChart as addChartAction,
 } from 'actions/dashboards';
 import {
-  StyledPipelineItem,
-} from 'styles/pipelines';
-import {
   StyledText,
   StyledH3,
   StyledButton,
@@ -25,6 +22,7 @@ import {
   StyledMenu,
   StyledMenuItem,
   StyledDropdown,
+  StyledGrid,
 } from 'styles/app';
 import {
   StyledAxisItem,
@@ -173,13 +171,19 @@ function AddChartModal({
       <Space direction="vertical" size={36} align="center">
         <Space direction="vertical" size={16} align="center">
           {pipelines.map(({ name: pipelineName }) => (
-            <StyledPipelineItem
+            <StyledGrid
               key={pipelineName}
               gridTemplateColumns="510px 124px"
               padding="12px 36px 12px 20px"
-              margin="0 -10px 0 -20px"
+              margin="0 0 0 -10px"
+              width="calc(100% + 10px)"
             >
-              <strong>{pipelineName}</strong>
+              <StyledText
+                size="middle"
+                fontweight="bold"
+              >
+                {pipelineName}
+              </StyledText>
               <StyledButton
                 onClick={() => setPipeline(pipelineName)}
                 active={pipeline === index ? 'active' : null}
@@ -190,7 +194,7 @@ function AddChartModal({
               >
                 Select
               </StyledButton>
-            </StyledPipelineItem>
+            </StyledGrid>
           ))}
         </Space>
         <StyledButton

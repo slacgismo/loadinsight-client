@@ -7,14 +7,14 @@ import {
   StyledH5, StyledInput, StyledCheckbox, StyledButton,
 } from 'styles/app';
 
-const SharePopover = ({ visible, setSharePopoverVisible }) => {
+const SharePopover = ({ visible, setSharePopoverVisible, currentDashboardName }) => {
   const linkInput = useRef(null);
   const passwordInput = useRef(null);
 
   const [copyState, setCopyState] = useState(false);
   const [checkedState, setCheckedState] = useState(false);
 
-  const shareLink = 'http://loadinsight.org/dashboards/hce';
+  const shareLink = `http://loadinsight.org/dashboards/${encodeURIComponent(currentDashboardName)}`;
 
   const copyToClipboard = (event) => {
     event.preventDefault();
@@ -80,6 +80,7 @@ const SharePopover = ({ visible, setSharePopoverVisible }) => {
 SharePopover.propTypes = {
   visible: PropTypes.bool.isRequired,
   setSharePopoverVisible: PropTypes.func.isRequired,
+  currentDashboardName: PropTypes.string.isRequired,
 };
 
 export default SharePopover;

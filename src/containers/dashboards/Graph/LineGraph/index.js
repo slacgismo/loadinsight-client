@@ -10,12 +10,19 @@ import theme from './theme';
 const LineGraph = ({
   data, dateTimeFilterValue, index = 0, maxY = 'auto', yUnit, hasTitleMargin,
 }) => {
-  const graphColors = [colors.yellow, colors.lightGreen, colors.oceanGreen, colors.green];
+  const graphColors = [
+    colors.yellow,
+    colors.lightGreen,
+    colors.oceanGreen,
+    colors.green,
+    colors.gray40,
+  ];
   const dataColors = [
     graphColors[index],
-    graphColors[(index + 1) % 4],
-    graphColors[(index + 2) % 4],
-    graphColors[(index + 3) % 4],
+    graphColors[(index + 1) % 5],
+    graphColors[(index + 2) % 5],
+    graphColors[(index + 3) % 5],
+    graphColors[(index + 4) % 5],
   ];
 
   let tickValues = 'every hour';

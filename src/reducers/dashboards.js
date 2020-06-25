@@ -7,10 +7,18 @@ import {
   GET_PGE_LOAD_PROFILE_FAILED,
   ADD_CHART,
   REMOVE_CHART,
+  ADD_DASHBOARD,
+  DELETE_DASHBOARD,
+  SET_CURRENT_DASHBOARD,
 } from 'actions';
+import {
+  USER_KEY_DASHBOARDS,
+  USER_KEY_CURRENT_DASHBOARD,
+} from 'util/storage';
 
 const DEFAULT_STATE = {
   dashboards: [],
+  currentDashboard: 0,
   isLoadingDashboards: false,
   isLoadingLoadProfile: false,
   PGELoadProfile: {},
@@ -27,13 +35,28 @@ export default (state = DEFAULT_STATE, action) => {
         isLoadingDashboards: true,
         error: null,
       };
-    case GET_DASHBOARDS_COMPLETED:
+    case GET_DASHBOARDS_COMPLETED: {
+      let localDashboards = window.localStorage.getItem(USER_KEY_DASHBOARDS);
+
+      try {
+        localDashboards = localDashboards.length ? JSON.parse(localDashboards) : [];
+      } catch (err) {
+        localDashboards = action.payload;
+      }
+
+      window.localStorage.setItem(USER_KEY_DASHBOARDS, JSON.stringify(localDashboards));
+
+      const localCurrentDashboard = window.localStorage.getItem(USER_KEY_CURRENT_DASHBOARD);
+      const currentDashboard = parseInt(localCurrentDashboard, 10) || 0;
+
       return {
         ...state,
-        dashboards: action.payload,
+        dashboards: localDashboards,
+        currentDashboard,
         isLoadingDashboards: false,
         error: null,
       };
+    }
     case GET_DASHBOARDS_FAILED:
       return {
         ...state,
@@ -81,27 +104,75 @@ export default (state = DEFAULT_STATE, action) => {
         error: action.payload,
       };
     case ADD_CHART: {
-      // add chart for only existing dashboard
-      const currentDashboard = state.dashboards[0];
-      currentDashboard.charts.push(action.payload);
+      const dashboards = [...state.dashboards];
+
+      if (state.currentDashboard in dashboards) {
+        dashboards[state.currentDashboard].charts.push(action.payload);
+      }
+
+      window.localStorage.setItem(USER_KEY_DASHBOARDS, JSON.stringify(dashboards));
 
       return {
         ...state,
-        dashboards: [
-          currentDashboard,
-        ],
+        dashboards,
       };
     }
     case REMOVE_CHART: {
-      // remove chart in only existing dashboard
-      const currentDashboard = state.dashboards[0];
-      currentDashboard.charts.splice(action.payload, 1);
+      const dashboards = [...state.dashboards];
+
+      if (state.currentDashboard in dashboards) {
+        dashboards[state.currentDashboard].charts.splice(action.payload, 1);
+      }
+
+      window.localStorage.setItem(USER_KEY_DASHBOARDS, JSON.stringify(dashboards));
+
+      return {
+        ...state,
+        dashboards,
+      };
+    }
+    case ADD_DASHBOARD: {
+      const dashboards = [...state.dashboards, action.payload];
+
+      window.localStorage.setItem(USER_KEY_DASHBOARDS, JSON.stringify(dashboards));
+
+      const currentDashboard = state.dashboards.length;
+
+      window.localStorage.setItem(USER_KEY_CURRENT_DASHBOARD, `${currentDashboard}`);
 
       return {
         ...state,
         dashboards: [
-          currentDashboard,
+          ...state.dashboards,
+          action.payload,
         ],
+        currentDashboard,
+      };
+    }
+    case DELETE_DASHBOARD: {
+      const dashboards = [...state.dashboards];
+      dashboards.splice(action.payload, 1);
+
+      window.localStorage.setItem(USER_KEY_DASHBOARDS, JSON.stringify(dashboards));
+
+      const currentDashboard = action.payload % (state.dashboards.length - 1);
+
+      window.localStorage.setItem(USER_KEY_CURRENT_DASHBOARD, `${currentDashboard}`);
+
+      return {
+        ...state,
+        dashboards,
+        currentDashboard,
+      };
+    }
+    case SET_CURRENT_DASHBOARD: {
+      const currentDashboard = action.payload;
+
+      window.localStorage.setItem(USER_KEY_CURRENT_DASHBOARD, `${currentDashboard}`);
+
+      return {
+        ...state,
+        currentDashboard,
       };
     }
     default:

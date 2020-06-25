@@ -7,6 +7,9 @@ import {
   GET_PGE_LOAD_PROFILE_FAILED,
   ADD_CHART,
   REMOVE_CHART,
+  ADD_DASHBOARD,
+  DELETE_DASHBOARD,
+  SET_CURRENT_DASHBOARD,
 } from 'actions';
 import ApiClient from 'util/api-client';
 
@@ -76,5 +79,23 @@ export const addChart = (name, datasets) => ({
 
 export const removeChart = (payload) => ({
   type: REMOVE_CHART,
+  payload,
+});
+
+export const addDashboard = (dashboardName) => ({
+  type: ADD_DASHBOARD,
+  payload: {
+    name: dashboardName,
+    charts: [],
+  },
+});
+
+export const deleteDashboard = (payload) => ({
+  type: DELETE_DASHBOARD,
+  payload,
+});
+
+export const setCurrentDashboard = (payload) => ({
+  type: SET_CURRENT_DASHBOARD,
   payload,
 });
