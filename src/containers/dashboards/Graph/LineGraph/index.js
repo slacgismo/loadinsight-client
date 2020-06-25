@@ -36,7 +36,36 @@ const LineGraph = ({
     const {
       tickIndex, value, x, y,
     } = tick;
-    const day = moment(value).format('DD');
+    const momentDate = moment(value);
+
+    if (dateTimeFilterValue === 1) {
+      return (
+        <g transform={`translate(${x},${y + 28})`}>
+          <text
+            textAnchor="middle"
+            style={{
+              fontSIze: 12,
+              ...theme.axis.ticks.text,
+            }}
+            transform="translate(0, -5)"
+          >
+            {momentDate.format('h')}
+          </text>
+          <text
+            textAnchor="middle"
+            style={{
+              ...theme.axis.ticks.text,
+              fontSize: 10,
+            }}
+            transform="translate(0, 5)"
+          >
+            {momentDate.format('A')}
+          </text>
+        </g>
+      );
+    }
+
+    const day = momentDate.format('DD');
     const showMonth = tickIndex === 0 || day === '01';
 
     return (

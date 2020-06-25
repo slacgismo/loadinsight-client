@@ -106,7 +106,7 @@ export const StyledDashboardsSummaryCard = styled(Card)`
   line-height: 16px;
   h4 {
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
   .ant-card-body {
     padding: 24px 20px;

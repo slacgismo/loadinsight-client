@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Space } from 'antd';
 import moment from 'moment';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main css file
 // import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // import reorder from 'util/reorder';
@@ -14,14 +16,17 @@ import {
 } from 'actions/dashboards';
 import MenuOutlined from 'icons/MenuOutlined';
 import DownOutlined from 'icons/DownOutlined';
+import colors from 'styles/colors';
 import {
   StyledTitle,
   StyledH2,
   StyledH4,
+  StyledText,
   StyledButton,
   StyledMenu,
   StyledMenuItem,
   StyledDropdown,
+  StyledGrid,
 } from 'styles/app';
 import {
   StyledDashboardsHeader,
@@ -48,6 +53,12 @@ const Dashboards = ({
   }, [getDashboards]);
 
   const [dateTimeFilterValue, setDateTimeFilterValue] = useState(1); // in days
+
+  const [dateRange, setDateRange] = useState([{
+    startDate: new Date('1/1/2019'),
+    endDate: new Date('2/1/2020'),
+    key: 'selection',
+  }]);
 
   const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
   const [addChartModalVisible, setAddChartModalVisible] = useState(false);
@@ -108,7 +119,7 @@ const Dashboards = ({
     </StyledDashboardsMenu>
   );
 
-  const getGraphs = () => {
+  const getGraphs = (filterValues = [1, 7, 31]) => {
     const graphsData = {
       1: [],
       7: [],
@@ -123,16 +134,16 @@ const Dashboards = ({
       const { charts } = dashboards[currentDashboard];
 
       charts.forEach(({
-        name, maxY, yUnit, datasets,
+        name: graphName, maxY, yUnit, datasets,
       }, index) => {
-        graphNames.push(name);
+        graphNames.push(graphName);
         graphsMaxY.push(maxY);
         graphsYUnit.push(yUnit);
 
         datasets.forEach((set) => {
           const { id, data } = set;
 
-          ([1, 7, 31]).forEach((filterValue) => {
+          filterValues.forEach((filterValue) => {
             const dataPoints = [];
 
             const momentStart = moment(data[data.length - 1].x)
@@ -173,6 +184,69 @@ const Dashboards = ({
     graphsMaxY,
     graphsYUnit,
   ] = useMemo(getGraphs, [dashboards, currentDashboard]);
+
+  const getGraphsCustomRange = () => {
+    const graphsCustomRangeData = {
+      0: [],
+    };
+
+    if (dateTimeFilterValue === 0) {
+      if (currentDashboard in dashboards) {
+        const { charts } = dashboards[currentDashboard];
+
+        const momentStart = moment(dateRange[0].startDate);
+        const momentEnd = moment(dateRange[0].endDate);
+        const momentEndFormatted = momentEnd.format('YYYY-MM-DD HH');
+
+        charts.forEach(({ datasets }, index) => {
+          datasets.forEach((set) => {
+            const { id, data } = set;
+
+            const dataPoints = [];
+
+            let endIndex = data.findIndex(({ x }) => x.match(momentEndFormatted));
+
+            if (endIndex < 0) {
+              endIndex = data.length - 1;
+            }
+
+            for (let i = endIndex; i >= 0; i -= 1) { // start from the end
+              const momentX = moment(data[i].x);
+              if (momentX.isSameOrAfter(momentStart) && momentX.isSameOrBefore(momentEnd)) {
+                if ((endIndex - i) % 4 === 0) {
+                  dataPoints.push(data[i]);
+                }
+              } else {
+                break;
+              }
+            }
+
+            const graphData = ({
+              id,
+              data: dataPoints,
+            });
+
+            if (index in graphsCustomRangeData[0]) {
+              graphsCustomRangeData[0][index].push(graphData);
+            } else {
+              graphsCustomRangeData[0][index] = [graphData];
+            }
+          });
+        });
+      }
+    }
+
+    return graphsCustomRangeData;
+  };
+
+  const customGraphsData = useMemo(getGraphsCustomRange, [
+    dashboards,
+    currentDashboard,
+    dateTimeFilterValue,
+    dateRange,
+  ]);
+
+  const charts = dateTimeFilterValue === 0 ? customGraphsData[0] : graphsData[dateTimeFilterValue];
 
   /* const graphs = graphsData
     .map((data, i) => ({
@@ -236,6 +310,14 @@ const Dashboards = ({
       >
         <span>Last month</span>
       </StyledMenuItem>
+      <StyledMenuItem
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
+        onClick={() => setDateTimeFilterValue(0)}
+      >
+        <span>Custom</span>
+      </StyledMenuItem>
     </StyledMenu>
   );
 
@@ -243,6 +325,7 @@ const Dashboards = ({
     1: 'Last 24 hours',
     7: 'Last week',
     31: 'Last month',
+    0: 'Custom',
   };
 
   const additionalFilterMenu = (
@@ -354,16 +437,64 @@ const Dashboards = ({
             </StyledDashboardsSummaryCard>
             <StyledDashboardsSummaryCard>
               <StyledH4 color="algaeGreen">Filter by</StyledH4>
-              <StyledDropdown
-                color="white"
-                bordercolor="algaeGreen"
-                overlay={dateTimeFilterMenu}
-              >
-                <div>
-                  {dateTimeFilterOptions[dateTimeFilterValue]}
-                  <DownOutlined color="algaeGreen" />
-                </div>
-              </StyledDropdown>
+              <Space direction="vertical" size={5}>
+                <StyledDropdown
+                  color="white"
+                  bordercolor="algaeGreen"
+                  overlay={dateTimeFilterMenu}
+                >
+                  <div>
+                    {dateTimeFilterOptions[dateTimeFilterValue]}
+                    <DownOutlined color="algaeGreen" />
+                  </div>
+                </StyledDropdown>
+                {dateTimeFilterValue === 0 && (
+                <StyledDropdown
+                  color="white"
+                  bordercolor="transparent"
+                  overlay={(
+                    <DateRange
+                      editableDateInputs
+                      onChange={(item) => setDateRange([item.selection])}
+                      moveRangeOnFirstSelection={false}
+                      ranges={dateRange}
+                      direction="horizontal"
+                      scroll={{
+                        enabled: true,
+                        monthWidth: 227,
+                        monthHeight: 100,
+                        longMonthHeight: 170,
+                        calendarWidth: 214,
+                      }}
+                      rangeColors={[colors.algaeGreen]}
+                      color={colors.lightGray}
+                      showMonthAndYearPickers={false}
+                    />
+                  )}
+                >
+                  <StyledGrid gridTemplateColumns="1fr 1fr" gridgap={10}>
+                    <StyledText
+                      size="small"
+                      bordercolor="algaeGreen"
+                      padding="3px 9px"
+                      margin="0 0 0 -9px"
+                      fontweight="400"
+                    >
+                      {dateRange[0].startDate && moment(dateRange[0].startDate).format('M/D/YYYY')}
+                    </StyledText>
+                    <StyledText
+                      size="small"
+                      bordercolor="algaeGreen"
+                      padding="3px 9px"
+                      margin="0 0 0 9px"
+                      fontweight="400"
+                    >
+                      {dateRange[0].endDate && moment(dateRange[0].endDate).format('M/D/YYYY')}
+                    </StyledText>
+                  </StyledGrid>
+                </StyledDropdown>
+                )}
+              </Space>
             </StyledDashboardsSummaryCard>
             <StyledDashboardsSummaryCard>
               <StyledH4 color="algaeGreen">Additional Filter</StyledH4>
@@ -383,14 +514,14 @@ const Dashboards = ({
         </div>
       </StyledDashboardsHeader>
       <StyledDashboardsGraphsGrid>
-        {graphsData[dateTimeFilterValue].map((data, index) => (
+        {charts.map((data, index) => (
           <Graph
             key={graphNames[index]}
             title={graphNames[index]}
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
             index={index}
-            maxY={index in graphsMaxY ? graphsMaxY[index][dateTimeFilterValue] : 'auto'}
+            maxY={graphsMaxY[index][dateTimeFilterValue]}
             yUnit={index in graphsYUnit ? graphsYUnit[index] : 'kWh'}
           />
         ))}
@@ -399,7 +530,7 @@ const Dashboards = ({
         <AddChartModal
           handleOk={toggleAddChartModal}
           handleCancel={toggleAddChartModal}
-          index={graphsData[dateTimeFilterValue].length}
+          index={charts.length}
         />
       )}
       {addDashboardModalVisible && (

@@ -42,6 +42,7 @@ function AddDashboardModal({
             margin="0 0 0 -20px"
             padding="10px"
             width="calc(100% + 20px)"
+            bgcolor="white"
           >
             <StyledInput
               onChange={(event) => setDashboardName(event.target.value)}
