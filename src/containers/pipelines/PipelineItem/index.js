@@ -35,15 +35,15 @@ const Pipeline = ({
 
   return (
     <StyledGrid gridTemplateColumns="1fr 1fr 0.25fr 0.5fr" bgcolor="white">
-      <StyledText size="large" fontweight="500" color="blue">
+      <StyledText size="large" fontweight={500} color="blue">
         {name}
       </StyledText>
-      <StyledText size="middle" fontweight="500" color="darkGray">
+      <StyledText size="middle" fontweight={500} color="darkGray">
         {`Last updated ${lastUpdated}`}
       </StyledText>
       <Dropdown overlay={menu}>
-        <StyledButton size="large" color="green">
-          Succeeded
+        <StyledButton size="large" width={134} color="green">
+          <StyledText>Succeeded</StyledText>
           <DownOutlined />
         </StyledButton>
       </Dropdown>

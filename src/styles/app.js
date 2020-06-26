@@ -77,7 +77,7 @@ export const StyledTitle = styled.div`
 export const StyledText = styled.span`
   width: 100%;
   ${({
-    color, fontweight, indent, size, bordercolor, padding, margin,
+    color, fontweight, indent, size, bordercolor, padding, margin, align,
   }) => (`
   ${color in colors ? (`
   color: ${colors[color]};
@@ -109,6 +109,9 @@ export const StyledText = styled.span`
   `) : ''}
   ${margin ? (`
   margin: ${margin};
+  `) : ''}
+  ${align ? (`
+  text-align: ${align};
   `) : ''}
   `)}
 `;
@@ -171,13 +174,13 @@ export const StyledButton = styled(Button)`
     border-radius: 3px;
     padding: 5px 8px;
   }
-  &.ant-btn[disabled] {
+  &.ant-btn[disabled], &.ant-btn[disabled]:hover, &.ant-btn[disabled]:focus {
     background-color: ${colors.lightGray};
     color: ${colors.white};
     cursor: default;
   }
   ${({
-    type, color, width, height, hoverbgcolor,
+    type, color, width, height,
   }) => (`
   ${type === 'text' ? (`
   color: ${colors.blue};
@@ -200,16 +203,17 @@ export const StyledButton = styled(Button)`
     color: ${(color in colors ? colors.white : colors.blue)};
   }
   &.ant-btn-sm, &.ant-btn-lg {
-    background-color: ${(color in colors ? colors[color] : colors.black)};
     color: ${colors.white};
-    &:hover, &:focus {
-      ${hoverbgcolor in colors ? (`
-      background-color: ${colors[hoverbgcolor]};
-      `) : ''}
+    ${color in colors ? (`
+    &, &:hover, &:focus {
+      background-color: ${colors[color]}
     }
-  }
-  &.ant-btn-sm:hover, &.ant-btn-sm:focus {
-    background-color: ${colors.blue};
+    `) : (`
+    background-color: ${colors.black};
+    &:hover, &:focus {
+      background-color: ${colors.blue};
+    }
+    `)}
   }
   `)}
   ${width ? (`
@@ -339,12 +343,14 @@ export const StyledMenuItem = styled(Menu.Item)`
   &:hover {
     background-color: transparent;
   }
-  &:not(:last-child) {
-    margin-bottom: 5px;
-  }
   span {
     ${CSSMenuItemSpan}
   }
+  ${({ marginbottom }) => (`
+  &:not(:last-child) {
+    margin-bottom: ${marginbottom || 5}px;
+  }
+  `)}
 `;
 
 export const StyledTable = styled(Table)`

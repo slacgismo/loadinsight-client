@@ -149,11 +149,18 @@ export const StyledDashboardsGraph = styled.section`
 `;
 
 export const StyledLegendIcon = styled.div`
-  width: 12px;
-  height: 12px;
-  margin-top: 3px;
-  border-radius: 3px;
-  background-color: ${({ serieColor }) => serieColor};
+  &:before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    background-color: ${({ serieColor }) => serieColor};
+  }
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  float: right;
 `;
 
 export const StyledAxisItem = styled.div`
