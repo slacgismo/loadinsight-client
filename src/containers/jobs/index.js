@@ -132,7 +132,6 @@ Jobs.propTypes = {
   getJobs: PropTypes.func.isRequired,
 };
 
-
 const mapStateToProps = (state) => ({
   jobs: state.jobs.jobs,
 });
