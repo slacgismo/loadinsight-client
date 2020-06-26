@@ -69,7 +69,7 @@ const Jobs = ({ jobs, getJobs }) => {
 
   const statusColors = {
     running: 'lightGray',
-    failed: 'orangeRed',
+    failed: 'orange',
     succeeded: 'green',
   };
 
