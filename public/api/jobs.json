@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Load Profile",
+    "status": "running",
+    "last_updated": "3 minutes ago"
+  },
+  {
+    "name": "GRIP - Anticipation",
+    "status": "succeeded",
+    "last_updated": "6 hours ago"
+  },
+  {
+    "name": "GRIP - Absorption",
+    "status": "succeeded",
+    "last_updated": "8 hours ago"
+  },
+  {
+    "name": "PG&E Load Profile",
+    "status": "failed",
+    "last_updated": "1 day ago"
+  },
+  {
+    "name": "Holy Cross Energy",
+    "status": "succeeded",
+    "last_updated": "1 day ago"
+  },
+  {
+    "name": "Load Profile",
+    "status": "succeeded",
+    "last_updated": "2 days ago"
+  }
+]

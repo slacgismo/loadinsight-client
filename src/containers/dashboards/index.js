@@ -401,7 +401,10 @@ const Dashboards = ({
       <StyledTitle margin={0}>
         <div>
           <h1>Dashboards</h1>
-          <StyledButton size="small">
+          <StyledButton
+            onClick={toggleAddDashboardModal}
+            size="small"
+          >
             + Add Dashboard
           </StyledButton>
           <StyledDashboardsDropdown overlay={dashboardsMenu}>

@@ -23,4 +23,5 @@ export default {
   lightGreen: '#76C2AD',
   yellow: '#FEDF88',
   orangeRed: '#F76D42',
+  orange: '#F66D42',
 };
