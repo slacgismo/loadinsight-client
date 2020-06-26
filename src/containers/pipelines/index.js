@@ -1,41 +1,46 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getPipelines as getPipelinesAction } from 'actions/pipelines';
+import { Space } from 'antd';
 import PropTypes from 'prop-types';
-import Pipeline from './pipeline';
-import styles from './index.module.css';
 
-class Pipelines extends Component {
-  componentDidMount() {
-    const { getPipelines } = this.props;
+import { getPipelines as getPipelinesAction } from 'actions/pipelines';
+import { StyledTitle, StyledButton } from 'styles/app';
+import PipelineItem from './PipelineItem';
+import AddModal from './AddModal';
+
+function Pipelines({ getPipelines, pipelines }) {
+  useEffect(() => {
     getPipelines();
-  }
+  }, [getPipelines]);
 
-  render() {
-    const { pipelines } = this.props;
-    return (
-      <div className={styles.root}>
-        <div className={styles.header}>
-          <div className={styles.title}>
-            Pipelines
-          </div>
-          <div className={styles.addPipelineButton}>
-            +Add Pipeline
-          </div>
+  const [addModalVisible, setAddModalVisible] = useState(false);
+
+  const toggleModal = () => setAddModalVisible(!addModalVisible);
+
+  return (
+    <>
+      <StyledTitle>
+        <div>
+          <h1>Pipelines</h1>
+          <StyledButton size="small" onClick={toggleModal}>
+            + Add Pipeline
+          </StyledButton>
         </div>
-        <div className={styles.pipelines}>
-          {
-                    pipelines.map((p) => (
-                      <div className={styles.item}>
-                        <Pipeline key={p.id} name={p.name} lastUpdated={p.last_updated} />
-                      </div>
-                    ))
-                }
-        </div>
-      </div>
-    );
-  }
+      </StyledTitle>
+      <Space direction="vertical" size={16}>
+        {pipelines.map(({ id, name, last_updated: lastUpdated }) => (
+          <PipelineItem key={id} id={id} name={name} lastUpdated={lastUpdated} />
+        ))}
+      </Space>
+      {addModalVisible && (
+      <AddModal
+        handleOk={toggleModal}
+        handleCancel={toggleModal}
+      />
+      )}
+    </>
+  );
 }
 
 Pipelines.propTypes = {

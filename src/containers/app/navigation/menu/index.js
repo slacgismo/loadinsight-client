@@ -1,36 +1,63 @@
 import React from 'react';
-import { withRouter, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useHistory, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import { Menu } from 'antd';
+
 import {
   ROUTE_DASHBOARDS,
   ROUTE_PIPELINES,
   ROUTE_JOBS,
 } from 'config/routes';
-import styles from './index.module.css';
+import colors from 'styles/colors';
 
-const Menu = (props) => {
-  const { history } = props;
+const StyledMenu = styled(Menu)`
+  padding: 23px 9px 0 0;
+  &.ant-menu-vertical {
+    border-right: 0;
+    .ant-menu-item-selected {
+      background-color: ${colors.black};
+      color: ${colors.white};
+      cursor: default;
+    }
+     > .ant-menu-item {
+    margin: 0;
+    height: auto;
+    line-height: 47px;
+  }
+`;
+
+const StyledMenuItem = styled(Menu.Item)`
+  padding-left: 16px 13px; 
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-radius: 2px;
+  &, &:hover {
+    color: #404040;
+  }
+  &:hover {
+    background-color: ${colors.lightGray};
+  }
+`;
+
+const MainMenu = () => {
+  const history = useHistory();
   const navigate = (path) => (() => history.push(path));
   const location = useLocation();
   const path = location.pathname;
 
-  const dashboardsStyle = path.includes(ROUTE_DASHBOARDS) ? styles.selected : styles.unselected;
-  const pipelinesStyle = path.includes(ROUTE_PIPELINES) ? styles.selected : styles.unselected;
-  const jobsStyle = path.includes(ROUTE_JOBS) ? styles.selected : styles.unselected;
+  const selectedKeys = [];
+  if (path.includes(ROUTE_DASHBOARDS)) selectedKeys.push('dashboards');
+  if (path.includes(ROUTE_PIPELINES)) selectedKeys.push('pipelines');
+  if (path.includes(ROUTE_JOBS)) selectedKeys.push('jobs');
 
   return (
-    <div className={styles.root}>
-      <div className={`${styles.menuItem} ${dashboardsStyle}`} role="button" tabIndex={0} onClick={navigate(ROUTE_DASHBOARDS)} onKeyPress={navigate(ROUTE_DASHBOARDS)}>Dashboards</div>
-      <div className={`${styles.menuItem} ${pipelinesStyle}`} role="button" tabIndex={0} onClick={navigate(ROUTE_PIPELINES)} onKeyPress={navigate(ROUTE_PIPELINES)}>Pipelines</div>
-      <div className={`${styles.menuItem} ${jobsStyle}`} role="button" tabIndex={0} onClick={navigate(ROUTE_JOBS)} onKeyPress={navigate(ROUTE_JOBS)}>Jobs</div>
-    </div>
+    <StyledMenu selectedKeys={selectedKeys}>
+      <StyledMenuItem key="dashboards" onClick={navigate(ROUTE_DASHBOARDS)}>Dashboards</StyledMenuItem>
+      <StyledMenuItem key="pipelines" onClick={navigate(ROUTE_PIPELINES)}>Pipelines</StyledMenuItem>
+      <StyledMenuItem key="jobs" onClick={navigate(ROUTE_JOBS)}>Jobs</StyledMenuItem>
+    </StyledMenu>
   );
 };
 
-Menu.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
-
-export default withRouter(Menu);
+export default MainMenu;

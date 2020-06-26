@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Navigation from './navigation';
-import styles from './index.module.css';
 
-const App = (props) => {
-  const { children } = props;
-  return (
-    <div className={styles.root}>
-      <div className={styles.leftPane}>
-        <Navigation />
-      </div>
-      <div className={styles.rightPane}>
-        {children}
-      </div>
-    </div>
-  );
-};
+import { StyledLayout, StyledSider, StyledContent } from 'styles/app';
+import Navigation from './navigation';
+
+const App = ({ children }) => (
+  <StyledLayout>
+    <StyledSider width={250} theme="light">
+      <Navigation />
+    </StyledSider>
+    <StyledContent>
+      {children}
+    </StyledContent>
+  </StyledLayout>
+);
 
 App.propTypes = { children: PropTypes.node.isRequired };
 

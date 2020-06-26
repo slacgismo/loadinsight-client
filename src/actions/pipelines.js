@@ -2,6 +2,11 @@ import {
   GET_PIPELINES_STARTED,
   GET_PIPELINES_COMPLETED,
   GET_PIPELINES_FAILED,
+  GET_CUSTOM_PIPELINE_STARTED,
+  GET_CUSTOM_PIPELINE_COMPLETED,
+  GET_CUSTOM_PIPELINE_FAILED,
+  ADD_PIPELINE,
+  DELETE_PIPELINE,
 } from 'actions';
 import ApiClient from 'util/api-client';
 
@@ -29,3 +34,38 @@ export const getPipelines = () => (dispatch) => {
       dispatch(getPipelinesFailed(err));
     });
 };
+
+export const getCustomPipelineStarted = () => ({
+  type: GET_CUSTOM_PIPELINE_STARTED,
+});
+
+export const getCustomPipelineCompleted = (payload) => ({
+  type: GET_CUSTOM_PIPELINE_COMPLETED,
+  payload,
+});
+
+export const getCustomPipelineFailed = (error) => ({
+  type: GET_CUSTOM_PIPELINE_FAILED,
+  payload: error,
+});
+
+export const getCustomPipeline = () => (dispatch) => {
+  dispatch(getCustomPipelineStarted());
+  ApiClient.get('/api/pge-pipeline.json')
+    .then((res) => {
+      dispatch(getCustomPipelineCompleted(res.data));
+    })
+    .catch((err) => {
+      dispatch(getCustomPipelineFailed(err));
+    });
+};
+
+export const addPipeline = (payload) => ({
+  type: ADD_PIPELINE,
+  payload,
+});
+
+export const deletePipeline = (payload) => ({
+  type: DELETE_PIPELINE,
+  payload,
+});

@@ -1,64 +1,75 @@
-import React, { Component } from 'react';
-import OrgDropdown from './org-dropdown';
-import styles from './index.module.css';
+import React from 'react';
+import styled from 'styled-components';
 
-export default class Profile extends Component {
-  constructor() {
-    super();
-    this.onToggleDropdown = this.onToggleDropdown.bind(this);
-    this.onWindowClick = this.onWindowClick.bind(this);
-    this.state = {
-      orgDropdownVisible: false,
-    };
+import colors from 'styles/colors';
+import SettingsDropdown from './SettingsDropdown';
+import PhotoImg from './images/dchassin-profile.jpeg';
+
+const StyledProfileContainer = styled.div`
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  border-bottom: 1px solid #d2d2d2;
+  padding-bottom: 10px;
+  margin: 34px 20px 0 16px;
+  font-size: 12px;
+  line-height: 14px;
+  .ant-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    color: ${colors.black};
   }
+`;
 
-  componentWillUnmount() {
-    window.removeEventListener('click', this.onWindowClick);
-  }
+const StyledPhotoContainer = styled.div`
+  width: 46px;
+  height: 46px;
+  border-radius: 22px;
+  border: 2px solid ${colors.black};
+  padding: 1px;
+  margin: 0 auto;
+`;
 
-  onToggleDropdown(e) {
-    e.stopPropagation();
-    const { orgDropdownVisible } = this.state;
-    if (orgDropdownVisible) {
-      window.removeEventListener('click', this.onWindowClick);
-    } else {
-      window.addEventListener('click', this.onWindowClick);
-    }
-    this.setState({ orgDropdownVisible: !orgDropdownVisible });
-  }
+const StyledPhoto = styled.div`
+  width: 40px;
+  height: 40px;
+  background-image: url(${PhotoImg});
+  background-size: 40px;
+  border-radius: 20px;
+`;
 
-  onWindowClick() {
-    this.setState({ orgDropdownVisible: false });
-  }
+const StyledNameAndOrg = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
+  margin-top: 10px;
+`;
 
-  render() {
-    const { orgDropdownVisible } = this.state;
+const StyledName = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
+  margin-top: 10px;
+`;
 
-    let orgDropdown;
-    if (orgDropdownVisible) {
-      orgDropdown = (
-        <div className={styles.orgDropdown}>
-          <OrgDropdown />
-        </div>
-      );
-    }
+const StyledOrganization = styled.div`
+  font-size: 14px;
+  margin-top: 5px;
+`;
 
-    return (
-      <div className={styles.root}>
-        <div className={styles.clickable}>
-          <div className={styles.photoBorder}>
-            <div className={styles.photo} />
-          </div>
-          <div className={styles.nameAndOrg}>
-            <div className={styles.name}>David Chassin</div>
-            <div className={styles.organization}>SLAC</div>
-          </div>
-          <div className={styles.manageSettings}>
-            Manage Settings
-          </div>
-        </div>
-        {orgDropdown}
-      </div>
-    );
-  }
-}
+const Profile = () => (
+  <StyledProfileContainer>
+    <StyledPhotoContainer>
+      <StyledPhoto />
+    </StyledPhotoContainer>
+    <StyledNameAndOrg>
+      <StyledName>David Chassin</StyledName>
+      <StyledOrganization>SLAC</StyledOrganization>
+    </StyledNameAndOrg>
+    <SettingsDropdown />
+  </StyledProfileContainer>
+);
+
+export default Profile;
