@@ -34,7 +34,7 @@ const Pipeline = ({
   );
 
   return (
-    <StyledGrid gridTemplateColumns="1fr 1fr 0.25fr 0.5fr">
+    <StyledGrid gridTemplateColumns="1fr 1fr 0.25fr 0.5fr" bgcolor="white">
       <StyledText size="large" fontweight="500" color="blue">
         {name}
       </StyledText>

@@ -177,6 +177,7 @@ function AddChartModal({
               padding="12px 36px 12px 20px"
               margin="0 0 0 -10px"
               width="calc(100% + 10px)"
+              bgcolor="white"
             >
               <StyledText
                 size="middle"
@@ -248,7 +249,7 @@ function AddChartModal({
       </Space>
     </>,
     <Space direction="vertical" size={16}>
-      <StyledDropdown overlay={chartTypesMenu}>
+      <StyledDropdown overlay={chartTypesMenu} bordercolor="lightGray">
         <div>
           Line Chart
           <DownOutlined color="darkGray" />

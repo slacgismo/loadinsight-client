@@ -119,7 +119,11 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
       </StyledTitle>
       <StyledSection>
         <header>
-          <StyledGrid padding="0" gridTemplateColumns="360px 1fr auto">
+          <StyledGrid
+            gridTemplateColumns="360px 1fr auto"
+            bgcolor="white"
+            padding="0"
+          >
             <StyledInput
               type="text"
               defaultValue={pipelineNewImportName}

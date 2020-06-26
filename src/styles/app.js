@@ -74,9 +74,10 @@ export const StyledTitle = styled.div`
   }
 `;
 
-export const StyledText = styled.div`
+export const StyledText = styled.span`
+  width: 100%;
   ${({
-    color, fontweight, indent, size,
+    color, fontweight, indent, size, bordercolor, padding, margin,
   }) => (`
   ${color in colors ? (`
   color: ${colors[color]};
@@ -94,6 +95,20 @@ export const StyledText = styled.div`
   ${size === 'middle' ? (`
   font-size: 16px;
   line-height: 19px;
+  `) : ''}
+  ${size === 'small' ? (`
+  font-size: 12px;
+  line-height: 14px;
+  `) : ''}
+  ${bordercolor ? (`
+  border: 1px solid ${bordercolor in colors ? colors[bordercolor] : bordercolor};
+  border-radius: 2px;
+  `) : ''}
+  ${padding ? (`
+  padding: ${padding};
+  `) : ''}
+  ${margin ? (`
+  margin: ${margin};
   `) : ''}
   `)}
 `;
@@ -456,32 +471,39 @@ export const StyledModalLabel = styled.div`
 
 export const StyledDropdown = styled(Dropdown)`
   &.ant-dropdown-trigger {
-    ${({ color, bordercolor }) => (`
-    color: ${color in colors ? colors[color] : colors.darkText};
-    border: 1px solid ${bordercolor in colors ? colors[bordercolor] : colors.lightGray};
-    `)}
     cursor: pointer;
     border-radius: 3px;
     padding: 3px 9px;
     display: inline-flex;
     align-items: center;
     margin-top: -4px;
+    font-weight: 500;
+    ${({ color, bordercolor }) => (`
+    color: ${color in colors ? colors[color] : colors.darkText};
+    border: 1px solid ${bordercolor in colors ? colors[bordercolor] : bordercolor};
     .anticon {
       margin-left: 8px;
+      color: ${bordercolor in colors ? colors[bordercolor] : bordercolor};
     }
+    `)}
   }
 `;
 
 export const StyledGrid = styled.div`
   display: grid;
   align-items: center;
-  background-color: ${colors.white};
   color: ${colors.darkText};
   ${({
-    gridTemplateColumns, padding, margin, width,
+    gridTemplateColumns, gridgap, padding, margin, width, bgcolor,
   }) => (`
+  ${bgcolor ? (`
+  background-color: ${bgcolor in colors ? colors[bgcolor] : bgcolor};
+  `) : ''}
   width: ${width || '100%'};
   grid-template-columns: ${gridTemplateColumns || '1fr'};
+  ${gridgap ? (`
+  grid-gap: ${gridgap}px;
+  `) : ''} 
   padding: ${padding || '16px 25px'};
   margin: ${margin || 0};
   `)}
