@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import {
   GET_DASHBOARDS_STARTED,
   GET_DASHBOARDS_COMPLETED,
@@ -72,27 +74,27 @@ export default (state = DEFAULT_STATE, action) => {
     case GET_PGE_LOAD_PROFILE_COMPLETED: {
       const loadProfileByTariff = {};
 
-      const xAxes = Object.keys(action.payload);
-      const yAxes = Object.keys(action.payload[xAxes[0]]);
-
-      Object.keys(action.payload).forEach((xAxis) => {
-        yAxes.forEach((yAxis) => {
+      action.payload.forEach((value, key) => {
+        Object.keys(value).forEach((tariff) => {
           const point = {
-            x: xAxis,
-            y: action.payload[xAxis][yAxis],
+            x: moment(key).format('YYYY-MM-DD HH:mm:ss'),
+            y: parseFloat(value[tariff]),
           };
 
-          if (yAxis in loadProfileByTariff) {
-            loadProfileByTariff[yAxis].push(point);
+          if (tariff in loadProfileByTariff) {
+            loadProfileByTariff[tariff].push(point);
           } else {
-            loadProfileByTariff[yAxis] = [point];
+            loadProfileByTariff[tariff] = [point];
           }
         });
       });
 
       return {
         ...state,
-        PGELoadProfile: loadProfileByTariff,
+        PGELoadProfile: {
+          ...state.PGELoadProfile,
+          ...loadProfileByTariff,
+        },
         isLoadingLoadProfile: true,
         error: null,
       };

@@ -196,7 +196,7 @@ LineGraph.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     data: PropTypes.arrayOf(PropTypes.shape({
-      x: PropTypes.string.isRequired,
+      x: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
       y: PropTypes.number.isRequired,
     })).isRequired,
   })).isRequired,

@@ -13,6 +13,7 @@ import {
   getDashboards as getDashboardsAction,
   deleteDashboard as deleteDashboardAction,
   setCurrentDashboard as setCurrentDashboardAction,
+  getPGELoadProfile as getPGELoadProfileAction,
 } from 'actions/dashboards';
 import MenuOutlined from 'icons/MenuOutlined';
 import DownOutlined from 'icons/DownOutlined';
@@ -47,16 +48,14 @@ const Dashboards = ({
   currentDashboard,
   deleteDashboard,
   setCurrentDashboard,
+  PGELoadProfile,
+  getPGELoadProfile,
 }) => {
-  useEffect(() => {
-    getDashboards();
-  }, [getDashboards]);
-
   const [dateTimeFilterValue, setDateTimeFilterValue] = useState(1); // in days
 
   const [dateRange, setDateRange] = useState([{
-    startDate: new Date('1/1/2019'),
-    endDate: new Date('2/1/2020'),
+    startDate: new Date('5/27/2020'),
+    endDate: new Date('6/27/2020'),
     key: 'selection',
   }]);
 
@@ -69,6 +68,14 @@ const Dashboards = ({
   const toggleAddDashboardModal = () => setAddDashboardModalVisible(!addDashboardModalVisible);
 
   const currentDashboardName = currentDashboard in dashboards ? dashboards[currentDashboard].name : '';
+
+  useEffect(() => {
+    getDashboards();
+  }, [getDashboards]);
+
+  useEffect(() => {
+    getPGELoadProfile(dateRange[0].startDate, dateRange[0].endDate);
+  }, [getPGELoadProfile, dateRange[0].startDate, dateRange[0].endDate]);
 
   const dashboardsMenu = (
     <StyledDashboardsMenu>
@@ -119,7 +126,7 @@ const Dashboards = ({
     </StyledDashboardsMenu>
   );
 
-  const getGraphs = (filterValues = [1, 7, 31]) => {
+  const getGraphs = () => {
     const graphsData = {
       1: [],
       7: [],
@@ -130,48 +137,75 @@ const Dashboards = ({
     const graphsMaxY = [];
     const graphsYUnit = [];
 
+    const filterData = (data, filterValue) => {
+      const dataPoints = [];
+
+      const momentStart = moment(data[data.length - 1].x)
+        .subtract(filterValue, 'days');
+      const xStart = momentStart.format('YYYY-MM-DD HH');
+
+      for (let i = data.length - 1; i >= 0; i -= 1) { // start from the end
+        if (filterValue !== 31 || i % 4 === 0) {
+          dataPoints.push(data[i]);
+        }
+        if (data[i].x.match(xStart)) {
+          break;
+        }
+      }
+
+      return dataPoints;
+    };
+
     if (currentDashboard in dashboards) {
       const { charts } = dashboards[currentDashboard];
 
       charts.forEach(({
-        name: graphName, maxY, yUnit, datasets,
+        name: graphName, maxY, yUnit, datasets, yAxis,
       }, index) => {
         graphNames.push(graphName);
         graphsMaxY.push(maxY);
         graphsYUnit.push(yUnit);
 
-        datasets.forEach((set) => {
-          const { id, data } = set;
 
-          filterValues.forEach((filterValue) => {
-            const dataPoints = [];
+        if (datasets) {
+          datasets.forEach(({ id, data }) => {
+            ([1, 7, 31]).forEach((filterValue) => {
+              const dataPoints = filterData(data, filterValue);
 
-            const momentStart = moment(data[data.length - 1].x)
-              .subtract(filterValue, 'days');
+              const graphData = ({
+                id,
+                data: dataPoints,
+              });
 
-            const xStart = momentStart.format('YYYY-MM-DD HH');
-
-            for (let i = data.length - 1; i >= 0; i -= 1) { // start from the end
-              if (filterValue !== 31 || i % 4 === 0) {
-                dataPoints.push(data[i]);
+              if (index in graphsData[filterValue]) {
+                graphsData[filterValue][index].push(graphData);
+              } else {
+                graphsData[filterValue][index] = [graphData];
               }
-              if (data[i].x.match(xStart)) {
-                break;
-              }
-            }
-
-            const graphData = ({
-              id,
-              data: dataPoints,
             });
+          });
+        } else if (yAxis) {
+          yAxis.forEach((axis) => {
+            if (axis in PGELoadProfile) {
+              const data = PGELoadProfile[axis];
 
-            if (index in graphsData[filterValue]) {
-              graphsData[filterValue][index].push(graphData);
-            } else {
-              graphsData[filterValue][index] = [graphData];
+              ([1, 7, 31]).forEach((filterValue) => {
+                const dataPoints = filterData(data, filterValue);
+
+                const graphData = ({
+                  id: axis,
+                  data: dataPoints,
+                });
+
+                if (index in graphsData[filterValue]) {
+                  graphsData[filterValue][index].push(graphData);
+                } else {
+                  graphsData[filterValue][index] = [graphData];
+                }
+              });
             }
           });
-        });
+        }
       });
     }
 
@@ -183,7 +217,7 @@ const Dashboards = ({
     graphNames,
     graphsMaxY,
     graphsYUnit,
-  ] = useMemo(getGraphs, [dashboards, currentDashboard]);
+  ] = useMemo(getGraphs, [dashboards, currentDashboard, PGELoadProfile]);
 
   const getGraphsCustomRange = () => {
     const graphsCustomRangeData = {
@@ -198,40 +232,77 @@ const Dashboards = ({
         const momentEnd = moment(dateRange[0].endDate);
         const momentEndFormatted = momentEnd.format('YYYY-MM-DD HH');
 
-        charts.forEach(({ datasets }, index) => {
-          datasets.forEach((set) => {
-            const { id, data } = set;
+        charts.forEach(({ datasets, yAxis }, index) => {
+          if (datasets) {
+            datasets.forEach((set) => {
+              const { id, data } = set;
 
-            const dataPoints = [];
+              const dataPoints = [];
 
-            let endIndex = data.findIndex(({ x }) => x.match(momentEndFormatted));
+              let endIndex = data.findIndex(({ x }) => x.match(momentEndFormatted));
 
-            if (endIndex < 0) {
-              endIndex = data.length - 1;
-            }
-
-            for (let i = endIndex; i >= 0; i -= 1) { // start from the end
-              const momentX = moment(data[i].x);
-              if (momentX.isSameOrAfter(momentStart) && momentX.isSameOrBefore(momentEnd)) {
-                if ((endIndex - i) % 4 === 0) {
-                  dataPoints.push(data[i]);
-                }
-              } else {
-                break;
+              if (endIndex < 0) {
+                endIndex = data.length - 1;
               }
-            }
 
-            const graphData = ({
-              id,
-              data: dataPoints,
+              for (let i = endIndex; i >= 0; i -= 1) { // start from the end
+                const momentX = moment(data[i].x);
+                if (momentX.isSameOrAfter(momentStart) && momentX.isSameOrBefore(momentEnd)) {
+                  if ((endIndex - i) % 4 === 0) {
+                    dataPoints.push(data[i]);
+                  }
+                } else {
+                  break;
+                }
+              }
+
+              const graphData = ({
+                id,
+                data: dataPoints,
+              });
+
+              if (index in graphsCustomRangeData[0]) {
+                graphsCustomRangeData[0][index].push(graphData);
+              } else {
+                graphsCustomRangeData[0][index] = [graphData];
+              }
             });
+          } else if (yAxis) {
+            yAxis.forEach((axis) => {
+              if (axis in PGELoadProfile) {
+                const data = PGELoadProfile[axis];
+                const dataPoints = [];
 
-            if (index in graphsCustomRangeData[0]) {
-              graphsCustomRangeData[0][index].push(graphData);
-            } else {
-              graphsCustomRangeData[0][index] = [graphData];
-            }
-          });
+                let endIndex = data.findIndex(({ x }) => x.match(momentEndFormatted));
+
+                if (endIndex < 0) {
+                  endIndex = data.length - 1;
+                }
+
+                for (let i = endIndex; i >= 0; i -= 1) { // start from the end
+                  const momentX = moment(data[i].x);
+                  if (momentX.isSameOrAfter(momentStart) && momentX.isSameOrBefore(momentEnd)) {
+                    if ((endIndex - i) % 4 === 0) {
+                      dataPoints.push(data[i]);
+                    }
+                  } else {
+                    break;
+                  }
+                }
+
+                const graphData = ({
+                  id: axis,
+                  data: dataPoints,
+                });
+
+                if (index in graphsCustomRangeData[0]) {
+                  graphsCustomRangeData[0][index].push(graphData);
+                } else {
+                  graphsCustomRangeData[0][index] = [graphData];
+                }
+              }
+            });
+          }
         });
       }
     }
@@ -244,6 +315,7 @@ const Dashboards = ({
     currentDashboard,
     dateTimeFilterValue,
     dateRange,
+    PGELoadProfile,
   ]);
 
   const charts = dateTimeFilterValue === 0 ? customGraphsData[0] : graphsData[dateTimeFilterValue];
@@ -577,17 +649,21 @@ Dashboards.propTypes = {
   currentDashboard: PropTypes.number.isRequired,
   deleteDashboard: PropTypes.func.isRequired,
   setCurrentDashboard: PropTypes.func.isRequired,
+  PGELoadProfile: PropTypes.shape(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  getPGELoadProfile: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   dashboards: state.dashboards.dashboards,
   currentDashboard: state.dashboards.currentDashboard,
+  PGELoadProfile: state.dashboards.PGELoadProfile,
 });
 
 const mapDispatch = (dispatch) => bindActionCreators({
   getDashboards: getDashboardsAction,
   deleteDashboard: deleteDashboardAction,
   setCurrentDashboard: setCurrentDashboardAction,
+  getPGELoadProfile: getPGELoadProfileAction,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(Dashboards);

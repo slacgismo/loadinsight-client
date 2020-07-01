@@ -1,3 +1,7 @@
+import moment from 'moment';
+import SortedMap from 'sortedmap';
+import { parse } from '@fast-csv/parse';
+
 import {
   GET_DASHBOARDS_COMPLETED,
   GET_DASHBOARDS_FAILED,
@@ -52,18 +56,59 @@ export const getPGELoadProfileFailed = (error) => ({
   payload: error,
 });
 
-export const getPGELoadProfile = () => (dispatch) => {
+export const getPGELoadProfile = (startDate, endDate) => (dispatch) => {
   dispatch(getPGELoadProfileStarted());
-  ApiClient.get('/api/pge-load-profile.json')
-    .then((res) => {
-      dispatch(getPGELoadProfileCompleted(res.data));
+
+  const loadProfile = new SortedMap([], (a, b) => moment(b) - moment(a));
+
+  const PGELoadProfileStream = parse({ headers: true })
+    .on('error', (error) => {
+      dispatch(getPGELoadProfileFailed(error));
     })
-    .catch((err) => {
-      dispatch(getPGELoadProfileFailed(err));
+    .on('data', (row) => {
+      const date = row[''];
+      if (date) {
+        row.shift();
+        window.localStorage.setItem(`PGE${date}`, JSON.stringify(row));
+        loadProfile.set(new Date(date), row);
+      }
+    })
+    .on('end', () => {
+      dispatch(getPGELoadProfileCompleted(loadProfile));
     });
+
+  const start = moment(startDate);
+  const stop = moment(endDate).subtract(1, 'days');
+  const stopFormatted = stop.format('YYYYMMDD');
+
+  for (let date = start; date.isSameOrBefore(stop); date.add(1, 'days')) {
+    const localLoadProfile = window.localStorage.getItem(`PGE${date}`);
+
+    if (localLoadProfile) {
+      try {
+        loadProfile[date] = JSON.parse(localLoadProfile);
+        if (date.match(stopFormatted)) {
+          dispatch(getPGELoadProfileCompleted(loadProfile));
+        }
+      } catch (err) {
+        dispatch(getPGELoadProfileFailed(err));
+      }
+    } else {
+      ApiClient.get(`/api/pge/${date.format('YYYYMMDD')}.csv`)
+        .then((res) => {
+          PGELoadProfileStream.write(res.data);
+          if (res.config.url.match(stopFormatted)) {
+            PGELoadProfileStream.end();
+          }
+        })
+        .catch((err) => {
+          dispatch(getPGELoadProfileFailed(err));
+        });
+    }
+  }
 };
 
-export const addChart = (name, datasets) => ({
+export const addChart = (name, yAxis = [], xAxis = '') => ({
   type: ADD_CHART,
   payload: {
     name,
@@ -73,7 +118,8 @@ export const addChart = (name, datasets) => ({
       31: 'auto',
     },
     yUnit: 'kWh',
-    datasets,
+    xAxis,
+    yAxis,
   },
 });
 

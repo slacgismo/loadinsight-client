@@ -6,10 +6,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { getPipelines as getPipelinesAction } from 'actions/pipelines';
-import {
-  getPGELoadProfile as getPGELoadProfileAction,
-  addChart as addChartAction,
-} from 'actions/dashboards';
+import { addChart as addChartAction } from 'actions/dashboards';
 import {
   StyledText,
   StyledH3,
@@ -40,7 +37,6 @@ function AddChartModal({
   pipelines,
   getPipelines,
   PGELoadProfile,
-  getPGELoadProfile,
   addChart,
   index,
 }) {
@@ -49,10 +45,6 @@ function AddChartModal({
   }, [pipelines, getPipelines]);
 
   const [step, setStep] = useState(0);
-
-  useEffect(() => {
-    if (!Object.keys(PGELoadProfile).length && step === 1) getPGELoadProfile();
-  }, [PGELoadProfile, getPGELoadProfile, step]);
 
   const [pipeline, setPipeline] = useState();
 
@@ -157,7 +149,6 @@ function AddChartModal({
     </StyledMenu>
   );
 
-  const graphData = [];
   const graphDataPreview = [];
 
   yAxis.forEach((tariff) => {
@@ -180,12 +171,9 @@ function AddChartModal({
         id: tariff,
         data,
       });
-      graphData.push({
-        id: tariff,
-        data: loadProfile,
-      });
     }
   });
+
 
   const steps = [
     <>
@@ -309,7 +297,7 @@ function AddChartModal({
           <div />
           <StyledButton
             onClick={(event) => {
-              addChart(graphName, graphData);
+              addChart(graphName, yAxis, xAxis);
               handleOk(event);
             }}
             disabled={!xAxis || !yAxis.length}
@@ -370,7 +358,6 @@ AddChartModal.propTypes = {
     name: PropTypes.string.isRequired,
     last_updated: PropTypes.string.isRequired,
   })).isRequired,
-  getPGELoadProfile: PropTypes.func.isRequired,
   PGELoadProfile: PropTypes.objectOf(PropTypes.array).isRequired,
   getPipelines: PropTypes.func.isRequired,
   addChart: PropTypes.func.isRequired,
@@ -390,7 +377,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatch = (dispatch) => bindActionCreators({
   getPipelines: getPipelinesAction,
-  getPGELoadProfile: getPGELoadProfileAction,
   addChart: addChartAction,
 }, dispatch);
 
