@@ -105,6 +105,8 @@ function AddChartModal({
     </StyledMenu>
   );
 
+  const tariffs = Object.keys(PGELoadProfile);
+
   const xAxisMenu = (
     <StyledMenu>
       <StyledMenuItem
@@ -115,14 +117,32 @@ function AddChartModal({
       >
         <span>DateTime</span>
       </StyledMenuItem>
+      {tariffs.map((axis) => (
+        <StyledMenuItem
+          onClick={() => setXAxis(axis)}
+          bordercolor="lightBg"
+          hoverbgcolor="darkGray"
+          hovercolor="white"
+        >
+          <span>
+            {axis}
+          </span>
+        </StyledMenuItem>
+      ))}
     </StyledMenu>
   );
 
-  const yAxes = Object.keys(PGELoadProfile);
-
   const yAxisMenu = (
     <StyledMenu>
-      {yAxes.map((axis) => (
+      <StyledMenuItem
+        onClick={() => addYAxis('DateTime')}
+        bordercolor="lightBg"
+        hoverbgcolor="darkGray"
+        hovercolor="white"
+      >
+        <span>DateTime</span>
+      </StyledMenuItem>
+      {tariffs.map((axis) => (
         <StyledMenuItem
           onClick={() => addYAxis(axis)}
           bordercolor="lightBg"
@@ -144,25 +164,27 @@ function AddChartModal({
     const loadProfile = PGELoadProfile[tariff] || [];
     const data = [];
 
-    const momentStart = moment(loadProfile[loadProfile.length - 1].x)
-      .subtract(7, 'days').startOf('day');
-    const xStart = momentStart.format('YYYY-MM-DD HH');
+    if (loadProfile.length) {
+      const { x } = loadProfile[loadProfile.length - 1];
+      const momentStart = moment(x).subtract(7, 'days').startOf('day');
+      const xStart = momentStart.format('YYYY-MM-DD HH');
 
-    for (let i = loadProfile.length - 1; i >= 0; i -= 1) { // start from the end
-      data.push(loadProfile[i]);
-      if (loadProfile[i].x.match(xStart)) {
-        break;
+      for (let i = loadProfile.length - 1; i >= 0; i -= 1) { // start from the end
+        data.push(loadProfile[i]);
+        if (loadProfile[i].x.match(xStart)) {
+          break;
+        }
       }
-    }
 
-    graphDataPreview.push({
-      id: tariff,
-      data,
-    });
-    graphData.push({
-      id: tariff,
-      data: loadProfile,
-    });
+      graphDataPreview.push({
+        id: tariff,
+        data,
+      });
+      graphData.push({
+        id: tariff,
+        data: loadProfile,
+      });
+    }
   });
 
   const steps = [

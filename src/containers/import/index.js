@@ -119,24 +119,30 @@ function ImportCustom({ getCustomPipeline, addPipeline, pipelineNewImport = {} }
       </StyledTitle>
       <StyledSection>
         <header>
-          <StyledGrid
-            gridTemplateColumns="360px 1fr auto"
-            bgcolor="white"
-            padding="0"
-          >
-            <StyledInput
-              type="text"
-              defaultValue={pipelineNewImportName}
-              onChange={(event) => setPipelineNewImportName(event.target.value)}
-              autofocus="autofocus"
-              placeholder="Edit Pipeline Name"
-              size="large"
-            />
-            <div />
-            <StyledButton size="large" color="lightBlue" onClick={addNewPipelineImport}>
-              Import Pipeline
-            </StyledButton>
-          </StyledGrid>
+          <form onSubmit={addNewPipelineImport}>
+            <StyledGrid
+              gridTemplateColumns="360px 1fr auto"
+              bgcolor="white"
+              padding="0"
+            >
+              <StyledInput
+                type="text"
+                defaultValue={pipelineNewImportName}
+                onChange={(event) => setPipelineNewImportName(event.target.value)}
+                autoFocus
+                placeholder="Edit Pipeline Name"
+                size="large"
+              />
+              <div />
+              <StyledButton
+                onClick={addNewPipelineImport}
+                size="large"
+                color="lightBlue"
+              >
+                Import Pipeline
+              </StyledButton>
+            </StyledGrid>
+          </form>
         </header>
         <Space direction="vertical" size={56}>
           <Space direction="vertical" size="middle" style={{ width: 'auto' }}>

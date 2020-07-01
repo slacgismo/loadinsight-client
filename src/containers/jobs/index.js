@@ -20,7 +20,7 @@ import {
 
 const Jobs = ({ jobs, getJobs }) => {
   useEffect(() => {
-    getJobs();
+    if (!jobs.length) getJobs();
   }, [jobs, getJobs]);
 
   const jobsDateFilterOptions = {
@@ -103,7 +103,7 @@ const Jobs = ({ jobs, getJobs }) => {
               padding="0 28px 0 0"
             >
               {jobName}
-              <StyledLegendIcon serieColor={statusColors[status]} float="right" />
+              <StyledLegendIcon serieColor={statusColors[status]} />
             </StyledText>
             <StyledText size="middle" fontweight={500} color="darkGray">
               {`Last updated ${lastUpdated}`}

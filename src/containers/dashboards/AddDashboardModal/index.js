@@ -48,7 +48,7 @@ function AddDashboardModal({
               onChange={(event) => setDashboardName(event.target.value)}
               size="large"
               bgcolor="white"
-              autofocus
+              autoFocus
             />
           </StyledGrid>
         </Space>
