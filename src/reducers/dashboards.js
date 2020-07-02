@@ -12,6 +12,7 @@ import {
   ADD_DASHBOARD,
   DELETE_DASHBOARD,
   SET_CURRENT_DASHBOARD,
+  SET_DATE_TIME_FILTER_VALUE,
 } from 'actions';
 import {
   USER_KEY_DASHBOARDS,
@@ -22,8 +23,9 @@ const DEFAULT_STATE = {
   dashboards: [],
   currentDashboard: 0,
   isLoadingDashboards: false,
-  isLoadingLoadProfile: false,
   PGELoadProfile: {},
+  isLoadingLoadProfile: false,
+  dateTimeFilterValue: 1,
   error: null,
 };
 
@@ -175,6 +177,12 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         currentDashboard,
+      };
+    }
+    case SET_DATE_TIME_FILTER_VALUE: {
+      return {
+        ...state,
+        dateTimeFilterValue: action.payload,
       };
     }
     default:

@@ -14,6 +14,7 @@ import {
   deleteDashboard as deleteDashboardAction,
   setCurrentDashboard as setCurrentDashboardAction,
   getPGELoadProfile as getPGELoadProfileAction,
+  setDateTimeFilterValue as setDateTimeFilterValueAction,
 } from 'actions/dashboards';
 import MenuOutlined from 'icons/MenuOutlined';
 import DownOutlined from 'icons/DownOutlined';
@@ -50,10 +51,10 @@ const Dashboards = ({
   setCurrentDashboard,
   PGELoadProfile,
   getPGELoadProfile,
+  dateTimeFilterValue,
+  setDateTimeFilterValue,
 }) => {
   const currentDashboardName = currentDashboard in dashboards ? dashboards[currentDashboard].name : '';
-
-  const [dateTimeFilterValue, setDateTimeFilterValue] = useState(1); // in days
 
   const [dateRange, setDateRange] = useState([{
     startDate: new Date('5/27/20'),
@@ -158,7 +159,7 @@ const Dashboards = ({
     </StyledDashboardsMenu>
   );
 
-  const filterData = (data, filterValue, start, end) => {
+  const filterData = (data, numDatasets, filterValue, start, end) => {
     const dataPoints = [];
 
     const ratio = Math.ceil(data.length / 10000);
@@ -181,7 +182,7 @@ const Dashboards = ({
     for (let i = endIndex; i >= 0; i -= 1) { // start from the end
       const momentX = moment(data[i].x);
       if (momentX.isSameOrAfter(momentStart) && momentX.isSameOrBefore(momentEnd)) {
-        if (filterValue !== 31 || (endIndex - i) % ratio === 0) {
+        if (filterValue !== 31 || (endIndex - i) % (ratio * numDatasets) === 0) {
           dataPoints.push(data[i]);
         }
       } else {
@@ -200,23 +201,19 @@ const Dashboards = ({
     };
 
     const graphNames = [];
-    const graphsMaxY = [];
-    const graphsYUnit = [];
 
     if (currentDashboard in dashboards) {
       const { charts } = dashboards[currentDashboard];
 
       charts.forEach(({
-        name: graphName, maxY, yUnit, datasets, yAxis,
+        name: graphName, datasets, yAxis,
       }, index) => {
         graphNames.push(graphName);
-        graphsMaxY.push(maxY);
-        graphsYUnit.push(yUnit);
 
         if (datasets) {
           datasets.forEach(({ id, data }) => {
             ([1, 7, 31]).forEach((filterValue) => {
-              const dataPoints = filterData(data, filterValue);
+              const dataPoints = filterData(data, datasets.length, filterValue);
 
               const graphData = {
                 id,
@@ -236,7 +233,7 @@ const Dashboards = ({
               const data = PGELoadProfile[axis];
 
               ([1, 7, 31]).forEach((filterValue) => {
-                const dataPoints = filterData(data, filterValue);
+                const dataPoints = filterData(data, yAxis.length, filterValue);
 
                 const graphData = {
                   id: axis,
@@ -255,14 +252,12 @@ const Dashboards = ({
       });
     }
 
-    return [graphsData, graphNames, graphsMaxY, graphsYUnit];
+    return [graphsData, graphNames];
   };
 
   const [
     graphsData,
     graphNames,
-    graphsMaxY,
-    graphsYUnit,
   ] = useMemo(getGraphs, [dashboards, currentDashboard, PGELoadProfile]);
 
   const getGraphsCustomRange = () => {
@@ -279,7 +274,7 @@ const Dashboards = ({
         charts.forEach(({ datasets, yAxis }, index) => {
           if (datasets) {
             datasets.forEach(({ id, data }) => {
-              const dataPoints = filterData(data, 0, startDate, endDate);
+              const dataPoints = filterData(data, datasets.length, 0, startDate, endDate);
 
               const graphData = {
                 id,
@@ -297,7 +292,7 @@ const Dashboards = ({
               if (axis in PGELoadProfile) {
                 const data = PGELoadProfile[axis];
 
-                const dataPoints = filterData(data, 0, startDate, endDate);
+                const dataPoints = filterData(data, yAxis.length, 0, startDate, endDate);
 
                 const graphData = ({
                   id: axis,
@@ -609,8 +604,6 @@ const Dashboards = ({
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
             index={index}
-            maxY={graphsMaxY[index][dateTimeFilterValue]}
-            yUnit={index in graphsYUnit ? graphsYUnit[index] : 'kWh'}
           />
         ))}
       </StyledDashboardsGraphsGrid>
@@ -664,12 +657,15 @@ Dashboards.propTypes = {
   setCurrentDashboard: PropTypes.func.isRequired,
   PGELoadProfile: PropTypes.objectOf(PropTypes.array).isRequired,
   getPGELoadProfile: PropTypes.func.isRequired,
+  dateTimeFilterValue: PropTypes.number.isRequired,
+  setDateTimeFilterValue: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   dashboards: state.dashboards.dashboards,
   currentDashboard: state.dashboards.currentDashboard,
   PGELoadProfile: state.dashboards.PGELoadProfile,
+  dateTimeFilterValue: state.dashboards.dateTimeFilterValue,
 });
 
 const mapDispatch = (dispatch) => bindActionCreators({
@@ -677,6 +673,7 @@ const mapDispatch = (dispatch) => bindActionCreators({
   deleteDashboard: deleteDashboardAction,
   setCurrentDashboard: setCurrentDashboardAction,
   getPGELoadProfile: getPGELoadProfileAction,
+  setDateTimeFilterValue: setDateTimeFilterValueAction,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(Dashboards);

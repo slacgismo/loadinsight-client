@@ -277,10 +277,8 @@ function AddChartModal({
         data={xAxis && yAxis.length ? graphDataPreview : []}
         dateTimeFilterValue={7}
         index={index}
-        yUnit="kWh"
         showMenu={false}
-        hasTitleMargin={false}
-        minheight="33vh"
+        maxY="auto"
       />
       <Space size={84} align="top">
         <Space direction="vertical" size={16}>
