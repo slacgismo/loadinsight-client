@@ -2,6 +2,9 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { CSVLink } from 'react-csv';
+import SortedMap from 'sortedmap';
+import moment from 'moment';
 
 import {
   removeChart as removeChartAction,
@@ -27,13 +30,35 @@ const Graph = ({
   graphheight,
   removeChart,
 }) => {
+  const headers = ['DateTime'];
+  const hashedRows = new SortedMap([], (a, b) => moment(b) - moment(a));
+
+  data.forEach(({ id, data: graphData }) => {
+    headers.push(id);
+    graphData.forEach(({ x, y }) => {
+      if (hashedRows.has(x)) {
+        hashedRows.get(x).push(y);
+      } else {
+        hashedRows.set(x, [x, y]);
+      }
+    });
+  });
+
+  const csvData = [...hashedRows.values()];
+
   const graphsMenu = (
     <StyledDashboardsMenu>
       <StyledDashboardsMenuItem>
         Edit chart
       </StyledDashboardsMenuItem>
       <StyledDashboardsMenuItem size="small">
-        Download CSV
+        <CSVLink
+          data={csvData}
+          filename={title || 'Untitled.csv'}
+          headers={headers}
+        >
+          Download CSV
+        </CSVLink>
       </StyledDashboardsMenuItem>
       <StyledDashboardsMenuItem size="small">
         Share Chart
