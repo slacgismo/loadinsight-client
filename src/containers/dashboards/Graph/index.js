@@ -25,13 +25,14 @@ const Graph = ({
   dateTimeFilterValue,
   index,
   maxY,
-  yUnit,
   showMenu,
-  graphheight,
   removeChart,
 }) => {
   const headers = ['DateTime'];
   const hashedRows = new SortedMap([], (a, b) => moment(b) - moment(a));
+
+  let graphMax = 0;
+  let yUnit = 'kWh';
 
   data.forEach(({ id, data: graphData }) => {
     headers.push(id);
@@ -41,8 +42,20 @@ const Graph = ({
       } else {
         hashedRows.set(x, [x, y]);
       }
+
+      const yTotal = hashedRows.get(x).slice(1).reduce((a, b) => (a + b), 0);
+      if (yTotal > graphMax) graphMax = yTotal;
     });
   });
+
+  if (graphMax >= 1000) {
+    yUnit = 'MWh';
+    graphMax = Math.ceil(graphMax / 1000) * 1000;
+  } else if (graphMax === 0) {
+    graphMax = 'auto';
+  } else {
+    graphMax = Math.ceil(graphMax / 10) * 10;
+  }
 
   const csvData = [...hashedRows.values()];
 
@@ -74,7 +87,7 @@ const Graph = ({
   );
 
   return (
-    <StyledDashboardsGraph graphheight={graphheight}>
+    <StyledDashboardsGraph>
       <header>
         {showMenu && (
         <StyledDashboardsDropdown overlay={graphsMenu}>
@@ -88,11 +101,11 @@ const Graph = ({
       <LineGraph
         title={title}
         data={data}
-        dateTimeFilterValue={dateTimeFilterValue}
         index={index}
-        maxY={maxY}
+        maxY={maxY || graphMax}
         yUnit={yUnit}
         hasTitleMargin={!!title}
+        dateTimeFilterValue={dateTimeFilterValue}
       />
     </StyledDashboardsGraph>
   );
@@ -107,21 +120,16 @@ Graph.propTypes = {
       y: PropTypes.number.isRequired,
     })).isRequired,
   })).isRequired,
-  dateTimeFilterValue: PropTypes.number.isRequired,
+  dateTimeFilterValue: PropTypes.number,
   index: PropTypes.number.isRequired,
   maxY: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  yUnit: PropTypes.string,
   showMenu: PropTypes.bool,
-  graphheight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   removeChart: PropTypes.func.isRequired,
 };
 
 Graph.defaultProps = {
   title: '',
-  maxY: 'auto',
-  yUnit: '',
   showMenu: true,
-  graphheight: null,
 };
 
 const mapDispatch = (dispatch) => bindActionCreators({

@@ -2,6 +2,7 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import colors from 'styles/colors';
 import { StyledLegendIcon } from 'styles/dashboards';
@@ -213,4 +214,10 @@ LineGraph.defaultProps = {
   maxY: 'auto',
 };
 
-export default LineGraph;
+const mapStateToProps = ({ dashboards }, { dateTimeFilterValue }) => {
+  return ({
+    dateTimeFilterValue: dateTimeFilterValue || dashboards.dateTimeFilterValue,
+  });
+}
+
+export default connect(mapStateToProps)(LineGraph);

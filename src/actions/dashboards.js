@@ -14,6 +14,7 @@ import {
   ADD_DASHBOARD,
   DELETE_DASHBOARD,
   SET_CURRENT_DASHBOARD,
+  SET_DATE_TIME_FILTER_VALUE,
 } from 'actions';
 import ApiClient from 'util/api-client';
 
@@ -120,7 +121,6 @@ export const addChart = (name, yAxis = [], xAxis = '') => ({
       7: 'auto',
       31: 'auto',
     },
-    yUnit: 'kWh',
     xAxis,
     yAxis,
   },
@@ -148,3 +148,8 @@ export const setCurrentDashboard = (payload) => ({
   type: SET_CURRENT_DASHBOARD,
   payload,
 });
+
+export const setDateTimeFilterValue = (payload) => ({
+  type: SET_DATE_TIME_FILTER_VALUE,
+  payload,
+})
