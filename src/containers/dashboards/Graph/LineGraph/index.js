@@ -214,10 +214,8 @@ LineGraph.defaultProps = {
   maxY: 'auto',
 };
 
-const mapStateToProps = ({ dashboards }, { dateTimeFilterValue }) => {
-  return ({
-    dateTimeFilterValue: dateTimeFilterValue || dashboards.dateTimeFilterValue,
-  });
-}
+const mapStateToProps = ({ dashboards }, { dateTimeFilterValue }) => ({
+  dateTimeFilterValue: dateTimeFilterValue || dashboards.dateTimeFilterValue,
+});
 
 export default connect(mapStateToProps)(LineGraph);
