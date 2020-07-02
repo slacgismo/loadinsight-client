@@ -27,6 +27,7 @@ const LineGraph = ({
 
   let tickValues = 'every hour';
   let axisBottomFormat = '%-I %p';
+
   if (dateTimeFilterValue !== 1) {
     tickValues = 'every day';
     axisBottomFormat = '%d';

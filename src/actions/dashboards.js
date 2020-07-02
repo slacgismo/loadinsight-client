@@ -70,7 +70,6 @@ export const getPGELoadProfile = (startDate, endDate) => (dispatch) => {
       const date = data[''];
       if (date) {
         delete data[''];
-        window.localStorage.setItem(`PGE${date}`, JSON.stringify(row));
         loadProfile.set(new Date(date), data);
       }
     })
@@ -79,33 +78,36 @@ export const getPGELoadProfile = (startDate, endDate) => (dispatch) => {
     });
 
   const start = moment(startDate);
-  const stop = moment(endDate).subtract(1, 'days');
+  const stop = moment(endDate);
   const stopFormatted = stop.format('YYYYMMDD');
 
   for (let date = start; date.isSameOrBefore(stop); date.add(1, 'days')) {
-    const localLoadProfile = window.localStorage.getItem(`PGE${date}`);
+    /*    const dateStringKey = `PGE${date.format('YYYYMMDD')}`;
+
+    const localLoadProfile = window.localStorage.getItem(dateStringKey);
 
     if (localLoadProfile) {
       try {
-        loadProfile[date] = JSON.parse(localLoadProfile);
-        if (date.match(stopFormatted)) {
+        PGELoadProfileStream.write(localLoadProfile);
+        if (date.isSame(stop, 'day')) {
           dispatch(getPGELoadProfileCompleted(loadProfile));
         }
       } catch (err) {
         dispatch(getPGELoadProfileFailed(err));
       }
-    } else {
-      ApiClient.get(`/api/pge/${date.format('YYYYMMDD')}.csv`)
-        .then((res) => {
-          PGELoadProfileStream.write(res.data);
-          if (res.config.url.match(stopFormatted)) {
-            PGELoadProfileStream.end();
-          }
-        })
-        .catch((err) => {
-          dispatch(getPGELoadProfileFailed(err));
-        });
-    }
+    } else { */
+    ApiClient.get(`/api/pge/${date.format('YYYYMMDD')}.csv`)
+      .then((res) => {
+        // window.localStorage.setItem(dateStringKey, res.data);
+        PGELoadProfileStream.write(res.data);
+        if (res.config.url.match(stopFormatted)) {
+          PGELoadProfileStream.end();
+        }
+      })
+      .catch((err) => {
+        dispatch(getPGELoadProfileFailed(err));
+      });
+    // }
   }
 };
 
