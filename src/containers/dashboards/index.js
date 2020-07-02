@@ -162,7 +162,7 @@ const Dashboards = ({
   const filterData = (data, numDatasets, filterValue, start, end) => {
     const dataPoints = [];
 
-    let ratio = Math.ceil(data.length / 10000);
+    const ratio = Math.ceil(data.length / 10000);
 
     let endIndex = data.length - 1;
     let momentEnd;
@@ -201,16 +201,14 @@ const Dashboards = ({
     };
 
     const graphNames = [];
-    const graphsMaxY = [];
 
     if (currentDashboard in dashboards) {
       const { charts } = dashboards[currentDashboard];
 
       charts.forEach(({
-        name: graphName, maxY, datasets, yAxis,
+        name: graphName, datasets, yAxis,
       }, index) => {
         graphNames.push(graphName);
-        graphsMaxY.push(maxY);
 
         if (datasets) {
           datasets.forEach(({ id, data }) => {
@@ -659,6 +657,8 @@ Dashboards.propTypes = {
   setCurrentDashboard: PropTypes.func.isRequired,
   PGELoadProfile: PropTypes.objectOf(PropTypes.array).isRequired,
   getPGELoadProfile: PropTypes.func.isRequired,
+  dateTimeFilterValue: PropTypes.number.isRequired,
+  setDateTimeFilterValue: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

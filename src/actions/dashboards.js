@@ -152,4 +152,4 @@ export const setCurrentDashboard = (payload) => ({
 export const setDateTimeFilterValue = (payload) => ({
   type: SET_DATE_TIME_FILTER_VALUE,
   payload,
-})
+});

@@ -130,6 +130,8 @@ Graph.propTypes = {
 Graph.defaultProps = {
   title: '',
   showMenu: true,
+  dateTimeFilterValue: null,
+  maxY: 'auto',
 };
 
 const mapDispatch = (dispatch) => bindActionCreators({
