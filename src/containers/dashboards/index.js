@@ -649,7 +649,7 @@ Dashboards.propTypes = {
   currentDashboard: PropTypes.number.isRequired,
   deleteDashboard: PropTypes.func.isRequired,
   setCurrentDashboard: PropTypes.func.isRequired,
-  PGELoadProfile: PropTypes.shape(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  PGELoadProfile: PropTypes.objectOf(PropTypes.array).isRequired,
   getPGELoadProfile: PropTypes.func.isRequired,
 };
 

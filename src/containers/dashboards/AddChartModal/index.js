@@ -111,6 +111,7 @@ function AddChartModal({
       </StyledMenuItem>
       {tariffs.map((axis) => (
         <StyledMenuItem
+          key={axis}
           onClick={() => setXAxis(axis)}
           bordercolor="lightBg"
           hoverbgcolor="darkGray"
@@ -136,6 +137,7 @@ function AddChartModal({
       </StyledMenuItem>
       {tariffs.map((axis) => (
         <StyledMenuItem
+          key={axis}
           onClick={() => addYAxis(axis)}
           bordercolor="lightBg"
           hoverbgcolor="darkGray"
@@ -320,7 +322,7 @@ function AddChartModal({
             <small>(max 5 columns)</small>
           </Space>
           {yAxis.map((axisItem, axisIndex) => (
-            <StyledAxisItem active>
+            <StyledAxisItem key={axisItem} active>
               <Space size={25}>
                 <StyledText color="lightGray" fontweight="500">
                   {`Column ${axisIndex + 1}`}

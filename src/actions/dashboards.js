@@ -66,11 +66,12 @@ export const getPGELoadProfile = (startDate, endDate) => (dispatch) => {
       dispatch(getPGELoadProfileFailed(error));
     })
     .on('data', (row) => {
-      const date = row[''];
+      const data = { ...row };
+      const date = data[''];
       if (date) {
-        row.shift();
+        delete data[''];
         window.localStorage.setItem(`PGE${date}`, JSON.stringify(row));
-        loadProfile.set(new Date(date), row);
+        loadProfile.set(new Date(date), data);
       }
     })
     .on('end', () => {
