@@ -155,7 +155,7 @@ export const StyledLegendIcon = styled.div`
     width: 12px;
     height: 12px;
     border-radius: 3px;
-    background-color: ${({ serieColor }) => serieColor};
+    background-color: ${({ serieColor }) => (serieColor in colors ? colors[serieColor] : serieColor)};
   }
   height: 18px;
   display: inline-flex;

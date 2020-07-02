@@ -180,7 +180,7 @@ export const StyledButton = styled(Button)`
     cursor: default;
   }
   ${({
-    type, color, width, height,
+    type, color, width, height, hoverbgcolor,
   }) => (`
   ${type === 'text' ? (`
   color: ${colors.blue};
@@ -205,9 +205,16 @@ export const StyledButton = styled(Button)`
   &.ant-btn-sm, &.ant-btn-lg {
     color: ${colors.white};
     ${color in colors ? (`
-    &, &:hover, &:focus {
-      background-color: ${colors[color]}
+    background-color: ${colors[color]};
+    ${hoverbgcolor in colors ? (`
+    &:hover, &:focus {
+      background-color: ${hoverbgcolor in colors ? colors[hoverbgcolor] : colors[color]};
     }
+    `) : (`
+    &:hover, &:focus {
+      background-color: ${colors[color]};
+    }
+    `)}
     `) : (`
     background-color: ${colors.black};
     &:hover, &:focus {

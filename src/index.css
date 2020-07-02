@@ -23,6 +23,9 @@ a {
     display: inline-block;
     min-width: 142px;
 }
+form {
+    width: 100%;
+}
 input {
     outline: none;
     border: 1px solid rgba(112, 112, 112, 0.1);
@@ -154,8 +157,8 @@ input {
 .rdrWeekDay {
     font-weight: 400;
     font-size: 12px;
-    line-height: 14px;
-    color: rgba(112, 112, 112, 0.5);
+    line-height: 30px;
+    color: #707070;
 }
 
 .rdrDay {
