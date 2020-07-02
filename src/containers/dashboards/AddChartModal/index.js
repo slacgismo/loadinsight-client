@@ -176,7 +176,6 @@ function AddChartModal({
     }
   });
 
-
   const steps = [
     <>
       <StyledH3>Select a pipeline</StyledH3>
