@@ -12,6 +12,8 @@ import DownOutlined from 'icons/DownOutlined';
 const { Item } = Menu;
 
 const StyledMenu = styled(Menu)`
+  display: block;
+  min-width: auto;
   width: 118px;
   margin: 0 auto;
   background: #f7f7f7;

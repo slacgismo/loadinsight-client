@@ -3,8 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CSVLink } from 'react-csv';
-import SortedMap from 'sortedmap';
-import moment from 'moment';
 
 import {
   removeChart as removeChartAction,
@@ -29,7 +27,7 @@ const Graph = ({
   removeChart,
 }) => {
   const headers = ['DateTime'];
-  const hashedRows = new SortedMap([], (a, b) => moment(b) - moment(a));
+  const hashedRows = new Map();
 
   let graphMax = 0;
   let yUnit = 'kWh';

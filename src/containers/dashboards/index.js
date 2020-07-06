@@ -80,7 +80,11 @@ const Dashboards = ({
   }, [currentDashboard, dashboards]);
 
   const maxDate = new Date();
-  const minDate = new Date(maxDate.getFullYear() - 3, 0, 1); // have calendar go back 3 years
+  const minDate = currentDashboardName === 'Holy Cross Dashboard' ? (
+    new Date(maxDate.getFullYear() - 3, 0, 1) // have calendar go back 3 years
+  ) : (
+    new Date('1/1/2020')
+  );
 
   const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
   const [addChartModalVisible, setAddChartModalVisible] = useState(false);
@@ -96,26 +100,29 @@ const Dashboards = ({
 
   useEffect(() => {
     if (dashboards.length && currentDashboard > 0) { // only get if not on Holy Cross Dashboard
-      if (dateTimeFilterValue === 0) {
-        getPGELoadProfile(dateRange[0].startDate, dateRange[0].endDate);
-      } else if (dateTimeFilterValue === 1 || dateTimeFilterValue === 7) {
-        const start = moment('6/20/2020'); // load 1 week for addChart preview
-        const end = moment('6/27/2020');
-        getPGELoadProfile(start, end);
-      } else if (dateTimeFilterValue === 31) {
+      if (dateTimeFilterValue) {
         const start = moment('5/27/2020');
         const end = moment('6/27/2020');
-        getPGELoadProfile(start, end);
+        getPGELoadProfile(start, end, addChartModalVisible);
+      } else {
+        getPGELoadProfile(dateRange[0].startDate, dateRange[0].endDate);
       }
     }
-  }, [getPGELoadProfile, dateRange, dateTimeFilterValue, dashboards, currentDashboard]);
+  }, [
+    getPGELoadProfile,
+    dateRange,
+    dateTimeFilterValue,
+    dashboards,
+    currentDashboard,
+    addChartModalVisible,
+  ]);
 
   const dashboardsMenu = (
     <StyledDashboardsMenu>
       {dashboards.map(({ name: dashboardName }, index) => (
         <StyledDashboardsMenuItem
-          onClick={() => setCurrentDashboard(index)}
           key={dashboardName}
+          onClick={() => setCurrentDashboard(index)}
         >
           {dashboardName}
         </StyledDashboardsMenuItem>
@@ -160,37 +167,29 @@ const Dashboards = ({
   );
 
   const filterData = (data, numDatasets, filterValue, start, end) => {
-    const dataPoints = [];
-
-    const ratio = Math.ceil(data.length / 10000);
-
-    let endIndex = data.length - 1;
-    let momentEnd;
     let momentStart;
+    let momentEnd;
 
     if (filterValue) {
-      momentStart = moment(data[endIndex].x).subtract(filterValue, 'days');
-      momentEnd = moment(data[endIndex].x);
+      momentStart = moment(data[data.length - 1].x).subtract(filterValue, 'days');
+      momentEnd = moment(data[data.length - 1].x).endOf('day');
     } else {
-      momentEnd = moment(end);
-      const momentEndFormatted = momentEnd.format('YYYY-MM-DD HH');
-      endIndex = data.findIndex(({ x }) => x.match(momentEndFormatted));
-      if (endIndex < 0) endIndex = data.length - 1;
-      momentStart = moment(start);
+      momentStart = moment(start).startOf('day');
+      momentEnd = moment(end).add(1, 'day').startOf('day');
     }
 
-    for (let i = endIndex; i >= 0; i -= 1) { // start from the end
-      const momentX = moment(data[i].x);
-      if (momentX.isSameOrAfter(momentStart) && momentX.isSameOrBefore(momentEnd)) {
-        if (filterValue !== 31 || (endIndex - i) % (ratio * numDatasets) === 0) {
-          dataPoints.push(data[i]);
-        }
-      } else {
-        break;
-      }
-    }
+    const momentStartFormatted = momentStart.format('YYYY-MM-DD HH:mm');
+    const momentEndFormatted = momentEnd.format('YYYY-MM-DD HH:mm');
 
-    return dataPoints;
+    let sliceStart = data.findIndex(({ x }) => x.match(momentStartFormatted));
+    if (sliceStart < 0) sliceStart = 0;
+
+    let sliceEnd = filterValue ? undefined : data.findIndex(({ x }) => (
+      x.match(momentEndFormatted)
+    ));
+    if (sliceEnd < 0) sliceEnd = undefined;
+
+    return data.slice(sliceStart, sliceEnd);
   };
 
   const getGraphs = () => {
@@ -213,11 +212,9 @@ const Dashboards = ({
         if (datasets) {
           datasets.forEach(({ id, data }) => {
             ([1, 7, 31]).forEach((filterValue) => {
-              const dataPoints = filterData(data, datasets.length, filterValue);
-
               const graphData = {
                 id,
-                data: dataPoints,
+                data: filterData(data, datasets.length, filterValue),
               };
 
               if (index in graphsData[filterValue]) {
@@ -233,11 +230,9 @@ const Dashboards = ({
               const data = PGELoadProfile[axis];
 
               ([1, 7, 31]).forEach((filterValue) => {
-                const dataPoints = filterData(data, yAxis.length, filterValue);
-
                 const graphData = {
                   id: axis,
-                  data: dataPoints,
+                  data: filterData(data, 1, filterValue),
                 };
 
                 if (index in graphsData[filterValue]) {
@@ -274,11 +269,9 @@ const Dashboards = ({
         charts.forEach(({ datasets, yAxis }, index) => {
           if (datasets) {
             datasets.forEach(({ id, data }) => {
-              const dataPoints = filterData(data, datasets.length, 0, startDate, endDate);
-
               const graphData = {
                 id,
-                data: dataPoints,
+                data: filterData(data, datasets.length, 0, startDate, endDate),
               };
 
               if (index in graphsCustomRangeData[0]) {
@@ -292,12 +285,10 @@ const Dashboards = ({
               if (axis in PGELoadProfile) {
                 const data = PGELoadProfile[axis];
 
-                const dataPoints = filterData(data, yAxis.length, 0, startDate, endDate);
-
-                const graphData = ({
+                const graphData = {
                   id: axis,
-                  data: dataPoints,
-                });
+                  data: filterData(data, 1, 0, startDate, endDate),
+                };
 
                 if (index in graphsCustomRangeData[0]) {
                   graphsCustomRangeData[0][index].push(graphData);
@@ -323,42 +314,6 @@ const Dashboards = ({
   ]);
 
   const charts = dateTimeFilterValue === 0 ? customGraphsData[0] : graphsData[dateTimeFilterValue];
-
-  /* const graphs = graphsData
-    .map((data, i) => ({
-      id: `graph${i}`,
-      content: (
-        <Graph
-          title={graphNames[i]}
-          data={data}
-          dateTimeFilterValue={dateTimeFilterValue}
-          index={i}
-        />
-      ),
-    }))
-    .concat(graphsData.map((data, i) => ({
-      id: `graph${i + 2}`,
-      content: (
-        <Graph
-          title={graphNames[i]}
-          data={data}
-          dateTimeFilterValue={dateTimeFilterValue}
-          index={i + 2}
-        />
-      ),
-    }))); // TODO: remove concat. doubled up for presentation purposes */
-
-  // const [items, setItems] = useState(graphs);
-
-  /* const onDragEnd = ((result) => {
-    if (!result.destination) return;
-
-    setItems(reorder(
-      items,
-      result.source.index,
-      result.destination.index,
-    ));
-  }); */
 
   const dateTimeFilterMenu = (
     <StyledMenu>
@@ -551,7 +506,6 @@ const Dashboards = ({
                       minDate={minDate}
                       maxDate={maxDate}
                       fixedHeight
-                      moveRangeOnFirstSelection
                     />
                   )}
                 >
@@ -599,7 +553,7 @@ const Dashboards = ({
       <StyledDashboardsGraphsGrid>
         {charts.map((data, index) => (
           <Graph
-            key={graphNames[index]}
+            key={graphNames[index] + data.id}
             title={graphNames[index]}
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
@@ -620,31 +574,6 @@ const Dashboards = ({
           handleCancel={toggleAddDashboardModal}
         />
       )}
-      {/* <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <StyledDashboardsGraphsGrid
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </StyledDashboardsGraphsGrid>
-          )}
-        </Droppable>
-      </DragDropContext> */}
     </>
   );
 };

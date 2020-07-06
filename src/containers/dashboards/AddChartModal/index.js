@@ -36,7 +36,7 @@ function AddChartModal({
   handleCancel,
   pipelines,
   getPipelines,
-  PGELoadProfile,
+  PGELoadProfilePreview,
   addChart,
   index,
 }) {
@@ -97,7 +97,7 @@ function AddChartModal({
     </StyledMenu>
   );
 
-  const tariffs = Object.keys(PGELoadProfile);
+  const tariffs = Object.keys(PGELoadProfilePreview);
 
   const xAxisMenu = (
     <StyledMenu>
@@ -154,7 +154,7 @@ function AddChartModal({
   const graphDataPreview = [];
 
   yAxis.forEach((tariff) => {
-    const loadProfile = PGELoadProfile[tariff] || [];
+    const loadProfile = PGELoadProfilePreview[tariff] || [];
     const data = [];
 
     if (loadProfile.length) {
@@ -357,7 +357,7 @@ AddChartModal.propTypes = {
     name: PropTypes.string.isRequired,
     last_updated: PropTypes.string.isRequired,
   })).isRequired,
-  PGELoadProfile: PropTypes.objectOf(PropTypes.array).isRequired,
+  PGELoadProfilePreview: PropTypes.objectOf(PropTypes.array).isRequired,
   getPipelines: PropTypes.func.isRequired,
   addChart: PropTypes.func.isRequired,
   handleOk: PropTypes.func.isRequired,
@@ -371,7 +371,7 @@ AddChartModal.defaultProps = {
 
 const mapStateToProps = (state) => ({
   pipelines: state.pipelines.pipelines,
-  PGELoadProfile: state.dashboards.PGELoadProfile,
+  PGELoadProfilePreview: state.dashboards.PGELoadProfilePreview,
 });
 
 const mapDispatch = (dispatch) => bindActionCreators({
