@@ -6,10 +6,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { getPipelines as getPipelinesAction } from 'actions/pipelines';
-import {
-  getPGELoadProfile as getPGELoadProfileAction,
-  addChart as addChartAction,
-} from 'actions/dashboards';
+import { addChart as addChartAction } from 'actions/dashboards';
 import {
   StyledText,
   StyledH3,
@@ -39,8 +36,7 @@ function AddChartModal({
   handleCancel,
   pipelines,
   getPipelines,
-  PGELoadProfile,
-  getPGELoadProfile,
+  PGELoadProfilePreview,
   addChart,
   index,
 }) {
@@ -49,10 +45,6 @@ function AddChartModal({
   }, [pipelines, getPipelines]);
 
   const [step, setStep] = useState(0);
-
-  useEffect(() => {
-    if (!Object.keys(PGELoadProfile).length && step === 1) getPGELoadProfile();
-  }, [PGELoadProfile, getPGELoadProfile, step]);
 
   const [pipeline, setPipeline] = useState();
 
@@ -105,7 +97,7 @@ function AddChartModal({
     </StyledMenu>
   );
 
-  const tariffs = Object.keys(PGELoadProfile);
+  const tariffs = Object.keys(PGELoadProfilePreview);
 
   const xAxisMenu = (
     <StyledMenu>
@@ -119,6 +111,7 @@ function AddChartModal({
       </StyledMenuItem>
       {tariffs.map((axis) => (
         <StyledMenuItem
+          key={axis}
           onClick={() => setXAxis(axis)}
           bordercolor="lightBg"
           hoverbgcolor="darkGray"
@@ -144,6 +137,7 @@ function AddChartModal({
       </StyledMenuItem>
       {tariffs.map((axis) => (
         <StyledMenuItem
+          key={axis}
           onClick={() => addYAxis(axis)}
           bordercolor="lightBg"
           hoverbgcolor="darkGray"
@@ -157,11 +151,10 @@ function AddChartModal({
     </StyledMenu>
   );
 
-  const graphData = [];
   const graphDataPreview = [];
 
   yAxis.forEach((tariff) => {
-    const loadProfile = PGELoadProfile[tariff] || [];
+    const loadProfile = PGELoadProfilePreview[tariff] || [];
     const data = [];
 
     if (loadProfile.length) {
@@ -179,10 +172,6 @@ function AddChartModal({
       graphDataPreview.push({
         id: tariff,
         data,
-      });
-      graphData.push({
-        id: tariff,
-        data: loadProfile,
       });
     }
   });
@@ -288,10 +277,8 @@ function AddChartModal({
         data={xAxis && yAxis.length ? graphDataPreview : []}
         dateTimeFilterValue={7}
         index={index}
-        yUnit="kWh"
         showMenu={false}
-        hasTitleMargin={false}
-        minheight="33vh"
+        maxY="auto"
       />
       <Space size={84} align="top">
         <Space direction="vertical" size={16}>
@@ -309,7 +296,7 @@ function AddChartModal({
           <div />
           <StyledButton
             onClick={(event) => {
-              addChart(graphName, graphData);
+              addChart(graphName, yAxis, xAxis);
               handleOk(event);
             }}
             disabled={!xAxis || !yAxis.length}
@@ -332,7 +319,7 @@ function AddChartModal({
             <small>(max 5 columns)</small>
           </Space>
           {yAxis.map((axisItem, axisIndex) => (
-            <StyledAxisItem active>
+            <StyledAxisItem key={axisItem} active>
               <Space size={25}>
                 <StyledText color="lightGray" fontweight="500">
                   {`Column ${axisIndex + 1}`}
@@ -370,8 +357,7 @@ AddChartModal.propTypes = {
     name: PropTypes.string.isRequired,
     last_updated: PropTypes.string.isRequired,
   })).isRequired,
-  getPGELoadProfile: PropTypes.func.isRequired,
-  PGELoadProfile: PropTypes.objectOf(PropTypes.array).isRequired,
+  PGELoadProfilePreview: PropTypes.objectOf(PropTypes.array).isRequired,
   getPipelines: PropTypes.func.isRequired,
   addChart: PropTypes.func.isRequired,
   handleOk: PropTypes.func.isRequired,
@@ -385,12 +371,11 @@ AddChartModal.defaultProps = {
 
 const mapStateToProps = (state) => ({
   pipelines: state.pipelines.pipelines,
-  PGELoadProfile: state.dashboards.PGELoadProfile,
+  PGELoadProfilePreview: state.dashboards.PGELoadProfilePreview,
 });
 
 const mapDispatch = (dispatch) => bindActionCreators({
   getPipelines: getPipelinesAction,
-  getPGELoadProfile: getPGELoadProfileAction,
   addChart: addChartAction,
 }, dispatch);
 

@@ -5,14 +5,14 @@ import { bindActionCreators } from 'redux';
 import { Space } from 'antd';
 import moment from 'moment';
 import { DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main css file
-// import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import 'react-date-range/dist/styles.css';
 
-// import reorder from 'util/reorder';
 import {
   getDashboards as getDashboardsAction,
   deleteDashboard as deleteDashboardAction,
   setCurrentDashboard as setCurrentDashboardAction,
+  getPGELoadProfile as getPGELoadProfileAction,
+  setDateTimeFilterValue as setDateTimeFilterValueAction,
 } from 'actions/dashboards';
 import MenuOutlined from 'icons/MenuOutlined';
 import DownOutlined from 'icons/DownOutlined';
@@ -47,18 +47,42 @@ const Dashboards = ({
   currentDashboard,
   deleteDashboard,
   setCurrentDashboard,
+  PGELoadProfile,
+  getPGELoadProfile,
+  dateTimeFilterValue,
+  setDateTimeFilterValue,
 }) => {
-  useEffect(() => {
-    getDashboards();
-  }, [getDashboards]);
-
-  const [dateTimeFilterValue, setDateTimeFilterValue] = useState(1); // in days
+  const currentDashboardName = currentDashboard in dashboards ? dashboards[currentDashboard].name : '';
 
   const [dateRange, setDateRange] = useState([{
-    startDate: new Date('1/1/2019'),
-    endDate: new Date('2/1/2020'),
+    startDate: new Date('5/27/20'),
+    endDate: new Date('6/27/20'),
     key: 'selection',
   }]);
+
+  useEffect(() => {
+    const currName = currentDashboard in dashboards ? dashboards[currentDashboard].name : '';
+    if (currName.match('Holy Cross Dashboard')) {
+      setDateRange([{
+        startDate: new Date('12/1/17'),
+        endDate: new Date('12/31/17'),
+        key: 'selection',
+      }]);
+    } else {
+      setDateRange([{
+        startDate: new Date('5/27/20'),
+        endDate: new Date('6/27/20'),
+        key: 'selection',
+      }]);
+    }
+  }, [currentDashboard, dashboards]);
+
+  const maxDate = new Date();
+  const minDate = currentDashboardName === 'Holy Cross Dashboard' ? (
+    new Date(maxDate.getFullYear() - 3, 0, 1) // have calendar go back 3 years
+  ) : (
+    new Date('1/1/2020')
+  );
 
   const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
   const [addChartModalVisible, setAddChartModalVisible] = useState(false);
@@ -68,14 +92,35 @@ const Dashboards = ({
   const toggleAddChartModal = () => setAddChartModalVisible(!addChartModalVisible);
   const toggleAddDashboardModal = () => setAddDashboardModalVisible(!addDashboardModalVisible);
 
-  const currentDashboardName = currentDashboard in dashboards ? dashboards[currentDashboard].name : '';
+  useEffect(() => {
+    getDashboards();
+  }, [getDashboards]);
+
+  useEffect(() => {
+    if (dashboards.length && currentDashboard > 0) { // only get if not on Holy Cross Dashboard
+      if (dateTimeFilterValue || addChartModalVisible) {
+        const start = new Date('5/27/2020');
+        const end = new Date('6/27/2020');
+        getPGELoadProfile(start, end, addChartModalVisible);
+      } else {
+        getPGELoadProfile(dateRange[0].startDate, dateRange[0].endDate);
+      }
+    }
+  }, [
+    getPGELoadProfile,
+    dateRange,
+    dateTimeFilterValue,
+    dashboards,
+    currentDashboard,
+    addChartModalVisible,
+  ]);
 
   const dashboardsMenu = (
     <StyledDashboardsMenu>
       {dashboards.map(({ name: dashboardName }, index) => (
         <StyledDashboardsMenuItem
-          onClick={() => setCurrentDashboard(index)}
           key={dashboardName}
+          onClick={() => setCurrentDashboard(index)}
         >
           {dashboardName}
         </StyledDashboardsMenuItem>
@@ -119,7 +164,33 @@ const Dashboards = ({
     </StyledDashboardsMenu>
   );
 
-  const getGraphs = (filterValues = [1, 7, 31]) => {
+  const filterData = (data, numDatasets, filterValue, start, end) => {
+    let momentStart;
+    let momentEnd;
+
+    if (filterValue) {
+      momentStart = moment(data[data.length - 1].x).subtract(filterValue, 'days');
+      momentEnd = moment(data[data.length - 1].x).endOf('day');
+    } else {
+      momentStart = moment(start).startOf('day');
+      momentEnd = moment(end).add(1, 'day').startOf('day');
+    }
+
+    const momentStartFormatted = momentStart.format('YYYY-MM-DD HH:mm');
+    const momentEndFormatted = momentEnd.format('YYYY-MM-DD HH:mm');
+
+    let sliceStart = data.findIndex(({ x }) => x.match(momentStartFormatted));
+    if (sliceStart < 0) sliceStart = 0;
+
+    let sliceEnd = filterValue ? undefined : data.findIndex(({ x }) => (
+      x.match(momentEndFormatted)
+    ));
+    if (sliceEnd < 0) sliceEnd = undefined;
+
+    return data.slice(sliceStart, sliceEnd);
+  };
+
+  const getGraphs = () => {
     const graphsData = {
       1: [],
       7: [],
@@ -127,63 +198,60 @@ const Dashboards = ({
     };
 
     const graphNames = [];
-    const graphsMaxY = [];
-    const graphsYUnit = [];
 
     if (currentDashboard in dashboards) {
       const { charts } = dashboards[currentDashboard];
 
       charts.forEach(({
-        name: graphName, maxY, yUnit, datasets,
+        name: graphName, datasets, yAxis,
       }, index) => {
         graphNames.push(graphName);
-        graphsMaxY.push(maxY);
-        graphsYUnit.push(yUnit);
 
-        datasets.forEach((set) => {
-          const { id, data } = set;
+        if (datasets) {
+          datasets.forEach(({ id, data }) => {
+            ([1, 7, 31]).forEach((filterValue) => {
+              const graphData = {
+                id,
+                data: filterData(data, datasets.length, filterValue),
+              };
 
-          filterValues.forEach((filterValue) => {
-            const dataPoints = [];
-
-            const momentStart = moment(data[data.length - 1].x)
-              .subtract(filterValue, 'days');
-
-            const xStart = momentStart.format('YYYY-MM-DD HH');
-
-            for (let i = data.length - 1; i >= 0; i -= 1) { // start from the end
-              if (filterValue !== 31 || i % 4 === 0) {
-                dataPoints.push(data[i]);
+              if (index in graphsData[filterValue]) {
+                graphsData[filterValue][index].push(graphData);
+              } else {
+                graphsData[filterValue][index] = [graphData];
               }
-              if (data[i].x.match(xStart)) {
-                break;
-              }
-            }
-
-            const graphData = ({
-              id,
-              data: dataPoints,
             });
+          });
+        } else if (yAxis) {
+          yAxis.forEach((axis) => {
+            if (axis in PGELoadProfile) {
+              const data = PGELoadProfile[axis];
 
-            if (index in graphsData[filterValue]) {
-              graphsData[filterValue][index].push(graphData);
-            } else {
-              graphsData[filterValue][index] = [graphData];
+              ([1, 7, 31]).forEach((filterValue) => {
+                const graphData = {
+                  id: axis,
+                  data: filterData(data, 1, filterValue),
+                };
+
+                if (index in graphsData[filterValue]) {
+                  graphsData[filterValue][index].push(graphData);
+                } else {
+                  graphsData[filterValue][index] = [graphData];
+                }
+              });
             }
           });
-        });
+        }
       });
     }
 
-    return [graphsData, graphNames, graphsMaxY, graphsYUnit];
+    return [graphsData, graphNames];
   };
 
   const [
     graphsData,
     graphNames,
-    graphsMaxY,
-    graphsYUnit,
-  ] = useMemo(getGraphs, [dashboards, currentDashboard]);
+  ] = useMemo(getGraphs, [dashboards, currentDashboard, PGELoadProfile]);
 
   const getGraphsCustomRange = () => {
     const graphsCustomRangeData = {
@@ -194,44 +262,40 @@ const Dashboards = ({
       if (currentDashboard in dashboards) {
         const { charts } = dashboards[currentDashboard];
 
-        const momentStart = moment(dateRange[0].startDate);
-        const momentEnd = moment(dateRange[0].endDate);
-        const momentEndFormatted = momentEnd.format('YYYY-MM-DD HH');
+        const { startDate, endDate } = dateRange[0];
 
-        charts.forEach(({ datasets }, index) => {
-          datasets.forEach((set) => {
-            const { id, data } = set;
+        charts.forEach(({ datasets, yAxis }, index) => {
+          if (datasets) {
+            datasets.forEach(({ id, data }) => {
+              const graphData = {
+                id,
+                data: filterData(data, datasets.length, 0, startDate, endDate),
+              };
 
-            const dataPoints = [];
-
-            let endIndex = data.findIndex(({ x }) => x.match(momentEndFormatted));
-
-            if (endIndex < 0) {
-              endIndex = data.length - 1;
-            }
-
-            for (let i = endIndex; i >= 0; i -= 1) { // start from the end
-              const momentX = moment(data[i].x);
-              if (momentX.isSameOrAfter(momentStart) && momentX.isSameOrBefore(momentEnd)) {
-                if ((endIndex - i) % 4 === 0) {
-                  dataPoints.push(data[i]);
-                }
+              if (index in graphsCustomRangeData[0]) {
+                graphsCustomRangeData[0][index].push(graphData);
               } else {
-                break;
+                graphsCustomRangeData[0][index] = [graphData];
               }
-            }
-
-            const graphData = ({
-              id,
-              data: dataPoints,
             });
+          } else if (yAxis) {
+            yAxis.forEach((axis) => {
+              if (axis in PGELoadProfile) {
+                const data = PGELoadProfile[axis];
 
-            if (index in graphsCustomRangeData[0]) {
-              graphsCustomRangeData[0][index].push(graphData);
-            } else {
-              graphsCustomRangeData[0][index] = [graphData];
-            }
-          });
+                const graphData = {
+                  id: axis,
+                  data: filterData(data, 1, 0, startDate, endDate),
+                };
+
+                if (index in graphsCustomRangeData[0]) {
+                  graphsCustomRangeData[0][index].push(graphData);
+                } else {
+                  graphsCustomRangeData[0][index] = [graphData];
+                }
+              }
+            });
+          }
         });
       }
     }
@@ -244,45 +308,10 @@ const Dashboards = ({
     currentDashboard,
     dateTimeFilterValue,
     dateRange,
+    PGELoadProfile,
   ]);
 
   const charts = dateTimeFilterValue === 0 ? customGraphsData[0] : graphsData[dateTimeFilterValue];
-
-  /* const graphs = graphsData
-    .map((data, i) => ({
-      id: `graph${i}`,
-      content: (
-        <Graph
-          title={graphNames[i]}
-          data={data}
-          dateTimeFilterValue={dateTimeFilterValue}
-          index={i}
-        />
-      ),
-    }))
-    .concat(graphsData.map((data, i) => ({
-      id: `graph${i + 2}`,
-      content: (
-        <Graph
-          title={graphNames[i]}
-          data={data}
-          dateTimeFilterValue={dateTimeFilterValue}
-          index={i + 2}
-        />
-      ),
-    }))); // TODO: remove concat. doubled up for presentation purposes */
-
-  // const [items, setItems] = useState(graphs);
-
-  /* const onDragEnd = ((result) => {
-    if (!result.destination) return;
-
-    setItems(reorder(
-      items,
-      result.source.index,
-      result.destination.index,
-    ));
-  }); */
 
   const dateTimeFilterMenu = (
     <StyledMenu>
@@ -459,19 +488,22 @@ const Dashboards = ({
                     <DateRange
                       editableDateInputs
                       onChange={(item) => setDateRange([item.selection])}
-                      moveRangeOnFirstSelection={false}
                       ranges={dateRange}
                       direction="horizontal"
                       scroll={{
                         enabled: true,
-                        monthWidth: 227,
-                        monthHeight: 100,
-                        longMonthHeight: 170,
+                        monthWidth: 224,
+                        longMonthHeight: 214,
                         calendarWidth: 214,
                       }}
                       rangeColors={[colors.algaeGreen]}
                       color={colors.lightGray}
                       showMonthAndYearPickers={false}
+                      dateDisplayFormat="M/d/yyyy"
+                      weekdayDisplayFormat="EEEEE"
+                      minDate={minDate}
+                      maxDate={maxDate}
+                      fixedHeight
                     />
                   )}
                 >
@@ -519,13 +551,11 @@ const Dashboards = ({
       <StyledDashboardsGraphsGrid>
         {charts.map((data, index) => (
           <Graph
-            key={graphNames[index]}
+            key={`${graphNames[index]}${data.map((dataset) => dataset.id)}`}
             title={graphNames[index]}
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
             index={index}
-            maxY={graphsMaxY[index][dateTimeFilterValue]}
-            yUnit={index in graphsYUnit ? graphsYUnit[index] : 'kWh'}
           />
         ))}
       </StyledDashboardsGraphsGrid>
@@ -542,31 +572,6 @@ const Dashboards = ({
           handleCancel={toggleAddDashboardModal}
         />
       )}
-      {/* <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <StyledDashboardsGraphsGrid
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </StyledDashboardsGraphsGrid>
-          )}
-        </Droppable>
-      </DragDropContext> */}
     </>
   );
 };
@@ -577,17 +582,25 @@ Dashboards.propTypes = {
   currentDashboard: PropTypes.number.isRequired,
   deleteDashboard: PropTypes.func.isRequired,
   setCurrentDashboard: PropTypes.func.isRequired,
+  PGELoadProfile: PropTypes.objectOf(PropTypes.array).isRequired,
+  getPGELoadProfile: PropTypes.func.isRequired,
+  dateTimeFilterValue: PropTypes.number.isRequired,
+  setDateTimeFilterValue: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   dashboards: state.dashboards.dashboards,
   currentDashboard: state.dashboards.currentDashboard,
+  PGELoadProfile: state.dashboards.PGELoadProfile,
+  dateTimeFilterValue: state.dashboards.dateTimeFilterValue,
 });
 
 const mapDispatch = (dispatch) => bindActionCreators({
   getDashboards: getDashboardsAction,
   deleteDashboard: deleteDashboardAction,
   setCurrentDashboard: setCurrentDashboardAction,
+  getPGELoadProfile: getPGELoadProfileAction,
+  setDateTimeFilterValue: setDateTimeFilterValueAction,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(Dashboards);

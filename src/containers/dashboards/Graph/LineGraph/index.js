@@ -2,6 +2,7 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import colors from 'styles/colors';
 import { StyledLegendIcon } from 'styles/dashboards';
@@ -27,6 +28,7 @@ const LineGraph = ({
 
   let tickValues = 'every hour';
   let axisBottomFormat = '%-I %p';
+
   if (dateTimeFilterValue !== 1) {
     tickValues = 'every day';
     axisBottomFormat = '%d';
@@ -115,9 +117,14 @@ const LineGraph = ({
     );
   };
 
+  const spacedOutData = data.map(({ id, data: graphData }) => ({
+    id,
+    data: graphData.filter((point, count) => count % (4 * data.length) === 0),
+  }));
+
   return (
     <ResponsiveLine
-      data={data}
+      data={spacedOutData}
       margin={{
         top: hasTitleMargin ? 93 : 60,
         right: 30,
@@ -196,7 +203,7 @@ LineGraph.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     data: PropTypes.arrayOf(PropTypes.shape({
-      x: PropTypes.string.isRequired,
+      x: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
       y: PropTypes.number.isRequired,
     })).isRequired,
   })).isRequired,
@@ -212,4 +219,8 @@ LineGraph.defaultProps = {
   maxY: 'auto',
 };
 
-export default LineGraph;
+const mapStateToProps = ({ dashboards }, { dateTimeFilterValue }) => ({
+  dateTimeFilterValue: dateTimeFilterValue || dashboards.dateTimeFilterValue,
+});
+
+export default connect(mapStateToProps)(LineGraph);

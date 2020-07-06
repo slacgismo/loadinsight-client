@@ -1,7 +1,10 @@
+import moment from 'moment';
+
 import {
   GET_DASHBOARDS_STARTED,
   GET_DASHBOARDS_COMPLETED,
   GET_DASHBOARDS_FAILED,
+  SET_PGE_LOAD_PROFILE,
   GET_PGE_LOAD_PROFILE_STARTED,
   GET_PGE_LOAD_PROFILE_COMPLETED,
   GET_PGE_LOAD_PROFILE_FAILED,
@@ -10,6 +13,7 @@ import {
   ADD_DASHBOARD,
   DELETE_DASHBOARD,
   SET_CURRENT_DASHBOARD,
+  SET_DATE_TIME_FILTER_VALUE,
 } from 'actions';
 import {
   USER_KEY_DASHBOARDS,
@@ -20,8 +24,10 @@ const DEFAULT_STATE = {
   dashboards: [],
   currentDashboard: 0,
   isLoadingDashboards: false,
-  isLoadingLoadProfile: false,
   PGELoadProfile: {},
+  PGELoadProfilePreview: {},
+  isLoadingLoadProfile: false,
+  dateTimeFilterValue: 1,
   error: null,
 };
 
@@ -63,6 +69,9 @@ export default (state = DEFAULT_STATE, action) => {
         isLoadingDashboards: false,
         error: action.payload,
       };
+    case SET_PGE_LOAD_PROFILE:
+      window.localStorage.setItem(action.dateStringKey, action.payload);
+      return state;
     case GET_PGE_LOAD_PROFILE_STARTED:
       return {
         ...state,
@@ -72,28 +81,34 @@ export default (state = DEFAULT_STATE, action) => {
     case GET_PGE_LOAD_PROFILE_COMPLETED: {
       const loadProfileByTariff = {};
 
-      const xAxes = Object.keys(action.payload);
-      const yAxes = Object.keys(action.payload[xAxes[0]]);
-
-      Object.keys(action.payload).forEach((xAxis) => {
-        yAxes.forEach((yAxis) => {
+      action.payload.forEach((row, dateTime) => {
+        Object.keys(row).forEach((tariff) => {
           const point = {
-            x: xAxis,
-            y: action.payload[xAxis][yAxis],
+            x: moment(dateTime).format('YYYY-MM-DD HH:mm:ss'),
+            y: parseFloat(row[tariff]),
           };
 
-          if (yAxis in loadProfileByTariff) {
-            loadProfileByTariff[yAxis].push(point);
+          if (tariff in loadProfileByTariff) {
+            loadProfileByTariff[tariff].push(point);
           } else {
-            loadProfileByTariff[yAxis] = [point];
+            loadProfileByTariff[tariff] = [point];
           }
         });
       });
 
+      if (action.addChartModalVisible) {
+        return {
+          ...state,
+          PGELoadProfilePreview: loadProfileByTariff,
+          isLoadingLoadProfile: false,
+          error: null,
+        };
+      }
+
       return {
         ...state,
         PGELoadProfile: loadProfileByTariff,
-        isLoadingLoadProfile: true,
+        isLoadingLoadProfile: false,
         error: null,
       };
     }
@@ -173,6 +188,12 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         currentDashboard,
+      };
+    }
+    case SET_DATE_TIME_FILTER_VALUE: {
+      return {
+        ...state,
+        dateTimeFilterValue: action.payload,
       };
     }
     default:
