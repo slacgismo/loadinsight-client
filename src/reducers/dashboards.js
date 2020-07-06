@@ -4,6 +4,7 @@ import {
   GET_DASHBOARDS_STARTED,
   GET_DASHBOARDS_COMPLETED,
   GET_DASHBOARDS_FAILED,
+  SET_PGE_LOAD_PROFILE,
   GET_PGE_LOAD_PROFILE_STARTED,
   GET_PGE_LOAD_PROFILE_COMPLETED,
   GET_PGE_LOAD_PROFILE_FAILED,
@@ -68,6 +69,9 @@ export default (state = DEFAULT_STATE, action) => {
         isLoadingDashboards: false,
         error: action.payload,
       };
+    case SET_PGE_LOAD_PROFILE:
+      window.localStorage.setItem(action.dateStringKey, action.payload);
+      return state;
     case GET_PGE_LOAD_PROFILE_STARTED:
       return {
         ...state,

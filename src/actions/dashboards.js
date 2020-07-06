@@ -6,6 +6,7 @@ import {
   GET_DASHBOARDS_COMPLETED,
   GET_DASHBOARDS_FAILED,
   GET_DASHBOARDS_STARTED,
+  SET_PGE_LOAD_PROFILE,
   GET_PGE_LOAD_PROFILE_STARTED,
   GET_PGE_LOAD_PROFILE_COMPLETED,
   GET_PGE_LOAD_PROFILE_FAILED,
@@ -42,6 +43,12 @@ export const getDashboards = () => (dispatch) => {
       dispatch(getDashboardsFailed(err));
     });
 };
+
+export const setPGELoadProfile = (dateStringKey, payload) => ({
+  type: SET_PGE_LOAD_PROFILE,
+  payload,
+  dateStringKey,
+});
 
 export const getPGELoadProfileStarted = () => ({
   type: GET_PGE_LOAD_PROFILE_STARTED,
@@ -98,7 +105,7 @@ export const getPGELoadProfile = (
       waitingOnAPI = true;
       ApiClient.get(`/api/pge/${date.format('YYYYMMDD')}.csv`)
         .then((res) => {
-          window.localStorage.setItem(dateStringKey, res.data);
+          setPGELoadProfile(dateStringKey, res.data);
         })
         .catch((err) => {
           dispatch(getPGELoadProfileFailed(err));
