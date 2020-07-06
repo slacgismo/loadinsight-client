@@ -189,14 +189,7 @@ const Dashboards = ({
     ));
     if (sliceEnd < 0) sliceEnd = undefined;
 
-    if (filterValue === 1 || filterValue === 7) {
-      return data
-        .slice(sliceStart, sliceEnd);
-    }
-
-    return data
-      .slice(sliceStart, sliceEnd)
-      .filter((point, index) => index % (4 * numDatasets) === 0);
+    return data.slice(sliceStart, sliceEnd);
   };
 
   const getGraphs = () => {

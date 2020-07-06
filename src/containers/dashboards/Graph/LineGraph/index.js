@@ -117,9 +117,12 @@ const LineGraph = ({
     );
   };
 
+  const spacedOutData = data
+    .filter((point, count) => count % (4 * data.length) === 0);
+
   return (
     <ResponsiveLine
-      data={data}
+      data={spacedOutData}
       margin={{
         top: hasTitleMargin ? 93 : 60,
         right: 30,

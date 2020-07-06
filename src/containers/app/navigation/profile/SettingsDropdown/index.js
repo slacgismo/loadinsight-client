@@ -13,7 +13,8 @@ const { Item } = Menu;
 
 const StyledMenu = styled(Menu)`
   display: block;
-  min-width: 118px;
+  min-width: auto;
+  width: 118px;
   margin: 0 auto;
   background: #f7f7f7;
   padding: 18px 0;
