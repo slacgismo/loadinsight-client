@@ -27,7 +27,7 @@ const Graph = ({
   removeChart,
 }) => {
   const headers = ['DateTime'];
-  const hashedRows = new Map([]);
+  const hashedRows = new Map();
 
   let graphMax = 0;
   let yUnit = 'kWh';

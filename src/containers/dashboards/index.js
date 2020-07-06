@@ -110,7 +110,7 @@ const Dashboards = ({
     }
   }, [
     getPGELoadProfile,
-    dateRange[0],
+    dateRange,
     dateTimeFilterValue,
     dashboards,
     currentDashboard,
@@ -121,8 +121,8 @@ const Dashboards = ({
     <StyledDashboardsMenu>
       {dashboards.map(({ name: dashboardName }, index) => (
         <StyledDashboardsMenuItem
-          onClick={() => setCurrentDashboard(index)}
           key={dashboardName}
+          onClick={() => setCurrentDashboard(index)}
         >
           {dashboardName}
         </StyledDashboardsMenuItem>
@@ -212,11 +212,9 @@ const Dashboards = ({
         if (datasets) {
           datasets.forEach(({ id, data }) => {
             ([1, 7, 31]).forEach((filterValue) => {
-              const dataPoints = filterData(data, datasets.length, filterValue);
-
               const graphData = {
                 id,
-                data: dataPoints,
+                data: filterData(data, datasets.length, filterValue),
               };
 
               if (index in graphsData[filterValue]) {
@@ -232,11 +230,9 @@ const Dashboards = ({
               const data = PGELoadProfile[axis];
 
               ([1, 7, 31]).forEach((filterValue) => {
-                const dataPoints = filterData(data, 1, filterValue);
-
                 const graphData = {
                   id: axis,
-                  data: dataPoints,
+                  data: filterData(data, 1, filterValue),
                 };
 
                 if (index in graphsData[filterValue]) {
@@ -273,11 +269,9 @@ const Dashboards = ({
         charts.forEach(({ datasets, yAxis }, index) => {
           if (datasets) {
             datasets.forEach(({ id, data }) => {
-              const dataPoints = filterData(data, datasets.length, 0, startDate, endDate);
-
               const graphData = {
                 id,
-                data: dataPoints,
+                data: filterData(data, datasets.length, 0, startDate, endDate),
               };
 
               if (index in graphsCustomRangeData[0]) {
@@ -290,11 +284,10 @@ const Dashboards = ({
             yAxis.forEach((axis) => {
               if (axis in PGELoadProfile) {
                 const data = PGELoadProfile[axis];
-                const dataPoints = filterData(data, 1, 0, startDate, endDate);
 
                 const graphData = {
                   id: axis,
-                  data: dataPoints,
+                  data: filterData(data, 1, 0, startDate, endDate),
                 };
 
                 if (index in graphsCustomRangeData[0]) {
@@ -321,42 +314,6 @@ const Dashboards = ({
   ]);
 
   const charts = dateTimeFilterValue === 0 ? customGraphsData[0] : graphsData[dateTimeFilterValue];
-
-  /* const graphs = graphsData
-    .map((data, i) => ({
-      id: `graph${i}`,
-      content: (
-        <Graph
-          title={graphNames[i]}
-          data={data}
-          dateTimeFilterValue={dateTimeFilterValue}
-          index={i}
-        />
-      ),
-    }))
-    .concat(graphsData.map((data, i) => ({
-      id: `graph${i + 2}`,
-      content: (
-        <Graph
-          title={graphNames[i]}
-          data={data}
-          dateTimeFilterValue={dateTimeFilterValue}
-          index={i + 2}
-        />
-      ),
-    }))); // TODO: remove concat. doubled up for presentation purposes */
-
-  // const [items, setItems] = useState(graphs);
-
-  /* const onDragEnd = ((result) => {
-    if (!result.destination) return;
-
-    setItems(reorder(
-      items,
-      result.source.index,
-      result.destination.index,
-    ));
-  }); */
 
   const dateTimeFilterMenu = (
     <StyledMenu>
@@ -596,7 +553,7 @@ const Dashboards = ({
       <StyledDashboardsGraphsGrid>
         {charts.map((data, index) => (
           <Graph
-            key={graphNames[index]}
+            key={graphNames[index] + data.id}
             title={graphNames[index]}
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
@@ -617,31 +574,6 @@ const Dashboards = ({
           handleCancel={toggleAddDashboardModal}
         />
       )}
-      {/* <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <StyledDashboardsGraphsGrid
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </StyledDashboardsGraphsGrid>
-          )}
-        </Droppable>
-      </DragDropContext> */}
     </>
   );
 };

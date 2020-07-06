@@ -117,8 +117,10 @@ const LineGraph = ({
     );
   };
 
-  const spacedOutData = data
-    .filter((point, count) => count % (4 * data.length) === 0);
+  const spacedOutData = data.map(({ id, data: graphData }) => ({
+    id,
+    data: graphData.filter((point, count) => count % (4 * data.length) === 0),
+  }));
 
   return (
     <ResponsiveLine
