@@ -5,10 +5,8 @@ import { bindActionCreators } from 'redux';
 import { Space } from 'antd';
 import moment from 'moment';
 import { DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main css file
-// import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import 'react-date-range/dist/styles.css';
 
-// import reorder from 'util/reorder';
 import {
   getDashboards as getDashboardsAction,
   deleteDashboard as deleteDashboardAction,
@@ -100,9 +98,9 @@ const Dashboards = ({
 
   useEffect(() => {
     if (dashboards.length && currentDashboard > 0) { // only get if not on Holy Cross Dashboard
-      if (dateTimeFilterValue) {
-        const start = moment('5/27/2020');
-        const end = moment('6/27/2020');
+      if (dateTimeFilterValue || addChartModalVisible) {
+        const start = new Date('5/27/2020');
+        const end = new Date('6/27/2020');
         getPGELoadProfile(start, end, addChartModalVisible);
       } else {
         getPGELoadProfile(dateRange[0].startDate, dateRange[0].endDate);
@@ -553,7 +551,7 @@ const Dashboards = ({
       <StyledDashboardsGraphsGrid>
         {charts.map((data, index) => (
           <Graph
-            key={graphNames[index] + data.id}
+            key={`${graphNames[index]}${data.map((dataset) => dataset.id)}`}
             title={graphNames[index]}
             data={data}
             dateTimeFilterValue={dateTimeFilterValue}
