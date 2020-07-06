@@ -357,8 +357,6 @@ const Dashboards = ({
     0: 'Custom',
   };
 
-  console.log(charts);
-
   const additionalFilterMenu = (
     <StyledMenu>
       <StyledMenuItem
