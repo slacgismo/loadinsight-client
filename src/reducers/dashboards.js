@@ -24,6 +24,7 @@ const DEFAULT_STATE = {
   currentDashboard: 0,
   isLoadingDashboards: false,
   PGELoadProfile: {},
+  PGELoadProfilePreview: {},
   isLoadingLoadProfile: false,
   dateTimeFilterValue: 1,
   error: null,
@@ -76,11 +77,11 @@ export default (state = DEFAULT_STATE, action) => {
     case GET_PGE_LOAD_PROFILE_COMPLETED: {
       const loadProfileByTariff = {};
 
-      action.payload.forEach((value, key) => {
-        Object.keys(value).forEach((tariff) => {
+      action.payload.forEach((row, dateTime) => {
+        Object.keys(row).forEach((tariff) => {
           const point = {
-            x: moment(key).format('YYYY-MM-DD HH:mm:ss'),
-            y: parseFloat(value[tariff]),
+            x: moment(dateTime).format('YYYY-MM-DD HH:mm:ss'),
+            y: parseFloat(row[tariff]),
           };
 
           if (tariff in loadProfileByTariff) {
@@ -91,13 +92,19 @@ export default (state = DEFAULT_STATE, action) => {
         });
       });
 
+      if (action.addChartModalVisible) {
+        return {
+          ...state,
+          PGELoadProfilePreview: loadProfileByTariff,
+          isLoadingLoadProfile: false,
+          error: null,
+        };
+      }
+
       return {
         ...state,
-        PGELoadProfile: {
-          ...state.PGELoadProfile,
-          ...loadProfileByTariff,
-        },
-        isLoadingLoadProfile: true,
+        PGELoadProfile: loadProfileByTariff,
+        isLoadingLoadProfile: false,
         error: null,
       };
     }
