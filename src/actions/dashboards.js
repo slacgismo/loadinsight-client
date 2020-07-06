@@ -105,7 +105,7 @@ export const getPGELoadProfile = (
       waitingOnAPI = true;
       ApiClient.get(`/api/pge/${date.format('YYYYMMDD')}.csv`)
         .then((res) => {
-          setPGELoadProfile(dateStringKey, res.data);
+          dispatch(setPGELoadProfile(dateStringKey, res.data));
         })
         .catch((err) => {
           dispatch(getPGELoadProfileFailed(err));

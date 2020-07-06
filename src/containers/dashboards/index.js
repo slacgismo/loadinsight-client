@@ -100,7 +100,7 @@ const Dashboards = ({
 
   useEffect(() => {
     if (dashboards.length && currentDashboard > 0) { // only get if not on Holy Cross Dashboard
-      if (dateTimeFilterValue) {
+      if (dateTimeFilterValue || addChartModalVisible) {
         const start = moment('5/27/2020');
         const end = moment('6/27/2020');
         getPGELoadProfile(start, end, addChartModalVisible);
