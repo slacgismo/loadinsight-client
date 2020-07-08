@@ -1,6 +1,6 @@
 {
-    "email": "dchassin@slac.stanford.edu",
-    "password": "dchassin",
+    "email": "guest@loadinsight.org",
+    "password": "guest",
     "first_name": "David",
     "last_name": "Chassin",
     "token": "fake_auth_token"
