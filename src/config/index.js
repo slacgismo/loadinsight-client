@@ -4,7 +4,7 @@ const ENVIRONMENT_PRODUCTION = 'PRODUCTION';
 
 const BASE_URL_DEVELOPMENT = 'http://localhost:3000';
 const BASE_URL_STAGING = 'https://staging.loadinsight.org';
-const BASE_URL_PRODUCTION = 'https://loadinsight.org';
+const BASE_URL_PRODUCTION = 'https://www.loadinsight.org';
 
 const parseEnvironment = () => {
   if (window.location.hostname.includes('localhost')) return ENVIRONMENT_DEVELOPMENT;
