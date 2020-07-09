@@ -1,10 +1,13 @@
 version: 2.1
 orbs:
   node: circleci/node@2.1.1
+  python: circleci/python@0.3.2
 jobs:
   build:
     docker:
       - image: cimg/base:stable
+    environment:
+      - PGE_STOP_DATE=7/5/20
     steps:
       - checkout
       - node/install:
@@ -21,6 +24,14 @@ jobs:
           name: Build
           command: |
             npm run build
+      - run:
+          name: Install pipenv
+          command: |
+            brew install pipenv
+      - run:
+          name: Update PG&E Data
+          command: |
+            cd scripts && pipenv install && pip run python pgande.py --start 1/1/20 --end $PGE_STOP_DATE
       - run:
           name: Deploy
           command: |
