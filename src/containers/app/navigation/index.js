@@ -5,7 +5,7 @@ import colors from 'styles/colors';
 import Profile from './profile';
 import Menu from './menu';
 
-const StyledHelpLink = styled.div`
+const StyledHelpLink = styled.a`
   position: absolute;
   left: 20px;
   bottom: 20px;
@@ -18,6 +18,6 @@ export default () => (
   <>
     <Profile />
     <Menu />
-    <StyledHelpLink>Help</StyledHelpLink>
+    <StyledHelpLink href="http://docs.gridlabd.us/" target="_blank">Help</StyledHelpLink>
   </>
 );

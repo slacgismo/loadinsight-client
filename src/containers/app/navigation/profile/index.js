@@ -65,8 +65,8 @@ const Profile = () => (
       <StyledPhoto />
     </StyledPhotoContainer>
     <StyledNameAndOrg>
-      <StyledName>David Chassin</StyledName>
-      <StyledOrganization>SLAC</StyledOrganization>
+      <StyledName>Guest</StyledName>
+      <StyledOrganization>Load Insight</StyledOrganization>
     </StyledNameAndOrg>
     <SettingsDropdown />
   </StyledProfileContainer>

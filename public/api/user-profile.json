@@ -1,7 +1,8 @@
 {
     "email": "guest@loadinsight.org",
     "password": "guest",
-    "first_name": "David",
-    "last_name": "Chassin",
+    "first_name": "Guest",
+    "last_name": "",
+    "organization": "Load Insight",
     "token": "fake_auth_token"
 }
