@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import colors from 'styles/colors';
 import SettingsDropdown from './SettingsDropdown';
-import PhotoImg from './images/dchassin-profile.jpeg';
+import PhotoImg from './images/navigation-profile-avatar.svg';
 
 const StyledProfileContainer = styled.div`
   position: relative;
