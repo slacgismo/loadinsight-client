@@ -25,10 +25,6 @@ jobs:
           command: |
             npm run build
       - run:
-          name: Install pipenv
-          command: |
-            brew install pipenv
-      - run:
           name: Update PG&E Data
           command: |
             cd scripts && pipenv install && pip run python pgande.py --start 1/1/20 --end $PGE_STOP_DATE
