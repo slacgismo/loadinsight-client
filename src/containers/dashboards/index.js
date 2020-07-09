@@ -370,65 +370,65 @@ const Dashboards = ({
         bordercolor="lightBg"
         hoverbgcolor="white"
         hovercolor="gray"
-        style={{ cursor: "default" }}
+        style={{ cursor: 'default' }}
       >
-        <span style={{ color: "rgba(112, 112, 112, 0.3)" }}>AMI Meter ID</span>
+        <span style={{ color: 'rgba(112, 112, 112, 0.3)' }}>AMI Meter ID</span>
       </StyledMenuItem>
       <StyledMenuItem
         bordercolor="lightBg"
         hoverbgcolor="white"
         hovercolor="gray"
-        style={{ cursor: "default" }}
+        style={{ cursor: 'default' }}
       >
-        <span style={{ color: "rgba(112, 112, 112, 0.3)" }}>Channel</span>
+        <span style={{ color: 'rgba(112, 112, 112, 0.3)' }}>Channel</span>
       </StyledMenuItem>
       <StyledMenuItem
         bordercolor="lightBg"
         hoverbgcolor="white"
         hovercolor="gray"
-        style={{ cursor: "default" }}
+        style={{ cursor: 'default' }}
       >
-        <span style={{ color: "rgba(112, 112, 112, 0.3)" }}>Flow Direction</span>
+        <span style={{ color: 'rgba(112, 112, 112, 0.3)' }}>Flow Direction</span>
       </StyledMenuItem>
       <StyledMenuItem
         bordercolor="lightBg"
         hoverbgcolor="white"
         hovercolor="gray"
-        style={{ cursor: "default" }}
+        style={{ cursor: 'default' }}
       >
-        <span style={{ color: "rgba(112, 112, 112, 0.3)" }}>Service Location Number</span>
+        <span style={{ color: 'rgba(112, 112, 112, 0.3)' }}>Service Location Number</span>
       </StyledMenuItem>
       <StyledMenuItem
         bordercolor="lightBg"
         hoverbgcolor="white"
         hovercolor="gray"
-        style={{ cursor: "default" }}
+        style={{ cursor: 'default' }}
       >
-        <span style={{ color: "rgba(112, 112, 112, 0.3)" }}>Substation</span>
+        <span style={{ color: 'rgba(112, 112, 112, 0.3)' }}>Substation</span>
       </StyledMenuItem>
       <StyledMenuItem
         bordercolor="lightBg"
         hoverbgcolor="white"
         hovercolor="gray"
-        style={{ cursor: "default" }}
+        style={{ cursor: 'default' }}
       >
-        <span style={{ color: "rgba(112, 112, 112, 0.3)" }}>Feeder</span>
+        <span style={{ color: 'rgba(112, 112, 112, 0.3)' }}>Feeder</span>
       </StyledMenuItem>
       <StyledMenuItem
         bordercolor="lightBg"
         hoverbgcolor="white"
         hovercolor="gray"
-        style={{ cursor: "default" }}
+        style={{ cursor: 'default' }}
       >
-        <span style={{ color: "rgba(112, 112, 112, 0.3)" }}>Zip Code</span>
+        <span style={{ color: 'rgba(112, 112, 112, 0.3)' }}>Zip Code</span>
       </StyledMenuItem>
       <StyledMenuItem
         bordercolor="lightBg"
         hoverbgcolor="white"
         hovercolor="gray"
-        style={{ cursor: "default" }}
+        style={{ cursor: 'default' }}
       >
-        <span style={{ color: "rgba(112, 112, 112, 0.3)" }}>Meter Type</span>
+        <span style={{ color: 'rgba(112, 112, 112, 0.3)' }}>Meter Type</span>
       </StyledMenuItem>
     </StyledMenu>
   );
