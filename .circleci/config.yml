@@ -21,12 +21,7 @@ jobs:
       - run:
           name: Install python
           command: |
-            sudo apt install python3
-      - run:
-          name: Symlink python3 to python
-          command: |
-            sudo ln -s /usr/bin/python3 /usr/bin/python && \
-            sudo ln -s /usr/bin/pip3 /usr/bin/pip
+            sudo apt install python
       - python/load-cache
       - python/install-deps
       - python/save-cache
