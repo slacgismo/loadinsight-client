@@ -18,10 +18,7 @@ jobs:
           name: Install curl
           command: |
             sudo apt install curl
-      - run:
-          name: Install curl
-          command: |
-            sudo apt install python3-pip
+      - python/install
       - python/load-cache
       - python/install-deps
       - python/save-cache
