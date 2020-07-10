@@ -60,7 +60,7 @@ def get_loads(start,stop,date_format='%m/%d/%y',show_progress=False):
             df.to_csv(f'../public/api/pge/{datename}.csv')
         except Exception as err:
             print(f"ERROR: get_load_profile(date={date}): {err}")
-            df = DataFrame()
+            df = pd.DataFrame()
         try:
             res1 = res1.append(df,sort=True)
         except Exception as err:
