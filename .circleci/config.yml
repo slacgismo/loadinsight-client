@@ -3,11 +3,8 @@ orbs:
   node: circleci/node@2.1.1
   python: circleci/python@0.3.2
 jobs:
-  build:
-    docker:
-      - image: cimg/base:stable
-    environment:
-      - PGE_STOP_DATE=7/5/20
+  downloadPGEData:
+    executor: python/default
     steps:
       - checkout
       - python/load-cache
@@ -17,6 +14,13 @@ jobs:
           name: Update PG&E Data
           command: |
             python ./scripts/pgande.py --start 1/1/20 --end $PGE_STOP_DATE
+  build:
+    docker:
+      - image: cimg/base:stable
+    environment:
+      - PGE_STOP_DATE=7/5/20
+    steps:
+      - checkout
       - node/install:
           node-version: latest
       - run:
@@ -43,3 +47,8 @@ jobs:
               npm run deploy-production-ci
               echo Deploy Complete
             fi
+workflows:
+  main:
+    jobs:
+      - downloadPGEData
+      - build
