@@ -49,9 +49,9 @@ jobs:
               echo Deploy Complete
             fi
 workflows:
-  prebuild:
-    jobs:
-      - downloadPGEData
   main:
     jobs:
+      - downloadPGEData
       - build
+          requires:
+            - downloadPGEData
