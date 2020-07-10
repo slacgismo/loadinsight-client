@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Update PG&E Data
           command: |
-            cd scripts && pip3 install && python3 pgande.py --start 1/1/20 --end $PGE_STOP_DATE
+            cd scripts && pip install && python pgande.py --start 1/1/20 --end $PGE_STOP_DATE
       - run:
           name: Deploy
           command: |
