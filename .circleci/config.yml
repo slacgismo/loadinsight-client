@@ -22,6 +22,10 @@ jobs:
           name: Install python
           command: |
             sudo apt install python
+      - run:
+          name: Install pip
+          command: |
+            sudo apt install python-pip
       - python/load-cache
       - python/install-deps
       - python/save-cache
