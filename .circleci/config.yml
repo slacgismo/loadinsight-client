@@ -11,6 +11,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: apt-get update
+          command: |
+            sudo apt-get update
+      - run:
           name: Install curl
           command: |
             sudo apt install curl
