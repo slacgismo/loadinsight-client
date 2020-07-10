@@ -3,17 +3,6 @@ orbs:
   node: circleci/node@2.1.1
   python: circleci/python@0.3.2
 jobs:
-  prebuild:
-    executor: python/default
-    steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          name: Update PG&E Data
-          command: |
-            python ./scripts/pgande.py --start 1/1/20 --end $PGE_STOP_DATE
   build:
     docker:
       - image: cimg/base:stable
@@ -52,5 +41,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - prebuild
       - build
