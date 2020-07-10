@@ -47,10 +47,3 @@ jobs:
               npm run deploy-production-ci
               echo Deploy Complete
             fi
-workflows:
-  main:
-    jobs:
-      - downloadPGEData
-      - build:
-          requires:
-            - downloadPGEData
