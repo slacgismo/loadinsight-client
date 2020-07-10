@@ -18,7 +18,15 @@ jobs:
           name: Install curl
           command: |
             sudo apt install curl
-      - python/install
+      - run:
+          name: Install python
+          command: |
+            sudo apt install python3
+      - run:
+          name: Symlink python3 to python
+          command: |
+            ln -s /usr/bin/python3 /usr/bin/python && \
+            ln -s /usr/bin/pip3 /usr/bin/pip
       - python/load-cache
       - python/install-deps
       - python/save-cache
