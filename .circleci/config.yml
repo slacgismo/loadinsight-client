@@ -7,7 +7,9 @@ jobs:
     executor: python/default
     steps:
       - checkout
+      - python/load-cache
       - python/install-deps
+      - python/save-cache
       - run:
           name: Update PG&E Data
           command: |
@@ -47,3 +49,8 @@ jobs:
               npm run deploy-production-ci
               echo Deploy Complete
             fi
+workflows:
+  main:
+    jobs:
+      - prebuild
+      - build
