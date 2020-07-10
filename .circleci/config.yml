@@ -1,43 +1,12 @@
 version: 2.1
 orbs:
   node: circleci/node@2.1.1
-  python: circleci/python@0.3.2
 jobs:
   build:
     docker:
       - image: cimg/base:stable
-    environment:
-      - PGE_STOP_DATE=7/5/20
     steps:
       - checkout
-      - run:
-          name: apt-get update
-          command: |
-            sudo apt-get update
-      - run:
-          name: Install python-pycurl
-          command: |
-            sudo apt install python-pycurl
-      - run:
-          name: Install python
-          command: |
-            sudo apt install python3
-      - run:
-          name: Install pip
-          command: |
-            sudo apt install python3-pip
-      - run:
-          name: symlink python3 to python
-          command: |
-            sudo ln -s /usr/bin/python3 /usr/bin/python & \
-            sudo ln -s /usr/bin/pip3 /usr/bin/pip
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          name: Update PG&E Data
-          command: |
-            python ./scripts/pgande.py --start 1/1/20 --end $PGE_STOP_DATE
       - node/install:
           node-version: latest
       - run:
