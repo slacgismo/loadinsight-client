@@ -11,9 +11,9 @@ jobs:
     steps:
       - checkout
       - run:
-          - name: Install curl
-          - command: |
-              - apk update && apk add curl curl-dev bash
+          name: Install curl
+          command: |
+            apk update && apk add curl curl-dev bash
       - python/load-cache
       - python/install-deps
       - python/save-cache
