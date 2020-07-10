@@ -52,6 +52,6 @@ workflows:
   main:
     jobs:
       - downloadPGEData
-      - build
+      - build:
           requires:
             - downloadPGEData
