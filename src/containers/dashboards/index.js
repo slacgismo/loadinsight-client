@@ -70,8 +70,8 @@ const Dashboards = ({
       }]);
     } else {
       setDateRange([{
-        startDate: new Date('5/27/20'),
-        endDate: new Date('6/27/20'),
+        startDate: new Date('6/05/20'),
+        endDate: new Date('7/05/20'),
         key: 'selection',
       }]);
     }
