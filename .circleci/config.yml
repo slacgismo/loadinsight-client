@@ -4,7 +4,10 @@ orbs:
   python: circleci/python@0.3.2
 jobs:
   downloadPGEData:
-    executor: python/default
+    docker:
+      - image: circleci/python:2.7.14
+    environment:
+      - PGE_STOP_DATE=7/5/20
     steps:
       - checkout
       - python/load-cache
@@ -17,8 +20,6 @@ jobs:
   build:
     docker:
       - image: cimg/base:stable
-    environment:
-      - PGE_STOP_DATE=7/5/20
     steps:
       - checkout
       - node/install:
