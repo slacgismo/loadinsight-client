@@ -4,6 +4,8 @@ orbs:
   python: circleci/python@0.3.2
 jobs:
   prebuild:
+    docker:
+      - image: cimg/base:stable
     executor: python/default
     steps:
       - checkout
