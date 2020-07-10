@@ -57,7 +57,7 @@ def get_loads(start,stop,date_format='%m/%d/%y',show_progress=False):
         try:
             df = None
             df = get_load_profile(date)
-            df.to_csv(f'../public/api/pge/{datename}.csv')
+            df.to_csv(f'public/api/pge/{datename}.csv')
         except Exception as err:
             print(f"ERROR: get_load_profile(date={date}): {err}")
             df = pd.DataFrame()
