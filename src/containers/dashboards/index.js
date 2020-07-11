@@ -54,9 +54,12 @@ const Dashboards = ({
 }) => {
   const currentDashboardName = currentDashboard in dashboards ? dashboards[currentDashboard].name : '';
 
+  const PGEStartDate = new Date('6/05/20');
+  const PGEEndDate = new Date('7/05/20');
+
   const [dateRange, setDateRange] = useState([{
-    startDate: new Date('5/27/20'),
-    endDate: new Date('6/27/20'),
+    startDate: PGEStartDate,
+    endDate: PGEEndDate,
     key: 'selection',
   }]);
 
@@ -70,12 +73,12 @@ const Dashboards = ({
       }]);
     } else {
       setDateRange([{
-        startDate: new Date('5/27/20'),
-        endDate: new Date('6/27/20'),
+        startDate: PGEStartDate,
+        endDate: PGEEndDate,
         key: 'selection',
       }]);
     }
-  }, [currentDashboard, dashboards]);
+  }, [currentDashboard, dashboards, PGEStartDate, PGEEndDate]);
 
   const maxDate = new Date();
   const minDate = currentDashboardName === 'Holy Cross Dashboard' ? (
