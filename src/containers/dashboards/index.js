@@ -54,9 +54,17 @@ const Dashboards = ({
 }) => {
   const currentDashboardName = currentDashboard in dashboards ? dashboards[currentDashboard].name : '';
 
+  const dateNow = new Date();
+  const dateNowYear = dateNow.getFullYear();
+  const dateNowMonth = dateNow.getMonth();
+  const dateNowDate = dateNow.getDate();
+
+  const datePGEStart = new Date(dateNowYear, dateNowMonth - 1, dateNowDate);
+  const datePGEStop = new Date(dateNowYear, dateNowMonth, dateNowDate);
+
   const [dateRange, setDateRange] = useState([{
-    startDate: new Date('6/05/20'),
-    endDate: new Date('7/05/20'),
+    startDate: new Date(datePGEStart),
+    endDate: new Date(datePGEStop),
     key: 'selection',
   }]);
 
@@ -70,8 +78,8 @@ const Dashboards = ({
       }]);
     } else {
       setDateRange([{
-        startDate: new Date('6/05/20'),
-        endDate: new Date('7/05/20'),
+        startDate: new Date(datePGEStart),
+        endDate: new Date(datePGEStop),
         key: 'selection',
       }]);
     }
@@ -81,7 +89,7 @@ const Dashboards = ({
   const minDate = currentDashboardName === 'Holy Cross Dashboard' ? (
     new Date(maxDate.getFullYear() - 3, 0, 1) // have calendar go back 3 years
   ) : (
-    new Date('1/1/2020')
+    new Date(dateNowYear, 0, 1)
   );
 
   const [sharePopoverVisible, setSharePopoverVisible] = useState(false);
@@ -99,8 +107,8 @@ const Dashboards = ({
   useEffect(() => {
     if (dashboards.length && currentDashboard > 0) { // only get if not on Holy Cross Dashboard
       if (dateTimeFilterValue || addChartModalVisible) {
-        const start = new Date('5/27/2020');
-        const end = new Date('6/27/2020');
+        const start = new Date(datePGEStart);
+        const end = new Date(datePGEStop);
         getPGELoadProfile(start, end, addChartModalVisible);
       } else {
         getPGELoadProfile(dateRange[0].startDate, dateRange[0].endDate);
