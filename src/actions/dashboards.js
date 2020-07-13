@@ -60,9 +60,10 @@ export const getPGELoadProfileCompleted = (payload, addChartModalVisible) => ({
   addChartModalVisible,
 });
 
-export const getPGELoadProfileFailed = (error) => ({
+export const getPGELoadProfileFailed = (error, dateStringKey) => ({
   type: GET_PGE_LOAD_PROFILE_FAILED,
   payload: error,
+  dateStringKey,
 });
 
 export const getPGELoadProfile = (
@@ -71,8 +72,8 @@ export const getPGELoadProfile = (
   const loadProfile = new Map();
 
   const PGELoadProfileStream = parse({ headers: true })
-    .on('error', (error) => {
-      dispatch(getPGELoadProfileFailed(error));
+    .on('error', (err) => {
+      dispatch(getPGELoadProfileFailed(err));
     })
     .on('data', (row) => {
       const data = { ...row };
@@ -98,9 +99,9 @@ export const getPGELoadProfile = (
 
     const localLoadProfile = window.localStorage.getItem(dateStringKey);
 
-    if (localLoadProfile) {
+    if (localLoadProfile !== null) {
       loadProfileCsvs.set(date.toDate(), localLoadProfile);
-    } else if (date.year() === 2020) { // PGE data in public folder is 2020-only
+    } else if (date.year() >= 2020) { // PGE data in public folder is 2020 onward
       dispatch(getPGELoadProfileStarted());
       waitingOnAPI = true;
       ApiClient.get(`/api/pge/${date.format('YYYYMMDD')}.csv`)
@@ -108,7 +109,7 @@ export const getPGELoadProfile = (
           dispatch(setPGELoadProfile(dateStringKey, res.data));
         })
         .catch((err) => {
-          dispatch(getPGELoadProfileFailed(err));
+          dispatch(getPGELoadProfileFailed(err, dateStringKey));
         });
     }
   }
