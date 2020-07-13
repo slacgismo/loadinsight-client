@@ -83,7 +83,7 @@ const Dashboards = ({
         key: 'selection',
       }]);
     }
-  }, [currentDashboard, dashboards]);
+  }, [currentDashboard, dashboards, datePGEStart, datePGEStop]);
 
   const maxDate = new Date();
   const minDate = currentDashboardName === 'Holy Cross Dashboard' ? (
@@ -121,6 +121,8 @@ const Dashboards = ({
     dashboards,
     currentDashboard,
     addChartModalVisible,
+    datePGEStart,
+    datePGEStop,
   ]);
 
   const dashboardsMenu = (
