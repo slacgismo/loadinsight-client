@@ -63,8 +63,8 @@ const Dashboards = ({
   const datePGEStop = new Date(dateNowYear, dateNowMonth, dateNowDate);
 
   const [dateRange, setDateRange] = useState([{
-    startDate: new Date(datePGEStart),
-    endDate: new Date(datePGEStop),
+    startDate: datePGEStart,
+    endDate: datePGEStop,
     key: 'selection',
   }]);
 
@@ -77,13 +77,18 @@ const Dashboards = ({
         key: 'selection',
       }]);
     } else {
+      const newDateNow = new Date();
+      const newDateNowYear = newDateNow.getFullYear();
+      const newDateNowMonth = newDateNow.getMonth();
+      const newDateNowDate = newDateNow.getDate();
+
       setDateRange([{
-        startDate: new Date(datePGEStart),
-        endDate: new Date(datePGEStop),
+        startDate: new Date(newDateNowYear, newDateNowMonth - 1, newDateNowDate),
+        endDate: new Date(newDateNowYear, newDateNowMonth, newDateNowDate),
         key: 'selection',
       }]);
     }
-  }, [currentDashboard, dashboards, datePGEStart, datePGEStop]);
+  }, [currentDashboard, dashboards]);
 
   const maxDate = new Date();
   const minDate = currentDashboardName === 'Holy Cross Dashboard' ? (
@@ -107,8 +112,13 @@ const Dashboards = ({
   useEffect(() => {
     if (dashboards.length && currentDashboard > 0) { // only get if not on Holy Cross Dashboard
       if (dateTimeFilterValue || addChartModalVisible) {
-        const start = new Date(datePGEStart);
-        const end = new Date(datePGEStop);
+        const newDateNow = new Date();
+        const newDateNowYear = newDateNow.getFullYear();
+        const newDateNowMonth = newDateNow.getMonth();
+        const newDateNowDate = newDateNow.getDate();
+
+        const start = new Date(newDateNowYear, newDateNowMonth - 1, newDateNowDate);
+        const end = new Date(newDateNowYear, newDateNowMonth, newDateNowDate);
         getPGELoadProfile(start, end, addChartModalVisible);
       } else {
         getPGELoadProfile(dateRange[0].startDate, dateRange[0].endDate);
@@ -121,8 +131,6 @@ const Dashboards = ({
     dashboards,
     currentDashboard,
     addChartModalVisible,
-    datePGEStart,
-    datePGEStop,
   ]);
 
   const dashboardsMenu = (
