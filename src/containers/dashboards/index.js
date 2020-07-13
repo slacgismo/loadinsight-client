@@ -190,13 +190,14 @@ const Dashboards = ({
       momentStart = moment(data[data.length - 1].x).subtract(filterValue, 'days');
       momentEnd = moment(data[data.length - 1].x).endOf('day');
     } else if (currentDashboardName.match('Holy Cross Dashboard')) {
-      if (start.getFullYear() !== 2017 && end.getFullYear() !== 2017) {
-        return [];
-      } if (start.getFullYear() !== 2017) {
-        return [];
-      }
+      if (start.getFullYear() !== 2017) return [];
       momentStart = moment(start).startOf('day');
-      momentEnd = moment('1/1/2018').startOf('day');
+
+      if (end.getFullYear() !== 2017) {
+        momentEnd = moment('1/1/2018').startOf('day');
+      }
+
+      momentEnd = moment(end).add(1, 'day').startOf('day');
     } else {
       momentStart = moment(start).startOf('day');
       momentEnd = moment(end).add(1, 'day').startOf('day');
