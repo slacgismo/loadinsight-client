@@ -57,7 +57,7 @@
     "deploy-production-ci": "NODE_ENV=production node ./scripts/deploy.js",
     "deploy-staging": "AWS_PROFILE=loadinsight-staging NODE_ENV=staging node ./scripts/deploy.js",
     "deploy-production": "AWS_PROFILE=loadinsight-production NODE_ENV=production node ./scripts/deploy.js",
-    "download-pge": "pipenv install && pipenv run python3 ./scripts/pgande.py --start 1/1/20 --end 7/6/20"
+    "download-pge": "pipenv install && pipenv run python3 ./scripts/pgande.py"
   },
   "eslintConfig": {
     "extends": "airbnb",
