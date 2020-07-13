@@ -113,7 +113,10 @@ export default (state = DEFAULT_STATE, action) => {
       };
     }
     case GET_PGE_LOAD_PROFILE_FAILED:
-      window.localStorage.setItem(action.dateStringKey, '');
+      if (action.dateStringKey) {
+        window.localStorage.setItem(action.dateStringKey, '');
+      }
+
       return {
         ...state,
         isLoadingLoadProfile: false,
