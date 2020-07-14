@@ -99,7 +99,7 @@ export const getPGELoadProfile = (
 
     const localLoadProfile = window.localStorage.getItem(dateStringKey);
 
-    if (!localLoadProfile.length || localLoadProfile.match(/</)) {
+    if (!localLoadProfile || localLoadProfile.match(/</)) {
       dispatch(getPGELoadProfileFailed(`ERROR: Invalid value at ${dateStringKey}`, dateStringKey));
       if (date.year() >= 2020) { // PGE data in public folder is 2020 onward
         dispatch(getPGELoadProfileStarted());
