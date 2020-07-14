@@ -195,9 +195,9 @@ const Dashboards = ({
 
       if (end.getFullYear() !== 2017) {
         momentEnd = moment('1/1/2018').startOf('day');
+      } else {
+        momentEnd = moment(end).add(1, 'day').startOf('day');
       }
-
-      momentEnd = moment(end).add(1, 'day').startOf('day');
     } else {
       momentStart = moment(start).startOf('day');
       momentEnd = moment(end).add(1, 'day').startOf('day');
