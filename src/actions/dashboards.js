@@ -71,6 +71,9 @@ export const getPGELoadProfile = (
 ) => (dispatch) => {
   const loadProfile = new Map();
 
+  const APIPromises = [];
+  const dirtyDateKeys = [];
+
   const PGELoadProfileStream = parse({ headers: true })
     .on('error', (err) => {
       dispatch(getPGELoadProfileFailed(err));
@@ -99,12 +102,14 @@ export const getPGELoadProfile = (
 
     const localLoadProfile = window.localStorage.getItem(dateStringKey);
 
-    if (localLoadProfile !== null && !localLoadProfile.match(/</)) {
+    if (localLoadProfile !== null && localLoadProfile !== '' && !localLoadProfile.match(/</)) {
       loadProfileCsvs.set(date.toDate(), localLoadProfile);
     } else if (date.year() >= 2020) { // PGE data in public folder is 2020 onward
       dispatch(getPGELoadProfileStarted());
-      waitingOnAPI = true;
-      ApiClient.get(`/api/pge/${date.format('YYYYMMDD')}.csv`)
+
+      if (localLoadProfile !== '') waitingOnAPI = true;
+
+      const APIPromise = ApiClient.get(`/api/pge/${date.format('YYYYMMDD')}.csv`)
         .then((res) => {
           if (!res.data.match(/</)) {
             dispatch(setPGELoadProfile(dateStringKey, res.data));
@@ -115,8 +120,35 @@ export const getPGELoadProfile = (
         .catch((err) => {
           dispatch(getPGELoadProfileFailed(err, dateStringKey));
         });
+
+      APIPromises.push(APIPromise);
+      dirtyDateKeys.push(moment(date));
     }
   }
+
+  // flush dirtyDateKeys
+  Promise.all(APIPromises)
+    .then(() => {
+      const dirtyLoadProfileCsvs = new SortedMap([], (a, b) => a - b);
+
+      dirtyDateKeys.forEach((date) => { // date is a moment obj
+        const dateStringKey = `PGE${date.format('YYYYMMDD')}`;
+
+        const localLoadProfile = window.localStorage.getItem(dateStringKey);
+
+        if (localLoadProfile !== null && localLoadProfile !== '' && !localLoadProfile.match(/</)) {
+          dirtyLoadProfileCsvs.set(date.toDate(), localLoadProfile);
+        }
+      });
+
+      if (dirtyLoadProfileCsvs.size) {
+        dirtyLoadProfileCsvs.forEach((data) => {
+          PGELoadProfileStream.write(data);
+        });
+
+        PGELoadProfileStream.end();
+      }
+    });
 
   if (loadProfileCsvs.size) {
     loadProfileCsvs.forEach((data) => {
